@@ -10,25 +10,25 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.1",
-    "@tailwindcss/typography": "^0.5.10",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-config-standard": "^17.1.0",
-    "eslint-plugin-tailwindcss": "^3.13.0",
-    "next": "latest",
-    "prettier": "^3.0.3",
+    "next": "^14.0.4",
     "react": "latest",
-    "react-dom": "latest",
-    "tailwindcss-animate": "^1.0.7"
+    "react-dom": "latest"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.10",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "autoprefixer": "latest",
     "eslint": "latest",
     "eslint-config-next": "latest",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-tailwindcss": "^3.13.0",
     "postcss": "latest",
+    "prettier": "^3.0.3",
     "tailwindcss": "latest",
+    "tailwindcss-animate": "^1.0.7",
     "typescript": "latest"
   }
 }

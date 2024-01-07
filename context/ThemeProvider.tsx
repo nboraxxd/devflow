@@ -22,15 +22,15 @@ const ThemeContext = createContext<ThemeContextType>(initialThemeContext)
 export function ThemeProvider({ children, defaultValue = initialThemeContext }: ThemeProviderProps) {
   const [mode, setMode] = useState(defaultValue.mode)
 
-  useEffect(() => {
-    if (mode === 'dark') {
-      setMode('light')
-      document.documentElement.classList.add('light')
-    } else {
-      setMode('dark')
-      document.documentElement.classList.add('dark')
-    }
-  }, [mode])
+  // useEffect(() => {
+  //   if (mode === 'dark') {
+  //     setMode('light')
+  //     document.documentElement.classList.add('light')
+  //   } else {
+  //     setMode('dark')
+  //     document.documentElement.classList.add('dark')
+  //   }
+  // }, [mode])
 
   return <ThemeContext.Provider value={{ mode, setMode }}>{children}</ThemeContext.Provider>
 }

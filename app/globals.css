@@ -42,7 +42,7 @@ body {
   }
 
   .primary-gradient {
-    background: linear-gradient(129deg, #ff7000 0%, #e2995f 100%);
+    background: linear-gradient(129deg, var(--primary-500) 0%, var(--primary-300) 100%);
   }
 
   .dark-gradient {
@@ -67,7 +67,7 @@ body {
 }
 
 .primary-text-gradient {
-  background: linear-gradient(129deg, #ff7000 0%, #e2995f 100%);
+  background: linear-gradient(129deg, var(--primary-500) 0%, var(--primary-300) 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -80,7 +80,7 @@ body {
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: #ffffff;
+  background: #fff;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
@@ -94,7 +94,7 @@ body {
 
 /* Markdown Start */
 .markdown a {
-  color: #1da1f2;
+  color: var(--accent-blue);
 }
 
 .markdown a,
@@ -116,7 +116,7 @@ code {
   hyphens: auto;
 
   padding: 2px;
-  color: #ff7000 !important;
+  color: var(--primary-500) !important;
 }
 
 .markdown pre {
@@ -135,7 +135,7 @@ code {
 
 /* Clerk */
 .cl-internal-b3fm6y {
-  background: linear-gradient(129deg, #ff7000 0%, #e2995f 100%) !important;
+  background: linear-gradient(129deg, var(--primary-500) 0%, var(--primary-300) 100%) !important;
 }
 
 .hash-span {

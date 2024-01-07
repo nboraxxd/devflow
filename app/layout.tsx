@@ -39,7 +39,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             },
           }}
         >
-          <ThemeProvider>{children}</ThemeProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            {children}
+          </ThemeProvider>
         </ClerkProvider>
       </body>
     </html>

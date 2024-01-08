@@ -1,7 +1,7 @@
 import { SignedIn, UserButton } from '@clerk/nextjs'
 
 import { DevflowLogo } from '@/components/shared/devflowLogo'
-import { Theme } from '@/components/shared/theme'
+import { Theme } from '@/components/shared/header'
 import { MobileNav } from '@/components/shared/mobileNav'
 import { GlobalSearch } from '@/components/shared/search'
 

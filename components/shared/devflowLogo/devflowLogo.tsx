@@ -11,7 +11,7 @@ type Props = {
 
 export default function DevflowLogo({ wrapClassName, textClassName, width = 23, height = 23 }: Props) {
   return (
-    <Link href="/" className={cn("flex items-center gap-1", wrapClassName)}>
+    <Link href="/" className={cn('flex items-center gap-1 shrink-0', wrapClassName)}>
       <Image src="/assets/images/site-logo.svg" width={width} height={height} alt="DevFlow" />
       <p className={cn('h2-bold font-spaceGrotesk text-dark100_light900 max-md:hidden', textClassName)}>
         Dev<span className="text-primary-500">flow</span>

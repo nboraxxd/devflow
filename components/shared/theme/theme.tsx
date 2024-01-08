@@ -11,7 +11,7 @@ export default function Theme() {
   const { theme, setTheme } = useTheme()
 
   return (
-    <Menubar className="relative border-none bg-transparent p-0 shadow-none">
+    <Menubar className="relative shrink-0 border-none bg-transparent p-0 shadow-none">
       <MenubarMenu>
         <MenubarTrigger className="cursor-pointer px-1.5 transition-all hover:bg-light-800 focus-visible:bg-light-800 data-[state=open]:bg-light-800 dark:hover:bg-dark-400 dark:focus-visible:bg-dark-400 dark:data-[state=open]:bg-dark-400">
           <Image

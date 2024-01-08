@@ -1,3 +1,6 @@
+import { type PluginAPI } from 'tailwindcss/types/config'
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { default: flattenColorPalette } = require('tailwindcss/lib/util/flattenColorPalette')
 
 /** @type {import('tailwindcss').Config} */
@@ -75,7 +78,7 @@ module.exports = {
 }
 
 // This plugin adds each Tailwind color as a global CSS variable, e.g. var(--gray-200).
-function addVariablesForColors({ addBase, theme }: { addBase: Function; theme: Function }) {
+function addVariablesForColors({ addBase, theme }: PluginAPI) {
   const allColors = flattenColorPalette(theme('colors')) as Record<string, string>
 
   const newVars = Object.fromEntries(Object.entries(allColors).map(([key, val]) => [`--${key}`, val]))

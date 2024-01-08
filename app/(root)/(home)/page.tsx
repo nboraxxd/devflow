@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+
 export default function Home() {
-  return <div className="h-screen">hihi</div>
+  return <div className="h-screen"><Button>Hello world</Button></div>
 }

@@ -49,7 +49,7 @@ export default function Theme() {
               />
               <span
                 className={cn('font-semibold leading-tight text-light-500', {
-                  'text-primary-500': theme === item.value,
+                  'primary-text-gradient': theme === item.value,
                 })}
               >
                 {item.label}

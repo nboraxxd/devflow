@@ -12,7 +12,7 @@ export default function MobileNavContent() {
   const pathname = usePathname()
 
   return (
-    <section className="mt-20 flex h-full flex-col gap-6">
+    <section className="mb-6 flex flex-col gap-6">
       {sidebarLinks.map((item) => {
         const isActive = (pathname.includes(item.route) && item.route.length > 1) || pathname === item.route
 

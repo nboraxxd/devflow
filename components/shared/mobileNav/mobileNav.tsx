@@ -21,15 +21,15 @@ export default function MobileNav() {
       </SheetTrigger>
       <SheetContent
         side="left"
-        className="background-light900_dark200 overflow-y-scroll border-none px-5 pb-9 pt-4"
+        className="background-light900_dark200 custom-scrollbar flex flex-col overflow-y-auto border-none px-5 pb-9 pt-4"
       >
         <DevflowLogo wrapClassName="w-fit px-2 -mx-2" textClassName="max-md:block" />
 
-        <div>
+        <div className="mt-20 flex grow flex-col">
           <MobileNavContent />
 
           <SignedOut>
-            <div className="flex flex-col gap-2.5">
+            <div className="mt-auto flex flex-col gap-2.5">
               <SheetClose asChild>
                 <Link href="/sign-in">
                   <Button className="btn-secondary min-h-[42px] w-full rounded-lg px-4 py-3 shadow-none">

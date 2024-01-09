@@ -2,6 +2,7 @@ import { ReactNode } from 'react'
 
 import { Header } from '@/components/shared/header'
 import { LeftSidebar } from '@/components/shared/leftSidebar'
+import { RightSidebar } from '@/components/shared/rightSidebar'
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
@@ -11,8 +12,9 @@ export default function Layout({ children }: { children: ReactNode }) {
         <LeftSidebar />
 
         <section className="grid gap-5 px-5 lg:grid-cols-[1fr_280px]">
-          <div>{children}</div>
-          <div className="flex flex-col gap-10 max-lg:hidden">RightSidebar</div>
+          <div className="pt-16">{children}</div>
+
+          <RightSidebar />
         </section>
       </main>
     </>

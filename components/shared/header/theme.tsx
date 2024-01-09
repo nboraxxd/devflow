@@ -1,14 +1,16 @@
 'use client'
 
+import Image from 'next/image'
 import { useTheme } from 'next-themes'
 
-import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from '@/components/ui/menubar'
 import { themes } from '@/constants'
+import { useWindowWidth } from '@/app/hooks/useWindowWidth'
 import { cn } from '@/lib/utils'
-import Image from 'next/image'
+import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from '@/components/ui/menubar'
 
 export default function Theme() {
   const { theme, setTheme } = useTheme()
+  const windowWidth = useWindowWidth(640)
 
   return (
     <Menubar className="relative shrink-0 border-none bg-transparent p-0 shadow-none">
@@ -32,7 +34,7 @@ export default function Theme() {
         </MenubarTrigger>
         <MenubarContent
           className="min-w-[120px] rounded border border-light-b bg-light-900 px-0 py-1.5 shadow-light-100 dark:border-dark-400 dark:bg-dark-300 dark:shadow-none"
-          align="end"
+          align={windowWidth < 640 ? 'center' : 'end'}
         >
           {themes.map((item) => (
             <MenubarItem

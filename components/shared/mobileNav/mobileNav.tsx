@@ -20,13 +20,14 @@ export default function MobileNav() {
         side="left"
         className="background-light900_dark200 custom-scrollbar flex flex-col gap-0 overflow-y-auto border-none px-5 pb-9 pt-4"
       >
-        <DevflowLogo wrapperClassName="w-fit px-2 -mx-2" textClassName="max-md:block" />
+        <header>
+          <DevflowLogo wrapperClassName="w-fit px-2 -mx-2" textClassName="max-md:block" />
+        </header>
 
-        <div className="mt-16 flex grow flex-col">
+        <div className="mt-16 grow">
           <MobileNavBody />
-
-          <MobileNavFooter />
         </div>
+        <MobileNavFooter />
       </SheetContent>
     </Sheet>
   )

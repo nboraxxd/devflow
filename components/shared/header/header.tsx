@@ -7,7 +7,7 @@ import { GlobalSearch } from '@/components/shared/search'
 
 export default function Header() {
   return (
-    <header className="background-light900_dark200 sticky top-0 z-20 shadow-light-300 dark:shadow-none">
+    <header className="background-light900_dark200 light-border sticky top-0 z-20 border-b shadow-light-300 dark:shadow-none">
       <nav className="flex-between container gap-5 px-5 py-6 lg:px-10">
         <DevflowLogo />
 

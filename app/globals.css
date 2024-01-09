@@ -30,11 +30,11 @@ body {
   }
 
   .btn-secondary {
-    @apply bg-light-800 dark:bg-dark-400 !important;
+    @apply bg-light-800 dark:bg-dark-400 hover:bg-light-700 hover:dark:bg-dark-500 transition duration-300 !important;
   }
 
   .btn-tertiary {
-    @apply bg-light-700 dark:bg-dark-300 !important;
+    @apply bg-light-700 dark:bg-dark-300 hover:bg-light-600 hover:dark:bg-dark-400 transition duration-300 !important;
   }
 
   .markdown {

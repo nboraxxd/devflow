@@ -12,5 +12,11 @@
   "rules": {
     "@typescript-eslint/no-unused-vars": ["warn", { "varsIgnorePattern": "^_", "argsIgnorePattern": "^_" }],
     "camelcase": "off"
+  },
+  "settings": {
+    "tailwindcss": {
+      "callees": ["cn", "className"],
+      "classRegex": ".*[Cc]lass[Nn]ame.*"
+    }
   }
 }

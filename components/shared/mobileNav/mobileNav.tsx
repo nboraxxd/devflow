@@ -15,7 +15,7 @@ export default function MobileNav() {
         className="background-light900_dark200 custom-scrollbar flex flex-col gap-0 overflow-y-auto border-none px-5 pb-9 pt-4"
       >
         <header>
-          <DevflowLogo wrapperClassName="w-fit px-2 -mx-2" textClassName="max-md:block" />
+          <DevflowLogo wrapperClassName="-mx-2 w-fit px-2" textClassName="max-md:block" />
         </header>
 
         <div className="mt-16 grow">

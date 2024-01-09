@@ -1,5 +1,5 @@
-import { sidebarLinks } from "@/constants";
-import { LeftSidebarItem } from "@/components/shared/leftSidebar";
+import { sidebarLinks } from '@/constants'
+import { LeftSidebarItem } from '@/components/shared/leftSidebar'
 
 export default function LeftSidebarBody() {
   return (
@@ -8,8 +8,8 @@ export default function LeftSidebarBody() {
         <LeftSidebarItem
           key={item.route}
           item={item}
-          wrapperClassName="md:px-2.5 gap-2.5 lg:px-4 xl:px-2.5"
-          textClassName="hidden md:block lg:hidden xl:block"
+          wrapperClassName="gap-2.5 md:px-2.5 lg:px-4 xl:px-2.5"
+          textClassName=" hidden md:block lg:hidden xl:block"
         />
       ))}
     </div>

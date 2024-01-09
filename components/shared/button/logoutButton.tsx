@@ -1,4 +1,8 @@
+'use client'
+
 import { ButtonHTMLAttributes, ReactNode } from 'react'
+import { useRouter } from 'next/navigation'
+import { useAuth } from '@clerk/nextjs'
 
 import { cn } from '@/lib/utils'
 
@@ -8,6 +12,9 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export default function LogoutButton({ children, className, ...rest }: Props) {
+  const { signOut } = useAuth()
+  const router = useRouter()
+
   return (
     <button
       className={cn(
@@ -15,6 +22,7 @@ export default function LogoutButton({ children, className, ...rest }: Props) {
         className
       )}
       {...rest}
+      onClick={() => signOut(() => router.push('/'))}
     >
       {children}
     </button>

@@ -1,1 +1,1 @@
-export { default as GlobalSearch } from './globalSearch'
+export { default as PrimarySearch } from './primarySearch'

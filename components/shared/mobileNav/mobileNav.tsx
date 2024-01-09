@@ -7,14 +7,8 @@ import { MobileNavBody, MobileNavFooter } from '@/components/shared/mobileNav'
 export default function MobileNav() {
   return (
     <Sheet>
-      <SheetTrigger>
-        <Image
-          src="/assets/icons/hamburger.svg"
-          width={36}
-          height={36}
-          alt="Menu"
-          className="invert-colors sm:hidden"
-        />
+      <SheetTrigger className="sm:hidden">
+        <Image src="/assets/icons/hamburger.svg" width={36} height={36} alt="Menu" className="invert-colors" />
       </SheetTrigger>
       <SheetContent
         side="left"

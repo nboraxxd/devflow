@@ -8,8 +8,8 @@ export default function LeftSidebarBody() {
         <LeftSidebarItem
           key={item.route}
           item={item}
-          wrapperClassName="md:px-2.5 gap-2.5"
-          textClassName="max-md:hidden"
+          wrapperClassName="md:px-2.5 gap-2.5 lg:px-4 xl:px-2.5"
+          textClassName="hidden md:block lg:hidden xl:block"
         />
       ))}
     </div>

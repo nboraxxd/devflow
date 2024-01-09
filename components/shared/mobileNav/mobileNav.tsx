@@ -18,9 +18,9 @@ export default function MobileNav() {
           <DevflowLogo wrapperClassName="-mx-2 w-fit px-2" textClassName="max-md:block" />
         </header>
 
-        <div className="mt-16 grow">
+        <section className="mt-16 grow">
           <MobileNavBody />
-        </div>
+        </section>
         <MobileNavFooter />
       </SheetContent>
     </Sheet>

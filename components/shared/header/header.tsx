@@ -12,28 +12,27 @@ import { MobileNav } from '@/components/shared/mobileNav'
 import { PrimarySearch } from '@/components/shared/search'
 import { PrimaryButton } from '@/components/shared/button'
 
-const mdBreakpoint = 768
+const MD_BREAKPOINT = 768
 
 export default function Header() {
+  const windowWidth = useWindowWidth(MD_BREAKPOINT)
+
+  const [isFocusSearch, setIsFocusSearch] = useState(false)
   const searchInput = useRef<HTMLInputElement>(null)
   const wrapperSearch = useRef<HTMLDivElement>(null)
 
-  const [focused, setFocused] = useState(false)
-
-  const windowWidth = useWindowWidth(mdBreakpoint)
-
   useEffect(() => {
     function handleFocus() {
-      if (windowWidth < mdBreakpoint) {
-        setFocused(true)
+      setIsFocusSearch(true)
+
+      if (windowWidth >= MD_BREAKPOINT) {
+        wrapperSearch.current!.style.display = 'block'
       }
     }
 
     function handleBlur() {
-      if (windowWidth < mdBreakpoint) {
-        setFocused(false)
-        wrapperSearch.current!.style.removeProperty('display')
-      }
+      setIsFocusSearch(false)
+      wrapperSearch.current!.style.removeProperty('display')
     }
 
     const input = searchInput.current!
@@ -48,36 +47,33 @@ export default function Header() {
   }, [windowWidth])
 
   function handleShowPrimarySearch() {
-    wrapperSearch.current!.style.display = 'flex'
+    wrapperSearch.current!.style.display = 'block'
     searchInput.current!.focus()
   }
 
   return (
-    <header className="background-light900_dark200 light-border sticky top-0 z-20 border-b shadow-light-header dark:shadow-none">
+    <header className="background-light900_dark200 light-border fixed inset-x-0 top-0 z-20 flex h-[88px] items-center border-b shadow-light-header dark:shadow-none">
       <div
-        className={cn('flex-between container h-[88px] px-5 md:h-[100px] lg:px-10', {
-          'px-10': focused,
-          'gap-5': !focused,
+        className={cn('container flex justify-between px-5 md:gap-5 lg:px-10', {
+          'max-md:px-10': isFocusSearch,
         })}
       >
-        <DevflowLogo wrapperClassName={cn({ hidden: focused })} />
-
+        <DevflowLogo wrapperClassName={cn({ 'max-md:hidden': isFocusSearch })} />
         <PrimarySearch wrapperClassName="mx-auto max-w-[600px] max-md:hidden" ref={wrapperSearch}>
           <PrimarySearch.SearchIcon iconSrc="/assets/icons/search.svg" iconAlt="Search" />
           <PrimarySearch.SearchInput ref={searchInput} placeholder="Search anything globally" />
         </PrimarySearch>
-
         <nav className="flex-between shrink-0 gap-3 md:gap-5">
           <PrimaryButton
-            className={cn('rounded-sm p-1.5 hover:bg-light-800 dark:hover:bg-dark-400 md:hidden', { hidden: focused })}
+            className={cn('rounded-sm p-1.5 hover:bg-light-800 dark:hover:bg-dark-400 md:hidden', {
+              'max-md:hidden': isFocusSearch,
+            })}
             onClick={handleShowPrimarySearch}
           >
             <Image src="/assets/icons/search.svg" alt="Search" width={20} height={20} />
           </PrimaryButton>
-
-          <Theme themeTriggerClassName={cn({ hidden: focused })} />
-
-          {!focused && (
+          <Theme themeTriggerClassName={cn({ 'max-md:hidden': isFocusSearch })} />
+          {(windowWidth >= MD_BREAKPOINT || !isFocusSearch) && (
             <SignedIn>
               <UserButton
                 afterSignOutUrl="/"
@@ -92,8 +88,7 @@ export default function Header() {
               />
             </SignedIn>
           )}
-
-          <MobileNav hamburgerClassName={cn({ hidden: focused })} />
+          <MobileNav hamburgerClassName={cn({ hidden: isFocusSearch })} />
         </nav>
       </div>
     </header>

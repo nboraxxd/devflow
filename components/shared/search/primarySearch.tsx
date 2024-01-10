@@ -43,8 +43,8 @@ const SearchContext = createContext({})
 const PrimarySearch = forwardRef<HTMLDivElement, PrimarySearchProps>(function PrimarySearch({ children, wrapperClassName }, ref) {
   return (
     <SearchContext.Provider value={{}}>
-      <div className={cn('relative w-full', wrapperClassName)} ref={ref}>
-        <div className="background-light800_darkgradient relative flex min-h-[40px] grow items-center gap-3 rounded-xl border border-light-700 px-4 dark:border-none md:min-h-[52px]">
+      <div className={cn('w-full', wrapperClassName)} ref={ref}>
+        <div className="background-light800_darkgradient relative flex min-h-[48px] grow items-center gap-3 rounded-xl border border-light-700 px-4 dark:border-none">
           {children}
         </div>
       </div>

@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { useTheme } from 'next-themes'
 
 import { themes } from '@/constants'
-import { useWindowWidth } from '@/app/hooks/useWindowWidth'
+import { useWindowWidth } from '@/hooks/useWindowWidth'
 import { cn } from '@/lib/utils'
 import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from '@/components/ui/menubar'
 

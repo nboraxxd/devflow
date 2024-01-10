@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { SignedIn, UserButton } from '@clerk/nextjs'
 
 import { cn } from '@/lib/utils'
-import { useWindowWidth } from '@/app/hooks/useWindowWidth'
+import { useWindowWidth } from '@/hooks/useWindowWidth'
 import { DevflowLogo } from '@/components/shared/devflowLogo'
 import { Theme } from '@/components/shared/header'
 import { MobileNav } from '@/components/shared/mobileNav'

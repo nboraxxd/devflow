@@ -12,8 +12,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         <LeftSidebar />
 
         <section className="grid gap-5 px-5 lg:grid-cols-[1fr_280px]">
-          <div className="pt-16">{children}</div>
-
+          {children}
           <RightSidebar />
         </section>
       </main>

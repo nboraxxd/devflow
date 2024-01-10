@@ -8,14 +8,19 @@ import { useWindowWidth } from '@/app/hooks/useWindowWidth'
 import { cn } from '@/lib/utils'
 import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from '@/components/ui/menubar'
 
-export default function Theme() {
+export default function Theme({ themeTriggerClassName }: { themeTriggerClassName?: string }) {
   const { theme, setTheme } = useTheme()
   const windowWidth = useWindowWidth(640)
 
   return (
     <Menubar className="relative shrink-0 border-none bg-transparent p-0 shadow-none">
       <MenubarMenu>
-        <MenubarTrigger className="cursor-pointer px-1.5 transition-all hover:bg-light-800 focus-visible:bg-light-800 data-[state=open]:bg-light-800 dark:hover:bg-dark-400 dark:focus-visible:bg-dark-400 dark:data-[state=open]:bg-dark-400">
+        <MenubarTrigger
+          className={cn(
+            'cursor-pointer px-1.5 transition-all hover:bg-light-800 focus-visible:bg-light-800 data-[state=open]:bg-light-800 dark:hover:bg-dark-400 dark:focus-visible:bg-dark-400 dark:data-[state=open]:bg-dark-400',
+            themeTriggerClassName
+          )}
+        >
           <Image
             src="/assets/icons/sun.svg"
             alt="Sun"

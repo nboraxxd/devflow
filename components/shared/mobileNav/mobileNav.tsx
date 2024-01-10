@@ -1,13 +1,14 @@
 import Image from 'next/image'
 
+import { cn } from '@/lib/utils'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { DevflowLogo } from '@/components/shared/devflowLogo'
 import { MobileNavBody, MobileNavFooter } from '@/components/shared/mobileNav'
 
-export default function MobileNav() {
+export default function MobileNav({ hamburgerClassName }: { hamburgerClassName?: string }) {
   return (
     <Sheet>
-      <SheetTrigger className="sm:hidden">
+      <SheetTrigger className={cn('sm:hidden', hamburgerClassName)}>
         <Image src="/assets/icons/hamburger.svg" width={36} height={36} alt="Menu" className="invert-colors" />
       </SheetTrigger>
       <SheetContent

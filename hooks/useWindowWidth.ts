@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-export function useWindowWidth(initialSize: number) {
+export default function useWindowWidth(initialSize: number) {
   const [windowWidth, setWindowWidth] = useState(() => {
     // use a lazy initializer, which helps you have a cleaner
     // view into how this might be initialized in either CSR or SSR contexts

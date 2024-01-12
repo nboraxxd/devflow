@@ -2,6 +2,7 @@
 
 import { ForwardRefExoticComponent, ReactNode, RefAttributes, createContext, forwardRef } from 'react'
 import Image from 'next/image'
+import { MotionProps, m } from 'framer-motion'
 
 import { Input, InputProps } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
@@ -26,7 +27,7 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(function Sear
   )
 })
 
-interface PrimarySearchProps {
+interface PrimarySearchProps extends MotionProps {
   children: ReactNode
   wrapperClassName?: string
 }
@@ -40,14 +41,17 @@ interface PrimarySearchType extends ForwardRefExoticComponent<PrimarySearchProps
 const SearchContext = createContext({})
 
 // Step 2. Create parent component
-const PrimarySearch = forwardRef<HTMLDivElement, PrimarySearchProps>(function PrimarySearch({ children, wrapperClassName }, ref) {
+const PrimarySearch = forwardRef<HTMLDivElement, PrimarySearchProps>(function PrimarySearch(
+  { children, wrapperClassName, style },
+  ref
+) {
   return (
     <SearchContext.Provider value={{}}>
-      <div className={cn('w-full', wrapperClassName)} ref={ref}>
-        <div className="background-light800_darkgradient relative flex min-h-[48px] grow items-center gap-3 rounded-xl border border-light-700 px-4 dark:border-none">
+      <m.div style={style} className={cn('w-full', wrapperClassName)} ref={ref}>
+        <div className="light-gradient dark:dark-gradient relative flex min-h-[48px] grow items-center gap-3 rounded-xl border border-light-700 px-4 dark:border-none">
           {children}
         </div>
-      </div>
+      </m.div>
     </SearchContext.Provider>
   )
 }) as PrimarySearchType

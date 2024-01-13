@@ -6,6 +6,34 @@ export type SidebarLink = {
   label: string
 }
 
+export type Tag = {
+  _id: number
+  name: string
+  count: number
+  createdAt: Date
+  updatedAt: Date
+}
+
+export type Author = {
+  _id: number
+  name: string
+  avatar: string
+  createdAt: Date
+  updatedAt: Date
+}
+
+export type Question = {
+  _id: number
+  title: string
+  tags: Tag[]
+  author: Author
+  answers: number
+  upvotes: number
+  views: number
+  createdAt: Date
+  updatedAt: Date
+}
+
 export type Job = {
   id?: string
   employer_name?: string

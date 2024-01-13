@@ -1,1 +1,1 @@
-export { default as HomeFilter } from './homeFilter'
+export { default as HomeFilters } from './homeFilters'

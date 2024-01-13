@@ -24,7 +24,8 @@ export default function Header() {
   const searchInput = useRef<HTMLInputElement>(null)
   const wrapperSearch = useRef<HTMLDivElement>(null)
 
-  const { theme } = useTheme()
+  const { resolvedTheme } = useTheme()
+
   const { scrollYBoundedProgress } = useBoundedScroll(300)
   const scrollYBoundedProgressThrottled = useTransform(scrollYBoundedProgress, [0, 0.5, 1], [0, 0, 1])
   const motionScale = useTransform(scrollYBoundedProgressThrottled, [0, 1], [1, 0.9])
@@ -34,7 +35,7 @@ export default function Header() {
       setIsFocusSearch(true)
 
       if (windowWidth >= MD_BREAKPOINT) {
-        wrapperSearch.current!.style.display = 'block'
+        wrapperSearch.current!.style.display = 'flex'
       }
     }
 
@@ -55,7 +56,7 @@ export default function Header() {
   }, [windowWidth])
 
   function handleShowPrimarySearch() {
-    wrapperSearch.current!.style.display = 'block'
+    wrapperSearch.current!.style.display = 'flex'
     searchInput.current!.focus()
   }
 
@@ -69,8 +70,8 @@ export default function Header() {
             [HeaderHeight.Expanded, HeaderHeight.Collapsed]
           ),
           backgroundColor: useMotionTemplate`rgb(${
-            theme === Theme.LIGHT ? '255 255 255' : theme === Theme.DARK ? '15 17 23' : 'none'
-          } / ${useTransform(scrollYBoundedProgressThrottled, [0, 1], [1, 0.3])})`,
+            resolvedTheme === Theme.LIGHT ? '255 255 255' : resolvedTheme === Theme.DARK ? '15 17 23' : 'none'
+          } / ${useTransform(scrollYBoundedProgressThrottled, [0, 1], [1, resolvedTheme === Theme.LIGHT ? 0.3 : 0.7])})`,
         }}
         className="background-light900_dark200 light-border fixed inset-x-0 top-0 z-20 flex h-[88px] items-center border-b shadow-light-header backdrop-blur-md dark:shadow-none"
       >
@@ -79,18 +80,17 @@ export default function Header() {
             'max-md:px-10': isFocusSearch,
           })}
         >
-          <DevflowLogo
-            style={{ scale: motionScale }}
-            wrapperClassName={cn({ 'max-md:hidden': isFocusSearch })}
-          />
+          <DevflowLogo style={{ scale: motionScale }} wrapperClassName={cn({ 'max-md:hidden': isFocusSearch })} />
+
           <PrimarySearch
-            wrapperClassName="mx-auto max-w-[600px] max-md:hidden"
+            className="light-gradient dark:dark-gradient max-w-[600px] dark:border-light-b max-md:hidden"
             ref={wrapperSearch}
             style={{ scale: motionScale }}
           >
             <PrimarySearch.SearchIcon iconSrc="/assets/icons/search.svg" iconAlt="Search" />
             <PrimarySearch.SearchInput ref={searchInput} placeholder="Search anything globally" />
           </PrimarySearch>
+
           <nav className={cn('flex-between shrink-0 md:gap-5', { 'gap-3': !isFocusSearch })}>
             <PrimaryButton
               className={cn('rounded-sm p-1.5 hover:bg-light-800 dark:hover:bg-dark-400 md:hidden', {
@@ -100,7 +100,9 @@ export default function Header() {
             >
               <Image src="/assets/icons/search.svg" alt="Search" width={20} height={20} />
             </PrimaryButton>
+
             <ThemeComponent themeTriggerClassName={cn({ 'max-md:hidden': isFocusSearch })} />
+
             <m.div style={{ scale: motionScale }}>
               {(windowWidth >= MD_BREAKPOINT || !isFocusSearch) && (
                 <SignedIn>
@@ -118,6 +120,7 @@ export default function Header() {
                 </SignedIn>
               )}
             </m.div>
+
             <MobileNav hamburgerClassName={cn({ hidden: isFocusSearch })} />
           </nav>
         </div>

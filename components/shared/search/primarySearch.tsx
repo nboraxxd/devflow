@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils'
 
 interface SearchInputProps extends InputProps {
   placeholder: string
+  className?: string
 }
 
 // Step 3. Create child components to help implementing the common tasks
@@ -16,20 +17,26 @@ function SearchIcon({ iconSrc, iconAlt }: { iconSrc: string; iconAlt: string }) 
   return <Image src={iconSrc} alt={iconAlt} width={24} height={24} />
 }
 
-const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(function SearchInput({ placeholder }, ref) {
+const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(function SearchInput(
+  { placeholder, className },
+  ref
+) {
   return (
     <Input
       ref={ref}
       type="text"
       placeholder={placeholder}
-      className="text-dark400_light700 paragraph-regular no-focus placeholder border-none bg-transparent px-0 shadow-none outline-none"
+      className={cn(
+        'text-dark400_light700 paragraph-regular no-focus placeholder border-none bg-transparent px-0 shadow-none outline-none placeholder-shown:text-ellipsis',
+        className
+      )}
     />
   )
 })
 
 interface PrimarySearchProps extends MotionProps {
   children: ReactNode
-  wrapperClassName?: string
+  className?: string
 }
 
 interface PrimarySearchType extends ForwardRefExoticComponent<PrimarySearchProps & RefAttributes<HTMLDivElement>> {
@@ -42,15 +49,20 @@ const SearchContext = createContext({})
 
 // Step 2. Create parent component
 const PrimarySearch = forwardRef<HTMLDivElement, PrimarySearchProps>(function PrimarySearch(
-  { children, wrapperClassName, style },
+  { children, className, style },
   ref
 ) {
   return (
     <SearchContext.Provider value={{}}>
-      <m.div style={style} className={cn('w-full', wrapperClassName)} ref={ref}>
-        <div className="light-gradient dark:dark-gradient relative flex min-h-[48px] grow items-center gap-3 rounded-xl border border-light-700 px-4 dark:border-none">
-          {children}
-        </div>
+      <m.div
+        style={style}
+        className={cn(
+          'flex min-h-[48px] w-full grow items-center gap-3 rounded-xl border border-light-700 px-4',
+          className
+        )}
+        ref={ref}
+      >
+        {children}
       </m.div>
     </SearchContext.Provider>
   )

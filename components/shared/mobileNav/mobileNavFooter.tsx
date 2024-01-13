@@ -4,13 +4,11 @@ import { SheetClose } from '@/components/ui/sheet'
 import { AuthButton, LogoutButton } from '@/components/shared/button'
 
 export default function MobileNavFooter() {
-
-
   return (
     <footer className="mt-auto flex flex-col gap-2.5">
       <SignedIn>
         <SheetClose asChild>
-          <LogoutButton>Logout</LogoutButton>
+          <LogoutButton className="">Logout</LogoutButton>
         </SheetClose>
       </SignedIn>
 
@@ -20,7 +18,7 @@ export default function MobileNavFooter() {
             <span className="body-semibold primary-text-gradient">Login</span>
           </AuthButton>
         </SheetClose>
-        
+
         <SheetClose asChild>
           <AuthButton href="/sign-up" className="btn-tertiary light-border-2 body-semibold border">
             Signup

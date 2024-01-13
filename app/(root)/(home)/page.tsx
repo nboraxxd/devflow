@@ -1,7 +1,7 @@
 'use client'
 
 import { LinkGradient } from '@/components/shared/button'
-import { HomeFilter } from '@/components/home'
+import { HomeFilters } from '@/components/home'
 
 export default function Home() {
   return (
@@ -13,7 +13,7 @@ export default function Home() {
         </LinkGradient>
       </div>
 
-      <HomeFilter />
+      <HomeFilters />
 
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate, mollitia. Facilis nihil atque ea tempore

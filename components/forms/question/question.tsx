@@ -1,16 +1,24 @@
 'use client'
 
+import { useRef } from 'react'
+import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import * as z from 'zod'
+import { Editor as TinyMCEEditor } from 'tinymce'
+import { Editor } from '@tinymce/tinymce-react'
+import { useTheme } from 'next-themes'
 
+import { envConfig } from '@/constants/config'
+import { Theme } from '@/constants/enums'
 import { QuestionsSchema } from '@/lib/validation'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { LinkGradient } from '@/components/shared/button'
 
 export default function Question() {
-  // 1. Define your form.
+  const { resolvedTheme } = useTheme()
+  const editorRef = useRef<TinyMCEEditor | null>(null)
+
   const form = useForm<z.infer<typeof QuestionsSchema>>({
     resolver: zodResolver(QuestionsSchema),
     defaultValues: {
@@ -20,7 +28,6 @@ export default function Question() {
     },
   })
 
-  // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof QuestionsSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
@@ -56,11 +63,45 @@ export default function Question() {
           control={form.control}
           name="explanation"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel className="paragraph-semibold text-dark400_light800">
+            <FormItem className="flex flex-col">
+              <FormLabel className="paragraph-semibold text-dark400_light800 mb-3">
                 Detailed explanation of your problem? <span className="text-primary-700">*</span>
               </FormLabel>
-              <FormControl>{/* TODO: Add an Editor component */}</FormControl>
+              <FormControl>
+                <Editor
+                  apiKey={envConfig.tinyEditorApiKey}
+                  onInit={(_evt, editor) => (editorRef.current = editor)}
+                  initialValue=''
+                  init={{
+                    skin: resolvedTheme === Theme.LIGHT ? 'oxide' : 'oxide-dark',
+                    content_css: resolvedTheme === Theme.LIGHT ? 'light' : 'dark',
+                    height: 350,
+                    menubar: false,
+                    plugins: [
+                      'advlist',
+                      'autolink',
+                      'lists',
+                      'link',
+                      'image',
+                      'charmap',
+                      'preview',
+                      'anchor',
+                      'searchreplace',
+                      'visualblocks',
+                      'codesample',
+                      'fullscreen',
+                      'insertdatetime',
+                      'media',
+                      'table',
+                    ],
+                    toolbar:
+                      'undo redo |' +
+                      'codesample | bold italic forecolor | alignleft aligncenter ' +
+                      'alignright alignjustify | bullist numlist',
+                    content_style: `body { font-family: Inter, font-size:14px; }`,
+                  }}
+                />
+              </FormControl>
               <FormDescription className="body-regular mt-2.5 text-light-500">
                 Introduce the problem and expand on what you put in the title. Minimum 20 characters.
               </FormDescription>

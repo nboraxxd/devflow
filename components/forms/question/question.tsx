@@ -1,7 +1,8 @@
 'use client'
 
 import * as z from 'zod'
-import { KeyboardEvent, useRef } from 'react'
+import { KeyboardEvent, useRef, useState } from 'react'
+import Image from 'next/image'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ControllerRenderProps, useForm } from 'react-hook-form'
 import { Editor as TinyMCEEditor } from 'tinymce'
@@ -9,16 +10,19 @@ import { Editor } from '@tinymce/tinymce-react'
 import { useTheme } from 'next-themes'
 
 import { envConfig } from '@/constants/config'
-import { Theme } from '@/constants/enums'
+import { Theme, ServiceStatus, QuestionFormType } from '@/constants/enums'
 import { QuestionsSchema } from '@/lib/validation'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { PrimaryButton } from '@/components/shared/button'
-import Image from 'next/image'
+import { LinkGradient, PrimaryButton } from '@/components/shared/button'
 
 type TagsField = ControllerRenderProps<{ tags: string[]; title: string; explanation: string }, 'tags'>
 
+const questionFormType: QuestionFormType = QuestionFormType.create
+
 export default function Question() {
+  const [status, setStatus] = useState<ServiceStatus>(ServiceStatus.idle)
+
   const { resolvedTheme } = useTheme()
   const editorRef = useRef<TinyMCEEditor | null>(null)
 
@@ -76,11 +80,12 @@ export default function Question() {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values)
+    setStatus(ServiceStatus.pending)
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-9">
+      <form className="space-y-9">
         {/* Title */}
         <FormField
           control={form.control}
@@ -210,9 +215,23 @@ export default function Question() {
         />
 
         {/* Submit */}
-        <button className="ml-auto" type="button">
-          Ask a Question
-        </button>
+        <LinkGradient
+          className="ml-auto gap-2"
+          type="button"
+          onClick={form.handleSubmit(onSubmit)}
+          disabled={status === ServiceStatus.pending}
+        >
+          {status === ServiceStatus.pending && (
+            <div className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent text-light-900" />
+          )}
+          <span className="mt-1">
+            {status === ServiceStatus.pending ? (
+              <>{questionFormType === QuestionFormType.create ? 'Posting...' : 'Editing...'}</>
+            ) : (
+              <>{questionFormType === QuestionFormType.create ? 'Ask a Question' : 'Edit Question'}</>
+            )}
+          </span>
+        </LinkGradient>
       </form>
     </Form>
   )

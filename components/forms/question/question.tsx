@@ -1,9 +1,9 @@
 'use client'
 
-import { useRef } from 'react'
 import * as z from 'zod'
+import { KeyboardEvent, useRef } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
+import { ControllerRenderProps, useForm } from 'react-hook-form'
 import { Editor as TinyMCEEditor } from 'tinymce'
 import { Editor } from '@tinymce/tinymce-react'
 import { useTheme } from 'next-themes'
@@ -13,7 +13,10 @@ import { Theme } from '@/constants/enums'
 import { QuestionsSchema } from '@/lib/validation'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { LinkGradient } from '@/components/shared/button'
+import { PrimaryButton } from '@/components/shared/button'
+import Image from 'next/image'
+
+type TagsField = ControllerRenderProps<{ tags: string[]; title: string; explanation: string }, 'tags'>
 
 export default function Question() {
   const { resolvedTheme } = useTheme()
@@ -28,6 +31,42 @@ export default function Question() {
     },
   })
 
+  function handleSubmitTag(e: KeyboardEvent<HTMLInputElement>, field: TagsField) {
+    const tagsInput = e.target as HTMLInputElement
+    const tagValue = tagsInput.value.trim()
+
+    if (e.key === 'Enter' || e.key === ' ') {
+      if (tagValue.length < 1) {
+        return form.setError('tags', {
+          type: 'min',
+          message: 'Tag must be at least 1 characters long.',
+        })
+      } else if (tagValue.length > 15) {
+        return form.setError('tags', {
+          type: 'max',
+          message: 'Tag cannot be longer than 15 characters.',
+        })
+      } else if (tagValue.includes(' ')) {
+        return form.setError('tags', {
+          type: 'pattern',
+          message: 'Tag cannot contain spaces.',
+        })
+      } else {
+        if (!field.value.includes(tagValue)) {
+          // form.setValue('tags', [...field.value, tagValue])
+          field.onChange([...field.value, tagValue])
+          tagsInput.value = ''
+
+          form.clearErrors('tags')
+        }
+      }
+    }
+  }
+
+  function handleDeteleTag(tag: string, field: TagsField) {
+    field.onChange(field.value.filter((t) => t !== tag))
+  }
+
   function onSubmit(values: z.infer<typeof QuestionsSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
@@ -37,6 +76,7 @@ export default function Question() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-9">
+        {/* Title */}
         <FormField
           control={form.control}
           name="title"
@@ -47,7 +87,7 @@ export default function Question() {
               </FormLabel>
               <FormControl>
                 <Input
-                  className="background-light800_dark300 mt-3 h-auto border-light-700 px-4 py-3 dark:border-dark-400 md:px-6 md:py-4"
+                  className="background-light850_dark300 mt-3 h-auto border-light-700 px-4 py-3 dark:border-dark-400 md:px-6 md:py-4"
                   {...field}
                 />
               </FormControl>
@@ -59,10 +99,11 @@ export default function Question() {
           )}
         />
 
+        {/* Explanation */}
         <FormField
           control={form.control}
           name="explanation"
-          render={({ field }) => (
+          render={() => (
             <FormItem className="flex flex-col">
               <FormLabel className="paragraph-semibold text-dark400_light800 mb-3">
                 Detailed explanation of your problem? <span className="text-primary-700">*</span>
@@ -70,11 +111,12 @@ export default function Question() {
               <FormControl>
                 <Editor
                   apiKey={envConfig.tinyEditorApiKey}
+                  key={resolvedTheme}
                   onInit={(_evt, editor) => (editorRef.current = editor)}
-                  initialValue=''
+                  initialValue=""
                   init={{
                     skin: resolvedTheme === Theme.LIGHT ? 'oxide' : 'oxide-dark',
-                    content_css: resolvedTheme === Theme.LIGHT ? 'light' : 'dark',
+                    content_css: resolvedTheme === Theme.LIGHT ? 'default' : 'dark',
                     height: 350,
                     menubar: false,
                     plugins: [
@@ -98,7 +140,7 @@ export default function Question() {
                       'undo redo |' +
                       'codesample | bold italic forecolor | alignleft aligncenter ' +
                       'alignright alignjustify | bullist numlist',
-                    content_style: `body { font-family: Inter, font-size:14px; }`,
+                    content_style: `body { font-family: Inter, font-size:16px; }`,
                   }}
                 />
               </FormControl>
@@ -110,6 +152,7 @@ export default function Question() {
           )}
         />
 
+        {/* Tags */}
         <FormField
           control={form.control}
           name="tags"
@@ -119,20 +162,52 @@ export default function Question() {
                 Tags <span className="text-primary-700">*</span>
               </FormLabel>
               <FormControl>
-                <Input
-                  className="background-light800_dark300 mt-3 h-auto border-light-700 px-4 py-3 dark:border-dark-400 md:px-6 md:py-4"
-                  {...field}
-                />
+                <>
+                  <Input
+                    className="background-light850_dark300 mt-3 h-auto border-light-700 px-4 py-3 dark:border-dark-400 md:px-6 md:py-4"
+                    onKeyDown={(e) => handleSubmitTag(e, field)}
+                    placeholder="Press Enter or Spacebar to add tag"
+                  />
+
+                  {field.value.length > 0 && (
+                    <div className="mt-2.5 flex flex-wrap gap-3">
+                      {field.value.map((tag) => (
+                        <div
+                          key={tag}
+                          className="flex-center background-light800_dark400 text-light400_light500 subtle-medium relative min-h-[29px] rounded-md px-4 py-1 uppercase transition-all duration-300 hover:!bg-light-700 hover:dark:!bg-dark-500"
+                        >
+                          <span className="text-dark500_light800">{tag}</span>
+                          <PrimaryButton
+                            type="button"
+                            className="absolute right-0 top-0 z-50 -translate-y-1/3 translate-x-1/3 rounded-full bg-dark-500 p-[1px] dark:bg-light-800"
+                            onClick={() => handleDeteleTag(tag, field)}
+                          >
+                            <Image
+                              src="/assets/icons/close.svg"
+                              alt="Close icon"
+                              width={10}
+                              height={10}
+                              className="object-contain invert dark:invert-0"
+                            />
+                          </PrimaryButton>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </>
               </FormControl>
               <FormDescription className="body-regular mt-2.5 text-light-500">
-                Add up to 3 tags to describe what your question is about. You need to press enter to add a tag.
+                Add up to 5 tags to describe what your question is about.
               </FormDescription>
               <FormMessage className="mt-1 text-sm font-medium italic text-primary-700" />
             </FormItem>
           )}
         />
 
-        <LinkGradient className="ml-auto">Ask a Question</LinkGradient>
+        {/* Submit */}
+        <button className="ml-auto" type="button">
+          Ask a Question
+        </button>
       </form>
     </Form>
   )

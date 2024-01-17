@@ -39,32 +39,37 @@ export default function Question() {
       if (tagValue.length < 1) {
         return form.setError('tags', {
           type: 'min',
-          message: 'Tag must be at least 1 characters long.',
+          message: 'Tag must be at least 1 character long.',
         })
-      } else if (tagValue.length > 15) {
+      }
+
+      if (tagValue.length > 15) {
         return form.setError('tags', {
           type: 'max',
           message: 'Tag cannot be longer than 15 characters.',
         })
-      } else if (tagValue.includes(' ')) {
+      }
+
+      if (tagValue.includes(' ')) {
         return form.setError('tags', {
           type: 'pattern',
           message: 'Tag cannot contain spaces.',
         })
-      } else {
-        if (!field.value.includes(tagValue)) {
-          // form.setValue('tags', [...field.value, tagValue])
-          field.onChange([...field.value, tagValue])
-          tagsInput.value = ''
+      }
 
-          form.clearErrors('tags')
-        }
+      if (!field.value.map((t) => t.toLowerCase()).includes(tagValue.toLowerCase())) {
+        field.onChange([...field.value, tagValue.toLowerCase()])
+        // or using: form.setValue('tags', [...field.value, tagValue.toLowerCase()])
+        tagsInput.value = ''
+
+        form.clearErrors('tags')
       }
     }
   }
 
   function handleDeteleTag(tag: string, field: TagsField) {
     field.onChange(field.value.filter((t) => t !== tag))
+    // or using: form.setValue('tags', field.value.filter((t) => t !== tag))
   }
 
   function onSubmit(values: z.infer<typeof QuestionsSchema>) {

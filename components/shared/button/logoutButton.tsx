@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@clerk/nextjs'
 
 import { cn } from '@/lib/utils'
+import { PATH } from '@/constants/path'
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode
@@ -22,7 +23,7 @@ export default function LogoutButton({ children, className, ...rest }: Props) {
         className
       )}
       {...rest}
-      onClick={() => signOut(() => router.push('/'))}
+      onClick={() => signOut(() => router.push(PATH.HOMEPAGE))}
     >
       {children}
     </button>

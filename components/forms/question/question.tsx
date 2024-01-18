@@ -3,6 +3,7 @@
 import * as z from 'zod'
 import { KeyboardEvent, useRef, useState } from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ControllerRenderProps, useForm } from 'react-hook-form'
 import { Editor as TinyMCEEditor } from 'tinymce'
@@ -10,19 +11,21 @@ import { Editor } from '@tinymce/tinymce-react'
 import { useTheme } from 'next-themes'
 
 import { envConfig } from '@/constants/config'
+import { PATH } from '@/constants/path'
 import { Theme, ServiceStatus, QuestionFormType } from '@/constants/enums'
 import { QuestionsSchema } from '@/lib/validation'
+import { createQuestion } from '@/lib/actions/question.actions'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { LinkGradient, PrimaryButton } from '@/components/shared/button'
-import { createQuestion } from '@/lib/actions/question.actions'
 
-type TagsField = ControllerRenderProps<{ tags: string[]; title: string; explanation: string }, 'tags'>
+type TagsField = ControllerRenderProps<z.infer<typeof QuestionsSchema>, 'tags'>
 
 const questionFormType: QuestionFormType = QuestionFormType.create
 
 export default function Question() {
   const [status, setStatus] = useState<ServiceStatus>(ServiceStatus.idle)
+  const router = useRouter()
 
   const { resolvedTheme } = useTheme()
   const editorRef = useRef<TinyMCEEditor | null>(null)
@@ -31,7 +34,7 @@ export default function Question() {
     resolver: zodResolver(QuestionsSchema),
     defaultValues: {
       title: '',
-      explanation: '',
+      content: '',
       tags: [],
     },
   })
@@ -78,12 +81,11 @@ export default function Question() {
   }
 
   async function onSubmit(values: z.infer<typeof QuestionsSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    setStatus(ServiceStatus.pending)
-    console.log(values)
     try {
-      await createQuestion(values)
+      setStatus(ServiceStatus.pending)
+      await createQuestion({ ...values, author: '65a92bd74b954f94ea1a37b2' })
+      setStatus(ServiceStatus.successful)
+      router.push(PATH.HOMEPAGE)
     } catch (error) {
       console.log(error)
     }
@@ -115,11 +117,11 @@ export default function Question() {
           )}
         />
 
-        {/* Explanation */}
+        {/* Content */}
         <FormField
           control={form.control}
-          name="explanation"
-          render={({field}) => (
+          name="content"
+          render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel className="paragraph-semibold text-dark400_light800 mb-3">
                 Detailed explanation of your problem? <span className="text-primary-700">*</span>
@@ -158,7 +160,7 @@ export default function Question() {
                       'undo redo |' +
                       'codesample | bold italic forecolor | alignleft aligncenter ' +
                       'alignright alignjustify | bullist numlist',
-                    content_style: `body { font-family: Inter, font-size:16px; }`,
+                    content_style: `body { font-family: Inter, font-size:14px; }`,
                   }}
                 />
               </FormControl>

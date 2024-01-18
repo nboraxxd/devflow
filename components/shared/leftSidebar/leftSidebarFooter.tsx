@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { SignedIn, SignedOut } from '@clerk/nextjs'
 
+import { PATH } from '@/constants/path'
 import { AuthButton, LogoutButton } from '@/components/shared/button'
 
 export default function LeftSidebarFooter() {
@@ -20,7 +21,7 @@ export default function LeftSidebarFooter() {
       </SignedIn>
 
       <SignedOut>
-        <AuthButton href="/sign-in" className="btn-secondary">
+        <AuthButton href={PATH.SIGN_IN} className="btn-secondary">
           <Image
             src="/assets/icons/account.svg"
             alt="Login"
@@ -31,7 +32,7 @@ export default function LeftSidebarFooter() {
           <span className="body-semibold primary-text-gradient hidden md:block lg:hidden xl:block">Login</span>
         </AuthButton>
         
-        <AuthButton href="/sign-up" className="btn-tertiary light-border-2 border">
+        <AuthButton href={PATH.SIGN_UP} className="btn-tertiary light-border-2 border">
           <Image
             src="/assets/icons/sign-up.svg"
             alt="Signup"

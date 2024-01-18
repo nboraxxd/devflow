@@ -13,7 +13,7 @@ export interface IQuestion extends Document {
   answers: Schema.Types.ObjectId[]
 }
 
-const QuestionSchema = new Schema<IQuestion>(
+const questionSchema = new Schema<IQuestion>(
   {
     title: { type: String, trim: true, required: true },
     content: { type: String, trim: true, required: true },
@@ -28,6 +28,6 @@ const QuestionSchema = new Schema<IQuestion>(
 )
 
 const Question: Model<IQuestion> =
-  models[envConfig.dbQuestionCollection] || model<IQuestion>(envConfig.dbQuestionCollection, QuestionSchema)
+  models[envConfig.dbQuestionCollection] || model<IQuestion>(envConfig.dbQuestionCollection, questionSchema)
 
 export default Question

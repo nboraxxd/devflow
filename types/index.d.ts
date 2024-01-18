@@ -7,15 +7,14 @@ export type SidebarLink = {
 }
 
 export type Tag = {
-  _id: number
+  _id: string
   name: string
   count: number
   createdAt: Date
-  updatedAt: Date
 }
 
 export type Author = {
-  _id: number
+  _id: string
   name: string
   avatar: string
   createdAt: Date
@@ -23,7 +22,7 @@ export type Author = {
 }
 
 export type Question = {
-  _id: number
+  _id: string
   title: string
   tags: Tag[]
   author: Author

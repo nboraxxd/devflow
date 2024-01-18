@@ -1,5 +1,6 @@
 import { SidebarLink } from '@/types'
 import { Theme } from '@/constants/enums'
+import { PATH } from '@/constants/path'
 import { capitalizeFirstLetter } from '@/lib/utils'
 
 export const themes = [
@@ -15,37 +16,37 @@ export const themes = [
 export const sidebarLinks: SidebarLink[] = [
   {
     imgURL: '/assets/icons/home.svg',
-    route: '/',
+    route: PATH.HOMEPAGE,
     label: 'Home',
   },
   {
     imgURL: '/assets/icons/users.svg',
-    route: '/community',
+    route: PATH.COMMUNITY,
     label: 'Community',
   },
   {
     imgURL: '/assets/icons/star.svg',
-    route: '/collection',
+    route: PATH.COLLECTION,
     label: 'Collections',
   },
   {
     imgURL: '/assets/icons/suitcase.svg',
-    route: '/jobs',
+    route: PATH.JOBS,
     label: 'Find Jobs',
   },
   {
     imgURL: '/assets/icons/tag.svg',
-    route: '/tags',
+    route: PATH.TAGS,
     label: 'Tags',
   },
   {
     imgURL: '/assets/icons/user.svg',
-    route: '/profile',
+    route: PATH.PROFILE,
     label: 'Profile',
   },
   {
     imgURL: '/assets/icons/question.svg',
-    route: '/ask-question',
+    route: PATH.ASK_QUESTION,
     label: 'Ask a question',
   },
 ]

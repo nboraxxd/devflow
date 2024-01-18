@@ -24,7 +24,7 @@ export interface IUser extends Document {
   saved: Schema.Types.ObjectId[]
 }
 
-const UserSchema = new Schema<IUser>(
+const userSchema = new Schema<IUser>(
   {
     clerkId: { type: String, required: true },
     name: { type: String, trim: true, required: true },
@@ -84,7 +84,6 @@ const UserSchema = new Schema<IUser>(
   { timestamps: true }
 )
 
-const User: Model<IUser> =
-  models[envConfig.dbUserCollection] || model<IUser>(envConfig.dbQuestionCollection, UserSchema)
+const User: Model<IUser> = models.User || model<IUser>(envConfig.dbUserCollection, userSchema)
 
 export default User

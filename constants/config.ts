@@ -1,4 +1,6 @@
 export const envConfig = {
   tinyEditorApiKey: process.env.NEXT_PUBLIC_TINY_EDITOR_API_KEY as string,
-  mongoDbUri: process.env.MONGODB_URI
+  mongoDbUri: process.env.MONGODB_URI,
+  dbQuestionCollection: process.env.DB_QUESTION_COLLECTION as string,
+  dbUserCollection: process.env.DB_USER_COLLECTION as string,
 }

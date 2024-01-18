@@ -15,6 +15,7 @@ import { QuestionsSchema } from '@/lib/validation'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { LinkGradient, PrimaryButton } from '@/components/shared/button'
+import { createQuestion } from '@/lib/actions/question.actions'
 
 type TagsField = ControllerRenderProps<{ tags: string[]; title: string; explanation: string }, 'tags'>
 
@@ -76,11 +77,16 @@ export default function Question() {
     // or using: form.setValue('tags', field.value.filter((t) => t !== tag))
   }
 
-  function onSubmit(values: z.infer<typeof QuestionsSchema>) {
+  async function onSubmit(values: z.infer<typeof QuestionsSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values)
     setStatus(ServiceStatus.pending)
+    console.log(values)
+    try {
+      await createQuestion(values)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -113,7 +119,7 @@ export default function Question() {
         <FormField
           control={form.control}
           name="explanation"
-          render={() => (
+          render={({field}) => (
             <FormItem className="flex flex-col">
               <FormLabel className="paragraph-semibold text-dark400_light800 mb-3">
                 Detailed explanation of your problem? <span className="text-primary-700">*</span>
@@ -123,6 +129,8 @@ export default function Question() {
                   apiKey={envConfig.tinyEditorApiKey}
                   key={resolvedTheme}
                   onInit={(_evt, editor) => (editorRef.current = editor)}
+                  onBlur={field.onBlur}
+                  onEditorChange={(content) => field.onChange(content)}
                   initialValue=""
                   init={{
                     skin: resolvedTheme === Theme.LIGHT ? 'oxide' : 'oxide-dark',

@@ -1,23 +1,19 @@
 'use server'
 
 import { ObjectId } from 'mongodb'
-import { connectToDatabase } from '@/lib/mongoose'
 
+import { CreateQuestionReqBody, GetQuestionsParams } from '@/types/question.types'
+import { connectToDatabase } from '@/lib/mongoose'
 import Question from '@/database/question.model'
 import Tag from '@/database/tag.model'
+import User from '@/database/user.model'
+import { revalidatePath } from 'next/cache'
 
-export type QuestionReqBody = {
-  title: string
-  content: string
-  tags: string[]
-  author: string
-}
-
-export async function createQuestion(body: QuestionReqBody) {
+export async function createQuestion(body: CreateQuestionReqBody) {
   try {
     connectToDatabase()
 
-    const { title, content, author } = body
+    const { title, content, author, path } = body
 
     // Create the tags or get them if they already exist
     const tags = await Promise.all(
@@ -37,8 +33,26 @@ export async function createQuestion(body: QuestionReqBody) {
       title,
       content,
       tags: tagIds,
-      author: new ObjectId(author),
+      author,
     })
+
+    revalidatePath(path)
+  } catch (err) {
+    console.log(err)
+    throw err
+  }
+}
+
+export async function getQuestions(params: GetQuestionsParams) {
+  try {
+    connectToDatabase()
+
+    const questions = await Question.find({})
+      .populate({ path: 'tags', model: Tag })
+      .populate({ path: 'author', model: User })
+      .sort({ createdAt: -1 })
+
+    return { questions }
   } catch (err) {
     console.log(err)
     throw err

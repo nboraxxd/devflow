@@ -2,10 +2,10 @@ import { Question } from '@/types'
 import Link from 'next/link'
 import Image from 'next/image'
 
+import { formatNumberToSocialStyle, getTimestamp } from '@/lib/utils'
 import { PrimaryButton, SubjectTag } from '@/components/shared/button'
 import { Author } from '@/components/shared/author'
-import { Metric } from '../metric'
-import { formatNumberToSocialStyle, getTimestamp } from '@/lib/utils'
+import { Metric } from '@/components/shared/metric'
 
 export default function QuestionCard({ question }: { question: Question }) {
   const { title, author, tags, upvotes, views, answers, createdAt } = question
@@ -38,7 +38,7 @@ export default function QuestionCard({ question }: { question: Question }) {
 
       <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-1.5">
-          <Author author={author} />
+          {/* <Author author={author} /> */}
 
           <span className="mt-0.5 max-md:hidden">•</span>
 

@@ -3,7 +3,7 @@
 import * as z from 'zod'
 import { KeyboardEvent, useRef, useState } from 'react'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ControllerRenderProps, useForm } from 'react-hook-form'
 import { Editor as TinyMCEEditor } from 'tinymce'
@@ -26,6 +26,8 @@ const questionFormType: QuestionFormType = QuestionFormType.create
 export default function Question() {
   const [status, setStatus] = useState<ServiceStatus>(ServiceStatus.idle)
   const router = useRouter()
+  const pathname = usePathname()
+  console.log('🔥 ~ Question ~ pathname:', pathname)
 
   const { resolvedTheme } = useTheme()
   const editorRef = useRef<TinyMCEEditor | null>(null)
@@ -81,9 +83,11 @@ export default function Question() {
   }
 
   async function onSubmit(values: z.infer<typeof QuestionsSchema>) {
+    const { content, tags, title } = values
+
     try {
       setStatus(ServiceStatus.pending)
-      await createQuestion({ ...values, author: '65a92bd74b954f94ea1a37b2' })
+      await createQuestion({ content, tags, title, path: pathname, author: '65a92eb64b954f94ea1ae670' })
       setStatus(ServiceStatus.successful)
       router.push(PATH.HOMEPAGE)
     } catch (error) {

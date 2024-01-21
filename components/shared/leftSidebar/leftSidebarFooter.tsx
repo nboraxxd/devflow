@@ -14,9 +14,9 @@ export default function LeftSidebarFooter() {
             alt="Logout"
             width={24}
             height={24}
-            className="invert-colors md:hidden lg:block xl:hidden"
+            className="invert-colors xl:hidden"
           />
-          <span className="body-medium hidden md:block lg:hidden xl:block">Logout</span>
+          <span className="body-medium hidden xl:block">Logout</span>
         </LogoutButton>
       </SignedIn>
 
@@ -27,9 +27,9 @@ export default function LeftSidebarFooter() {
             alt="Login"
             width={24}
             height={24}
-            className="invert-colors md:hidden lg:block xl:hidden"
+            className="invert-colors xl:hidden"
           />
-          <span className="body-semibold primary-text-gradient hidden md:block lg:hidden xl:block">Login</span>
+          <span className="body-semibold primary-text-gradient hidden xl:block">Login</span>
         </AuthButton>
         
         <AuthButton href={PATH.SIGN_UP} className="btn-tertiary light-border-2 border">
@@ -38,9 +38,9 @@ export default function LeftSidebarFooter() {
             alt="Signup"
             width={24}
             height={24}
-            className="invert-colors md:hidden lg:block xl:hidden"
+            className="invert-colors xl:hidden"
           />
-          <span className="body-semibold hidden md:block lg:hidden xl:block">Signup</span>
+          <span className="body-semibold hidden xl:block">Signup</span>
         </AuthButton>
       </SignedOut>
     </footer>

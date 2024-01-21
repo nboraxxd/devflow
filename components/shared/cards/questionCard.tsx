@@ -15,8 +15,10 @@ export default function QuestionCard({ question }: { question: Question }) {
       <div className="flex flex-col-reverse gap-2.5 md:flex-row">
         <div>
           <p className="subtle-regular text-dark400_light700 line-clamp-1 md:hidden">{getTimestamp(createdAt)}</p>
-          <h2 className="h3-semibold text-dark200_light900 line-clamp-2 max-md:mt-0.5">
-            <Link href="/">{title}</Link>
+          <h2 className="h3-semibold text-dark200_light900 max-md:mt-0.5">
+            <Link href="/" className="line-clamp-2">
+              {title}
+            </Link>
           </h2>
         </div>
 
@@ -72,9 +74,3 @@ export default function QuestionCard({ question }: { question: Question }) {
     </section>
   )
 }
-
-// font-family: Inter;
-// font-size: 20px;
-// font-style: normal;
-// font-weight: 600;
-// line-height: 124%; /* 24.8px */

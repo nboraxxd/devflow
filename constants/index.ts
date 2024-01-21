@@ -41,7 +41,7 @@ export const sidebarLinks: SidebarLink[] = [
   },
   {
     imgURL: '/assets/icons/user.svg',
-    route: PATH.PROFILE,
+    route: PATH.MY_PROFILE,
     label: 'Profile',
   },
   {

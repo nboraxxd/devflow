@@ -4,4 +4,6 @@ export const envConfig = {
   dbQuestionCollection: process.env.DB_QUESTION_COLLECTION as string,
   dbUserCollection: process.env.DB_USER_COLLECTION as string,
   dbTagCollection: process.env.DB_TAG_COLLECTION as string,
+  webhookSecret: process.env.WEBHOOK_SECRET as string,
+  
 }

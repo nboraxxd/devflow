@@ -75,7 +75,7 @@ export async function POST(req: Request) {
     const mongoUser = await updateUser({
       clerkId: id,
       updateData: {
-        name: `${first_name} ${last_name || ''}`,
+        name: `${first_name}${last_name ? ` ${last_name}` : ''}`,
         email: email_addresses[0].email_address,
         username: username!,
         picture: image_url,

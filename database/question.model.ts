@@ -1,4 +1,4 @@
-import { Document, Schema, models, model, Model } from 'mongoose'
+import { Document, Schema, models, model } from 'mongoose'
 
 import { envConfig } from '@/constants/config'
 import { ITag } from './tag.model'
@@ -12,8 +12,6 @@ export interface IQuestion extends Document {
   upvotes: Schema.Types.ObjectId[]
   downvotes: Schema.Types.ObjectId[]
   answers: Schema.Types.ObjectId[]
-  createdAt: Date
-  updatedAt: Date
 }
 
 const questionSchema = new Schema<IQuestion>(
@@ -30,7 +28,7 @@ const questionSchema = new Schema<IQuestion>(
   { timestamps: true }
 )
 
-const Question: Model<IQuestion> =
+const Question =
   models[envConfig.dbQuestionCollection] || model<IQuestion>(envConfig.dbQuestionCollection, questionSchema)
 
 export default Question

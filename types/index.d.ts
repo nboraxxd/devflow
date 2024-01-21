@@ -26,9 +26,9 @@ export type Question = {
   _id: string
   title: string
   tags: Tag[]
-  author: Author
-  answers: number
-  upvotes: number
+  author: string
+  answers: string[]
+  upvotes: string[]
   views: number
   createdAt: Date
   updatedAt: Date

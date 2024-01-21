@@ -4,12 +4,10 @@ import Image from 'next/image'
 
 import { formatNumberToSocialStyle, getTimestamp } from '@/lib/utils'
 import { PrimaryButton, SubjectTag } from '@/components/shared/button'
-import { Author } from '@/components/shared/author'
 import { Metric } from '@/components/shared/metric'
-import { IQuestion } from '@/database/question.model'
 
-export default function QuestionCard({ question }: { question: IQuestion }) {
-  const { title, author, tags, upvotes, views, answers, createdAt } = question
+export default function QuestionCard({ question }: { question: Question }) {
+  const { title, tags, upvotes, views, answers, createdAt } = question
 
   return (
     <section className="card-wrapper rounded-[10px] p-5 md:px-11 md:py-9">

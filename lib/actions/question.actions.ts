@@ -1,5 +1,6 @@
 'use server'
 
+import { revalidatePath } from 'next/cache'
 import { ObjectId } from 'mongodb'
 
 import { CreateQuestionReqBody, GetQuestionsParams } from '@/types/question.types'
@@ -7,7 +8,6 @@ import { connectToDatabase } from '@/lib/mongoose'
 import Question from '@/database/question.model'
 import Tag from '@/database/tag.model'
 import User from '@/database/user.model'
-import { revalidatePath } from 'next/cache'
 
 export async function createQuestion(body: CreateQuestionReqBody) {
   try {
@@ -29,7 +29,7 @@ export async function createQuestion(body: CreateQuestionReqBody) {
     const tagIds: ObjectId[] = tags.map((tag) => tag._id)
 
     // Create the question
-    const question = await Question.create({
+    const _question = await Question.create({
       title,
       content,
       tags: tagIds,
@@ -43,7 +43,7 @@ export async function createQuestion(body: CreateQuestionReqBody) {
   }
 }
 
-export async function getQuestions(params: GetQuestionsParams) {
+export async function getQuestions(_params: GetQuestionsParams) {
   try {
     connectToDatabase()
 
@@ -51,10 +51,6 @@ export async function getQuestions(params: GetQuestionsParams) {
       .populate({ path: 'tags', model: Tag })
       .populate({ path: 'author', model: User })
       .sort({ createdAt: -1 })
-    console.log(
-      '🔥 ~ getQuestions ~ questions:',
-      questions.map((question) => question.tags)
-    )
 
     return { questions }
   } catch (err) {

@@ -18,7 +18,6 @@ import { createQuestion } from '@/lib/actions/question.actions'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { LinkGradient, PrimaryButton } from '@/components/shared/button'
-import { ObjectId } from 'mongodb'
 
 type TagsField = ControllerRenderProps<z.infer<typeof QuestionsSchema>, 'tags'>
 

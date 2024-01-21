@@ -6,9 +6,7 @@ export const NAME_MESSAGES = {
 export const USERNAME_MESSAGES = {
   IS_REQUIRED: 'Username is required',
   MUST_BE_A_STRING: 'Username must be a string',
-  LENGTH: 'Username must between 3 and 64 characters',
   MUST_NOT_CONTAIN_SPACE: 'Username must not contain space',
-  MUST_CONTAIN_ONLY_ALPHANUMERIC_AND_UNDERSCORE: 'Username must contain only alphanumeric and underscore',
 }
 
 export const EMAIL_MESSAGES = {

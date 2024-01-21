@@ -35,16 +35,8 @@ const userSchema = new Schema<IUser>(
       unique: true,
       validate: [
         {
-          validator: (username: string) => validator.isLength(username, { min: 3, max: 64 }),
-          message: USERNAME_MESSAGES.LENGTH,
-        },
-        {
           validator: (username: string) => !username.includes(' '),
           message: USERNAME_MESSAGES.MUST_NOT_CONTAIN_SPACE,
-        },
-        {
-          validator: (username: string) => username.match(/^[a-zA-Z0-9_]*$/),
-          message: USERNAME_MESSAGES.MUST_CONTAIN_ONLY_ALPHANUMERIC_AND_UNDERSCORE,
         },
       ],
     },

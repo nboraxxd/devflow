@@ -6,8 +6,9 @@ import { formatNumberToSocialStyle, getTimestamp } from '@/lib/utils'
 import { PrimaryButton, SubjectTag } from '@/components/shared/button'
 import { Author } from '@/components/shared/author'
 import { Metric } from '@/components/shared/metric'
+import { IQuestion } from '@/database/question.model'
 
-export default function QuestionCard({ question }: { question: Question }) {
+export default function QuestionCard({ question }: { question: IQuestion }) {
   const { title, author, tags, upvotes, views, answers, createdAt } = question
 
   return (
@@ -51,14 +52,14 @@ export default function QuestionCard({ question }: { question: Question }) {
           <Metric
             iconUrl="/assets/icons/like.svg"
             alt="Votes"
-            value={formatNumberToSocialStyle(upvotes)}
+            value={formatNumberToSocialStyle(upvotes.length)}
             title="vote"
             titles="votes"
           />
           <Metric
             iconUrl="/assets/icons/message.svg"
             alt="Answers"
-            value={formatNumberToSocialStyle(answers)}
+            value={formatNumberToSocialStyle(answers.length)}
             title="answer"
             titles="answers"
           />

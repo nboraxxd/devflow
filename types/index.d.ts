@@ -9,8 +9,9 @@ export type SidebarLink = {
 export type Tag = {
   _id: string
   name: string
-  count: number
   createdAt: Date
+  followers: string[]
+  questions: string[]
 }
 
 export type Author = {

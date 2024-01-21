@@ -13,8 +13,6 @@ export default async function AskQuestionPage() {
 
   const mongoUser = await getUserById({ clerkId: userId })
 
-  console.log('🔥 ~ AskQuestionPage ~ mongoUser:', userId, mongoUser)
-
   return (
     <section className="py-8 sm:py-16">
       <h1 className="h1-bold text-dark100_light900">Ask a public quesiton</h1>

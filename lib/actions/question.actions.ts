@@ -51,6 +51,10 @@ export async function getQuestions(params: GetQuestionsParams) {
       .populate({ path: 'tags', model: Tag })
       .populate({ path: 'author', model: User })
       .sort({ createdAt: -1 })
+    console.log(
+      '🔥 ~ getQuestions ~ questions:',
+      questions.map((question) => question.tags)
+    )
 
     return { questions }
   } catch (err) {

@@ -1,16 +1,19 @@
 import { Document, Schema, models, model, Model } from 'mongoose'
 
 import { envConfig } from '@/constants/config'
+import { ITag } from './tag.model'
 
 export interface IQuestion extends Document {
   title: string
   content: string
-  tags: Schema.Types.ObjectId[]
+  tags: ITag[]
   author: Schema.Types.ObjectId
   views: number
   upvotes: Schema.Types.ObjectId[]
   downvotes: Schema.Types.ObjectId[]
   answers: Schema.Types.ObjectId[]
+  createdAt: Date
+  updatedAt: Date
 }
 
 const questionSchema = new Schema<IQuestion>(

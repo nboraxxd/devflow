@@ -1,10 +1,10 @@
-import { User } from "@/types/user.types"
+import { User } from '@/types/user.types'
 
 export type CreateQuestionReqBody = {
   title: string
   content: string
   tags: string[]
-  author: Schema.Types.ObjectId
+  author: string
   path: string
 }
 
@@ -26,4 +26,3 @@ export type Question = {
   createdAt: Date
   updatedAt: Date
 }
-

@@ -14,26 +14,6 @@ export type Tag = {
   questions: string[]
 }
 
-export type Author = {
-  _id: string
-  name: string
-  avatar: string
-  createdAt: Date
-  updatedAt: Date
-}
-
-export type Question = {
-  _id: string
-  title: string
-  tags: Tag[]
-  author: string
-  answers: string[]
-  upvotes: string[]
-  views: number
-  createdAt: Date
-  updatedAt: Date
-}
-
 export type Job = {
   id?: string
   employer_name?: string

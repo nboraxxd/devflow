@@ -8,11 +8,11 @@ export const connectToDatabase = async () => {
   mongoose.set('strictQuery', true)
 
   if (!envConfig.mongoDbUri) {
-    return console.log('MongoDB URI not found')
+    return console.log('🚦 MongoDB URI not found')
   }
 
   if (isConnected) {
-    return console.log('Already connected to database')
+    return console.log('🛵 Already connected to database')
   }
 
   try {

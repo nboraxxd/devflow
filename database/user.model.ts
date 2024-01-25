@@ -1,4 +1,4 @@
-import { Document, Schema, models, model } from 'mongoose'
+import { Document, Schema, models, model, Model } from 'mongoose'
 import validator from 'validator'
 
 import {
@@ -76,6 +76,7 @@ const userSchema = new Schema<IUser>(
   { timestamps: true }
 )
 
-const User = models[envConfig.dbUserCollection] || model<IUser>(envConfig.dbUserCollection, userSchema)
+const User = (models[envConfig.dbUserCollection] ||
+  model<IUser>(envConfig.dbUserCollection, userSchema)) as Model<IUser>
 
 export default User

@@ -18,12 +18,13 @@ import { createQuestion } from '@/lib/actions/question.actions'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { LinkGradient, PrimaryButton } from '@/components/shared/button'
+import { ObjectId } from 'mongodb'
 
 type TagsField = ControllerRenderProps<z.infer<typeof QuestionsSchema>, 'tags'>
 
 const questionFormType: QuestionFormType = QuestionFormType.create
 
-export default function Question() {
+export default function Question({ mongoUserId }: { mongoUserId: string }) {
   const [status, setStatus] = useState<ServiceStatus>(ServiceStatus.idle)
   const router = useRouter()
   const pathname = usePathname()
@@ -86,7 +87,7 @@ export default function Question() {
 
     try {
       setStatus(ServiceStatus.pending)
-      await createQuestion({ content, tags, title, path: pathname, author: '65a92eb64b954f94ea1ae670' })
+      await createQuestion({ content, tags, title, path: pathname, author: new ObjectId(mongoUserId) })
       setStatus(ServiceStatus.successful)
       router.push(PATH.HOMEPAGE)
     } catch (error) {

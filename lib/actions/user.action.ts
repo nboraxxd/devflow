@@ -18,7 +18,7 @@ export async function createUser(userData: CreateUserParams) {
   }
 }
 
-export async function getUserById({ clerkId }: { clerkId: string }) {
+export async function getUserByClerkId({ clerkId }: { clerkId: string }) {
   try {
     connectToDatabase()
 

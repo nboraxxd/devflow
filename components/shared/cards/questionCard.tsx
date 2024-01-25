@@ -1,13 +1,14 @@
-import { Question } from '@/types'
 import Link from 'next/link'
 import Image from 'next/image'
 
+import { Question } from '@/types/question.types'
 import { formatNumberToSocialStyle, getTimestamp } from '@/lib/utils'
 import { PrimaryButton, SubjectTag } from '@/components/shared/button'
 import { Metric } from '@/components/shared/metric'
+import { Author } from '@/components/shared/author'
 
 export default function QuestionCard({ question }: { question: Question }) {
-  const { title, tags, upvotes, views, answers, createdAt } = question
+  const { title, author, tags, upvotes, views, answers, createdAt } = question
 
   return (
     <section className="card-wrapper rounded-[10px] p-5 md:px-11 md:py-9">
@@ -39,7 +40,7 @@ export default function QuestionCard({ question }: { question: Question }) {
 
       <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-1.5">
-          {/* <Author author={author} /> */}
+          <Author author={author} />
 
           <span className="mt-0.5 max-md:hidden">•</span>
 

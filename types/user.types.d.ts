@@ -8,6 +8,13 @@ export type CreateUserParams = {
   picture: string
 }
 
+export type GetAllUsersParams = {
+  page?: number
+  pageSize?: number
+  filter?: string
+  searchQuery?: string
+}
+
 export type UpdateUserParams = {
   clerkId: string
   updateData: Partial<IUser>

@@ -71,7 +71,11 @@ export default function Header() {
           ),
           backgroundColor: useMotionTemplate`rgb(${
             resolvedTheme === Theme.LIGHT ? '255 255 255' : resolvedTheme === Theme.DARK ? '15 17 23' : 'none'
-          } / ${useTransform(scrollYBoundedProgressThrottled, [0, 1], [1, resolvedTheme === Theme.LIGHT ? 0.3 : 0.7])})`,
+          } / ${useTransform(
+            scrollYBoundedProgressThrottled,
+            [0, 1],
+            [1, resolvedTheme === Theme.LIGHT ? 0.3 : 0.7]
+          )})`,
         }}
         className="background-light900_dark200 light-border fixed inset-x-0 top-0 z-20 flex h-[88px] items-center border-b shadow-light-header backdrop-blur-md dark:shadow-none"
       >

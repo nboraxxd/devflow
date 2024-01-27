@@ -1,6 +1,7 @@
 import { cn } from '@/lib/utils'
 
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import Image from 'next/image'
 
 interface FilterProps {
   filters: { name: string; value: string }[]
@@ -18,6 +19,7 @@ export default function Filter({ filters, filterClassName, containerClassName }:
             filterClassName
           )}
         >
+          <Image src="/assets/icons/filter.svg" alt="Filter" width={24} height={24} />
           <SelectValue placeholder="Select a filter" />
         </SelectTrigger>
         <SelectContent align="end" className="background-light800_dark300">

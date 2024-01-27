@@ -23,7 +23,7 @@ export default function LeftSidebarItem({ item, wrapperClassName, imageClassName
     <Link
       href={item.route}
       className={cn(
-        'flex items-center gap-4 rounded-lg p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 max-xl:justify-center',
+        'flex items-center gap-4 rounded-lg p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
         { 'primary-gradient': isActive, 'hover:background-light800_darkgradient transition duration-300': !isActive },
         wrapperClassName
       )}

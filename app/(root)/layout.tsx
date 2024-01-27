@@ -4,8 +4,6 @@ import { Header } from '@/components/shared/header'
 import { LeftSidebar } from '@/components/shared/leftSidebar'
 import { RightSidebar } from '@/components/shared/rightSidebar'
 
-// md:grid-cols-[185px_minmax(0,1fr)] lg:grid-cols-[auto_minmax(0,1fr)]
-
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <>

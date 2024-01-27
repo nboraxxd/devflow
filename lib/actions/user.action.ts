@@ -1,7 +1,7 @@
 import { revalidatePath } from 'next/cache'
 
 import { connectToDatabase } from '@/lib/mongoose'
-import { CreateUserParams, DeleteUserParams, UpdateUserParams } from '@/types/user.types'
+import { CreateUserParams, DeleteUserParams, GetAllUsersParams, UpdateUserParams } from '@/types/user.types'
 import User from '@/database/user.model'
 import Question from '@/database/question.model'
 
@@ -15,6 +15,21 @@ export async function createUser(userData: CreateUserParams) {
   } catch (err) {
     console.log(err)
     throw err
+  }
+}
+
+export async function getAllUsers(_params: GetAllUsersParams) {
+  try {
+    connectToDatabase()
+
+    // const { page = 1, pageSize = 20, filter, searchQuery } = params
+
+    const users = await User.find({}).sort({ createdAt: -1 })
+
+    return { users }
+  } catch (error) {
+    console.log(error)
+    throw error
   }
 }
 

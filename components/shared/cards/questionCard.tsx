@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 import { Question } from '@/types/question.types'
+import { PATH } from '@/constants/path'
 import { formatNumberToSocialStyle, getTimestamp } from '@/lib/utils'
 import { PrimaryButton, SubjectTag } from '@/components/shared/button'
 import { Metric } from '@/components/shared/metric'
@@ -34,7 +35,9 @@ export default function QuestionCard({ question }: { question: Question }) {
 
       <div className="mt-3.5 flex flex-wrap gap-2">
         {tags.map((tag) => (
-          <SubjectTag key={tag._id}>{tag.name}</SubjectTag>
+          <SubjectTag key={tag._id} href={`${PATH.TAGS}/${tag._id}`}>
+            {tag.name}
+          </SubjectTag>
         ))}
       </div>
 

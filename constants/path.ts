@@ -9,9 +9,8 @@ export const PATH = {
   COLLECTION: '/collection',
   JOBS: '/jobs',
   TAGS: '/tags',
-  TAG_DETAIL: '/tag',
   MY_PROFILE: '/my-profile',
-  USER: '/user',
+  USERS: '/users',
   ASK_QUESTION: '/ask-question',
   API: {
     WEBHOOK: API + '/webhook',

@@ -1,4 +1,5 @@
 import { PATH } from '@/constants/path'
+import { UserFilters } from '@/constants/filters'
 import { getAllUsers } from '@/lib/actions/user.action'
 import { UserCard } from '@/components/shared/cards'
 import { FilterGroup } from '@/components/shared/filter'
@@ -11,12 +12,19 @@ export default async function Page() {
     <div className="py-8 sm:py-16">
       <h1 className="h1-bold text-dark100_light900">All Users</h1>
 
-      <FilterGroup />
+      <FilterGroup inputPlacehoder="Search by username..." filters={UserFilters} />
 
       <section className="mt-12 flex flex-wrap gap-4">
         {users.length > 0 ? (
           users.map((user) => (
-            <UserCard key={JSON.stringify(user._id)} clerkId={user.clerkId} name={user.name} picture={user.picture} username={user.username} />
+            <UserCard
+              key={JSON.stringify(user._id)}
+              _id={user._id}
+              clerkId={user.clerkId}
+              name={user.name}
+              picture={user.picture}
+              username={user.username}
+            />
           ))
         ) : (
           <NoResult

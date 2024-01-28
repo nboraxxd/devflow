@@ -3,15 +3,19 @@ import Link from 'next/link'
 
 import { PATH } from '@/constants/path'
 import { SubjectTag } from '@/components/shared/button'
+import { getTopInteractedTags } from '@/lib/actions/tag.action'
 
 interface UserCardProps {
+  _id: string
   clerkId: string
   name: string
   username: string
   picture: string
 }
 
-export default function UserCard({ clerkId, name, picture, username }: UserCardProps) {
+export default async function UserCard({ _id, clerkId, name, picture, username }: UserCardProps) {
+  const interactedTags = await getTopInteractedTags({ userId: _id })
+
   return (
     <section className="shadow-light100_darknone background-light900_dark200 flex flex-col items-center rounded-[10px] border border-light-b p-7 dark:border-dark-300 max-xs:min-w-full xs:w-[260px]">
       <Image
@@ -23,16 +27,22 @@ export default function UserCard({ clerkId, name, picture, username }: UserCardP
       />
       <h2 className="text-dark200_light900 h3-bold mt-5 line-clamp-1 break-all">{name}</h2>
       <Link
-        href={`${PATH.USER}/${clerkId}`}
+        href={`${PATH.USERS}/${clerkId}`}
         className="text-dark500_light500 body-regular mt-1.5 line-clamp-1 break-all"
       >
         @{username}
       </Link>
 
       <div className="flex-between mt-5 gap-2">
-        <SubjectTag>[[HTML]]</SubjectTag>
-        <SubjectTag>[[HTML]]</SubjectTag>
-        <SubjectTag>[[HTML]]</SubjectTag>
+        {interactedTags.length > 0 ? (
+          interactedTags.map((tag) => (
+            <SubjectTag key={tag._id}>
+              {tag.name}
+            </SubjectTag>
+          ))
+        ) : (
+          <SubjectTag>No tags yet</SubjectTag>
+        )}
       </div>
     </section>
   )

@@ -1,4 +1,5 @@
 import { User } from '@/types/user.types'
+import { Tag } from '@/types'
 
 export type CreateQuestionReqBody = {
   title: string

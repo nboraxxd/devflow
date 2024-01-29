@@ -5,6 +5,8 @@ import { PATH } from '@/constants/path'
 import { formatNumberToSocialStyle, getTimestamp } from '@/lib/utils'
 import { getQuestionById } from '@/lib/actions/question.actions'
 import { Metric } from '@/components/shared/metric'
+import { ParseHTML } from '@/components/shared/parseHTML'
+import { SubjectTag } from '@/components/shared/button'
 
 export default async function Page({ params }: { params: { id: string } }) {
   const result = await getQuestionById(params.id)
@@ -43,7 +45,15 @@ export default async function Page({ params }: { params: { id: string } }) {
           </div>
         </div>
 
-        
+        <ParseHTML html={result.content} />
+
+        <div className="mt-8 flex flex-wrap items-center gap-2">
+          {result.tags.map((tag) => (
+            <SubjectTag key={tag._id.toString()} href={`${PATH.TAGS}/${tag._id}`}>
+              {tag.name}
+            </SubjectTag>
+          ))}
+        </div>
       </article>
     </main>
   )

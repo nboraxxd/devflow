@@ -9,7 +9,7 @@ export default function QuestionLink({ children }: { children: string }) {
     >
       <h3 className="text-dark500_light700 body-medium">{children}</h3>
       <Image
-        src="assets/icons/chevron-right.svg"
+        src="/assets/icons/chevron-right.svg"
         alt="chevron right"
         width={20}
         height={20}

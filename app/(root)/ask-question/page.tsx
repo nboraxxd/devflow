@@ -12,7 +12,7 @@ export default async function AskQuestionPage() {
   const mongoUser = await getUserByClerkId({ clerkId: userId })
 
   return (
-    <section className="py-8 sm:py-16">
+    <section className="py-8 md:py-16">
       <h1 className="h1-bold text-dark100_light900">Ask a public quesiton</h1>
 
       <div className="mt-4 md:mt-9">

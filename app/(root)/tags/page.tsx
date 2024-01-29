@@ -8,7 +8,7 @@ export default async function Page() {
   const { tags } = await getAllTags({})
 
   return (
-    <div className="py-8 sm:py-16">
+    <div className="py-8 md:py-16">
       <h1 className="h1-bold text-dark100_light900">Tags</h1>
 
       <FilterGroup inputPlacehoder="Search by tag name..." filters={TagFilters} />

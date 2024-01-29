@@ -3,11 +3,24 @@
 import { revalidatePath } from 'next/cache'
 import { ObjectId } from 'mongodb'
 
-import { CreateQuestionReqBody, GetQuestionsParams } from '@/types/question.types'
+import { CreateQuestionReqBody, GetQuestionsParams, Question as QuestionType } from '@/types/question.types'
 import { connectToDatabase } from '@/lib/mongoose'
 import Question from '@/database/question.model'
 import Tag from '@/database/tag.model'
 import User from '@/database/user.model'
+
+type GetQuestionByIdReturn = Omit<QuestionType, 'tags' | 'author'> & {
+  tags: {
+    _id: ObjectId
+    name: string
+  }[]
+  author: {
+    _id: ObjectId
+    clerkId: string
+    name: string
+    picture: string
+  }
+}
 
 export async function createQuestion(body: CreateQuestionReqBody) {
   try {
@@ -56,5 +69,24 @@ export async function getQuestions(_params: GetQuestionsParams) {
   } catch (err) {
     console.log(err)
     throw err
+  }
+}
+
+export async function getQuestionById(questionId: string): Promise<GetQuestionByIdReturn> {
+  try {
+    connectToDatabase()
+
+    const question = await Question.findById(questionId)
+      .populate({ path: 'tags', model: Tag, select: '_id name' })
+      .populate({ path: 'author', model: User, select: '_id clerkId name picture' })
+
+    if (!question) {
+      throw new Error('Question not found')
+    }
+
+    return question
+  } catch (error) {
+    console.log(error)
+    throw error
   }
 }

@@ -9,7 +9,7 @@ export default async function Page() {
   const { users } = await getAllUsers({})
 
   return (
-    <div className="py-8 sm:py-16">
+    <div className="py-8 md:py-16">
       <h1 className="h1-bold text-dark100_light900">All Users</h1>
 
       <FilterGroup inputPlacehoder="Search by username..." filters={UserFilters} />

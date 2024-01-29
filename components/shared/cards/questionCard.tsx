@@ -8,8 +8,8 @@ import { PrimaryButton, SubjectTag } from '@/components/shared/button'
 import { Metric } from '@/components/shared/metric'
 import { Author } from '@/components/shared/author'
 
-export default function QuestionCard({ question }: { question: Question }) {
-  const { title, author, tags, upvotes, views, answers, createdAt } = question
+export default function QuestionCard({ question }: { question: Omit<Question, 'content' | '__v'> }) {
+  const { _id, title, author, tags, upvotes, views, answers, createdAt } = question
 
   return (
     <section className="card-wrapper rounded-[10px] p-5 md:px-11 md:py-9">
@@ -17,7 +17,7 @@ export default function QuestionCard({ question }: { question: Question }) {
         <div>
           <p className="subtle-regular text-dark400_light700 line-clamp-1 md:hidden">{getTimestamp(createdAt)}</p>
           <h2 className="h3-semibold text-dark200_light900 max-md:mt-0.5">
-            <Link href="/" className="line-clamp-2">
+            <Link href={`${PATH.QUESTIONS}/${_id.toString()}`} className="line-clamp-2">
               {title}
             </Link>
           </h2>

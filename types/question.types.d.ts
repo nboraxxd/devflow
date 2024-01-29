@@ -1,3 +1,5 @@
+import { ObjectId } from 'mongodb'
+
 import { User } from '@/types/user.types'
 import { Tag } from '@/types'
 
@@ -17,8 +19,9 @@ export type GetQuestionsParams = {
 }
 
 export type Question = {
-  _id: string
+  _id: ObjectId
   title: string
+  content: string
   tags: Tag[]
   author: User
   answers: string[]
@@ -26,4 +29,5 @@ export type Question = {
   views: number
   createdAt: Date
   updatedAt: Date
+  __v: number
 }

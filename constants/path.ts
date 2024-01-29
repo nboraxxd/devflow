@@ -2,7 +2,7 @@ const API = '/api'
 
 export const PATH = {
   HOMEPAGE: '/',
-  QUESTION_DETAIL: '/question',
+  QUESTIONS: '/questions',
   SIGN_IN: '/sign-in',
   SIGN_UP: '/sign-up',
   COMMUNITY: '/community',

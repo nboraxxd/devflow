@@ -8,7 +8,7 @@ export default async function Home() {
   const { questions } = await getQuestions({})
 
   return (
-    <div className="py-8 sm:py-16">
+    <div className="py-8 md:py-16">
       <div className="flex flex-col-reverse items-start max-sm:gap-2 sm:flex-row sm:items-center">
         <h1 className="h1-bold text-dark100_light900">All Questions</h1>
         <LinkGradient href="/ask-question" className="ml-auto">

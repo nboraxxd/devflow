@@ -12,14 +12,15 @@ import { useTheme } from 'next-themes'
 
 import { envConfig } from '@/constants/config'
 import { PATH } from '@/constants/path'
-import { Theme, ServiceStatus, QuestionFormType } from '@/constants/enums'
-import { QuestionsSchema } from '@/lib/validation'
+import { ServiceStatus, QuestionFormType } from '@/constants/enums'
+import { QuestionSchema } from '@/lib/validation'
 import { createQuestion } from '@/lib/actions/question.actions'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { LinkGradient, PrimaryButton } from '@/components/shared/button'
+import { editorOptions } from '@/constants'
 
-type TagsField = ControllerRenderProps<z.infer<typeof QuestionsSchema>, 'tags'>
+type TagsField = ControllerRenderProps<z.infer<typeof QuestionSchema>, 'tags'>
 
 const questionFormType: QuestionFormType = QuestionFormType.create
 
@@ -31,8 +32,8 @@ export default function Question({ mongoUserId }: { mongoUserId: string }) {
   const { resolvedTheme } = useTheme()
   const editorRef = useRef<TinyMCEEditor | null>(null)
 
-  const form = useForm<z.infer<typeof QuestionsSchema>>({
-    resolver: zodResolver(QuestionsSchema),
+  const form = useForm<z.infer<typeof QuestionSchema>>({
+    resolver: zodResolver(QuestionSchema),
     defaultValues: {
       title: '',
       content: '',
@@ -81,7 +82,7 @@ export default function Question({ mongoUserId }: { mongoUserId: string }) {
     // or using: form.setValue('tags', field.value.filter((t) => t !== tag))
   }
 
-  async function onSubmit(values: z.infer<typeof QuestionsSchema>) {
+  async function onSubmit(values: z.infer<typeof QuestionSchema>) {
     const { content, tags, title } = values
 
     try {
@@ -131,40 +132,12 @@ export default function Question({ mongoUserId }: { mongoUserId: string }) {
               </FormLabel>
               <FormControl>
                 <Editor
-                  apiKey={envConfig.tinyEditorApiKey}
                   key={resolvedTheme}
+                  apiKey={envConfig.tinyEditorApiKey}
                   onInit={(_evt, editor) => (editorRef.current = editor)}
                   onBlur={field.onBlur}
-                  onEditorChange={(content) => field.onChange(content)}
-                  initialValue=""
-                  init={{
-                    skin: resolvedTheme === Theme.LIGHT ? 'oxide' : 'oxide-dark',
-                    content_css: resolvedTheme === Theme.LIGHT ? 'default' : 'dark',
-                    height: 350,
-                    menubar: false,
-                    plugins: [
-                      'advlist',
-                      'autolink',
-                      'lists',
-                      'link',
-                      'image',
-                      'charmap',
-                      'preview',
-                      'anchor',
-                      'searchreplace',
-                      'visualblocks',
-                      'codesample',
-                      'fullscreen',
-                      'insertdatetime',
-                      'media',
-                      'table',
-                    ],
-                    toolbar:
-                      'undo redo |' +
-                      'codesample | bold italic forecolor | alignleft aligncenter ' +
-                      'alignright alignjustify | bullist numlist',
-                    content_style: `body { font-family: Inter, font-size:14px; }`,
-                  }}
+                  onEditorChange={(content: string) => field.onChange(content)}
+                  {...editorOptions(resolvedTheme)}
                 />
               </FormControl>
               <FormDescription className="body-regular mt-2.5 text-light-500">

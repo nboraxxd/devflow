@@ -78,3 +78,35 @@ export const BADGE_CRITERIA = {
     GOLD: 100000,
   },
 } as const
+
+export const editorOptions = (resolvedTheme: string | undefined) => ({
+  initialValue: '',
+  init: {
+    skin: resolvedTheme === Theme.LIGHT ? 'oxide' : 'oxide-dark',
+    content_css: resolvedTheme === Theme.LIGHT ? 'default' : 'dark',
+    height: 350,
+    menubar: false,
+    plugins: [
+      'advlist',
+      'autolink',
+      'lists',
+      'link',
+      'image',
+      'charmap',
+      'preview',
+      'anchor',
+      'searchreplace',
+      'visualblocks',
+      'codesample',
+      'fullscreen',
+      'insertdatetime',
+      'media',
+      'table',
+    ],
+    toolbar:
+      'undo redo |' +
+      'codesample | bold italic forecolor | alignleft aligncenter ' +
+      'alignright alignjustify | bullist numlist',
+    content_style: `body { font-family: Inter, font-size:14px; }`,
+  },
+})

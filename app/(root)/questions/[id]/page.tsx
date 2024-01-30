@@ -6,7 +6,8 @@ import { formatNumberToSocialStyle, getTimestamp } from '@/lib/utils'
 import { getQuestionById } from '@/lib/actions/question.actions'
 import { Metric } from '@/components/shared/metric'
 import { ParseHTML } from '@/components/shared/parseHTML'
-import { SubjectTag } from '@/components/shared/button'
+import { PrimaryButton, SubjectTag } from '@/components/shared/button'
+import { Answer } from '@/components/forms'
 
 export default async function Page({ params }: { params: { id: string } }) {
   const result = await getQuestionById(params.id)
@@ -55,6 +56,18 @@ export default async function Page({ params }: { params: { id: string } }) {
           ))}
         </div>
       </article>
+
+      <div className="mt-8">
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between sm:gap-2">
+          <h3 className="text-dark400_light800 paragraph-semibold">Write your answer here</h3>
+          <PrimaryButton className="light-border-2 background-light800_dark300 flex-center flex items-center gap-1.5 rounded-md border px-4 py-2.5">
+            <Image src="/assets/icons/stars.svg" alt="Stars" width={12} height={12} />
+            <span className="primary-text-gradient small-medium mt-px">Generate AI Answer</span>
+          </PrimaryButton>
+        </div>
+        
+        <Answer />
+      </div>
     </main>
   )
 }

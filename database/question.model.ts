@@ -17,7 +17,7 @@ export interface IQuestion extends Document {
 const questionSchema = new Schema<IQuestion>(
   {
     title: { type: String, trim: true, required: true },
-    content: { type: String, trim: true, required: true },
+    content: { type: String, required: true },
     tags: [{ type: Schema.Types.ObjectId, ref: envConfig.dbTagCollection }],
     author: { type: Schema.Types.ObjectId, ref: envConfig.dbUserCollection },
     views: { type: Number, default: 0 },

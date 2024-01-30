@@ -16,7 +16,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { LinkGradient } from '@/components/shared/button'
 
 export default function Answer() {
-  const [status, setStatus] = useState<ServiceStatus>(ServiceStatus.idle)
+  const [status, _setStatus] = useState<ServiceStatus>(ServiceStatus.idle)
 
   const { resolvedTheme } = useTheme()
   const editorRef = useRef<TinyMCEEditor | null>(null)

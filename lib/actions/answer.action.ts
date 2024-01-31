@@ -10,14 +10,18 @@ import Question from '@/database/question.model'
 export async function createAnswer(params: CreateAnswerParams) {
   connectToDatabase()
 
-  const { author, content, path, question } = params
+  const { author, content, path, questionId } = params
 
   try {
-    const newAnswer = await Answer.create({ content, author, question })
+    const newAnswer = await Answer.create({ content, author, questionId })
 
-    await Question.findByIdAndUpdate(question, {
-      $push: { answers: newAnswer._id },
-    })
+    await Question.findByIdAndUpdate(
+      questionId,
+      {
+        $push: { answers: newAnswer._id },
+      },
+      { new: true }
+    )
 
     // TODO: Add interaction...
 

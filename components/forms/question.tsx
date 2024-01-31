@@ -87,7 +87,7 @@ export default function Question({ mongoUserId }: { mongoUserId: string }) {
 
     try {
       setStatus(ServiceStatus.pending)
-      await createQuestion({ content, tags, title, path: pathname, author: JSON.parse(mongoUserId) })
+      await createQuestion({ content, tags, title, path: pathname, author: mongoUserId })
       setStatus(ServiceStatus.successful)
       router.push(PATH.HOMEPAGE)
     } catch (error) {

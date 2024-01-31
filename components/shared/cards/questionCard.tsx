@@ -58,13 +58,13 @@ export default function QuestionCard({ question }: { question: Omit<Question, 'c
             title="vote"
             titles="votes"
           />
-          <Metric
+          {/* <Metric
             iconUrl="/assets/icons/message.svg"
             alt="Answers"
             value={formatNumberToSocialStyle(answers.length)}
             title="answer"
             titles="answers"
-          />
+          /> */}
           <Metric
             iconUrl="/assets/icons/eye.svg"
             alt="Views"

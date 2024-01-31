@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { auth } from '@clerk/nextjs'
 
 import { PATH } from '@/constants/path'
 import { formatNumberToSocialStyle, getTimestamp } from '@/lib/utils'
@@ -8,9 +9,16 @@ import { Metric } from '@/components/shared/metric'
 import { ParseHTML } from '@/components/shared/parseHTML'
 import { PrimaryButton, SubjectTag } from '@/components/shared/button'
 import { Answer } from '@/components/forms'
+import { getUserByClerkId } from '@/lib/actions/user.action'
 
 export default async function Page({ params }: { params: { id: string } }) {
   const result = await getQuestionById(params.id)
+  const { userId: clerkId } = auth()
+
+  let mongoUser
+  if (clerkId) {
+    mongoUser = await getUserByClerkId(clerkId)
+  }
 
   return (
     <main className="py-8 md:py-16">
@@ -65,8 +73,8 @@ export default async function Page({ params }: { params: { id: string } }) {
             <span className="primary-text-gradient small-medium mt-px">Generate AI Answer</span>
           </PrimaryButton>
         </div>
-        
-        <Answer />
+
+        <Answer mongoUserId={mongoUser?._id.toString()} questionId={result._id.toString()} />
       </div>
     </main>
   )

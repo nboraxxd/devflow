@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -14,10 +15,17 @@ import { ServiceStatus } from '@/constants/enums'
 import { AnswerSchema } from '@/lib/validation'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { LinkGradient } from '@/components/shared/button'
+import { createAnswer } from '@/lib/actions/answer.action'
 
-export default function Answer() {
-  const [status, _setStatus] = useState<ServiceStatus>(ServiceStatus.idle)
+interface AnswerProps {
+  mongoUserId: string | undefined
+  questionId: string
+}
 
+export default function Answer({ mongoUserId, questionId }: AnswerProps) {
+  const [status, setStatus] = useState<ServiceStatus>(ServiceStatus.idle)
+
+  const pathname = usePathname()
   const { resolvedTheme } = useTheme()
   const editorRef = useRef<TinyMCEEditor | null>(null)
 
@@ -29,7 +37,20 @@ export default function Answer() {
   })
 
   async function onSubmit(values: z.infer<typeof AnswerSchema>) {
-    console.log('🔥 ~ onSubmit ~ values:', values)
+    const { content } = values
+    if (!mongoUserId) return
+
+    try {
+      setStatus(ServiceStatus.pending)
+
+      await createAnswer({ content, author: mongoUserId, questionId, path: pathname })
+
+      setStatus(ServiceStatus.successful)
+      form.reset()
+      if (editorRef.current) editorRef.current.setContent('')
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (

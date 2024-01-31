@@ -23,7 +23,7 @@ const questionSchema = new Schema<IQuestion>(
     views: { type: Number, default: 0 },
     upvotes: [{ type: Schema.Types.ObjectId, ref: envConfig.dbUserCollection }],
     downvotes: [{ type: Schema.Types.ObjectId, ref: envConfig.dbUserCollection }],
-    answers: [{ type: Schema.Types.ObjectId, ref: 'Answer' }],
+    answers: [{ type: Schema.Types.ObjectId, ref: envConfig.dbAnswerCollection }],
   },
   { timestamps: true }
 )

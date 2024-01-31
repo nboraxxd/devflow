@@ -6,10 +6,10 @@ import { getUserByClerkId } from '@/lib/actions/user.action'
 import { Question } from '@/components/forms'
 
 export default async function AskQuestionPage() {
-  const { userId } = auth()
-  if (!userId) redirect(PATH.SIGN_IN)
+  const { userId: clerkId } = auth()
+  if (!clerkId) redirect(PATH.SIGN_IN)
 
-  const mongoUser = await getUserByClerkId({ clerkId: userId })
+  const mongoUser = await getUserByClerkId(clerkId)
 
   return (
     <section className="py-8 md:py-16">

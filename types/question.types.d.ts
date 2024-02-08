@@ -26,6 +26,7 @@ export type Question = {
   author: User
   answers: string[]
   upvotes: string[]
+  downvotes: string[]
   views: number
   createdAt: Date
   updatedAt: Date

@@ -18,7 +18,7 @@ import { LinkGradient } from '@/components/shared/button'
 import { createAnswer } from '@/lib/actions/answer.action'
 
 interface AnswerProps {
-  mongoUserId: string | undefined
+  mongoUserId?: string
   questionId: string
 }
 

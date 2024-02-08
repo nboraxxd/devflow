@@ -6,7 +6,7 @@ import { Author } from '@/components/shared/author'
 import { ParseHTML } from '@/components/shared/parseHTML'
 
 interface Props {
-  mongoUserId: string
+  mongoUserId?: string
   questionId: string
   totalAnswers: number
   page?: number
@@ -15,11 +15,11 @@ interface Props {
 }
 
 export default async function AnswerList({ mongoUserId, questionId, totalAnswers, page, pageSize, sortBy }: Props) {
-  const answers = await getAnswers({ questionId, page, pageSize, sortBy })
+  // const answers = await getAnswers({ questionId, page, pageSize, sortBy })
 
   return (
     <section className="mt-9">
-      <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between sm:gap-2">
+      {/* <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between sm:gap-2">
         <p className="primary-text-gradient paragraph-medium">
           {totalAnswers} {totalAnswers > 1 ? 'answers' : 'answer'}
         </p>
@@ -31,13 +31,13 @@ export default async function AnswerList({ mongoUserId, questionId, totalAnswers
       </div>
 
       {answers.map((answer) => (
-        <article key={answer._id}>
+        <article key={answer._id.toString()}>
           <div className="mt-5 flex flex-col-reverse gap-5 sm:flex-row sm:items-center sm:justify-between sm:gap-2 md:mt-8">
             <div className="flex w-fit flex-col gap-1.5 sm:flex-row sm:items-center">
               <Author author={answer.author} authorClassName="body-medium text-dark400_light700" />
               <span className="mt-0.5 max-sm:hidden">•</span>
               <p className="small-regular text-dark400_light700 text-right sm:mt-0.5">
-                Answered {getTimestamp(answer.createdAt)}
+                Answered <span className="lowercase">{getTimestamp(answer.createdAt)}</span>
               </p>
             </div>
 
@@ -46,7 +46,7 @@ export default async function AnswerList({ mongoUserId, questionId, totalAnswers
 
           <ParseHTML html={answer.content} />
         </article>
-      ))}
+      ))} */}
     </section>
   )
 }

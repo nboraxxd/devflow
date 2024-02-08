@@ -1,6 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
+import { ObjectId } from 'mongodb'
 
 import { connectToDatabase } from '@/lib/mongoose'
 import { Answer as AnswerType, CreateAnswerParams, GetAnswersParams } from '@/types/answer.types'
@@ -43,9 +44,10 @@ export async function getAnswers(params: GetAnswersParams) {
 
     const { questionId } = params
 
-    const answers = await Answer.find({ questionId })
-      .populate('author', '_id clerkId name picture')
-      .sort({ createdAt: -1 })
+    const answers = await Answer.find({ questionId: new ObjectId(questionId) }).populate({
+      path: 'author',
+      select: '_id clerkId name picture',
+    })
 
     return answers as GetAnswersReturn
   } catch (error) {

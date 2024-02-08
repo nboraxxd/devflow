@@ -2,12 +2,11 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import { useTheme } from 'next-themes'
 import { SignedIn, UserButton } from '@clerk/nextjs'
-import { m, LazyMotion, domAnimation, useTransform, useMotionTemplate } from 'framer-motion'
+import { m, LazyMotion, domAnimation, useTransform } from 'framer-motion'
 
 import { cn } from '@/lib/utils'
-import { HeaderHeight, Theme } from '@/constants/enums'
+import { HeaderHeight } from '@/constants/enums'
 import { useBoundedScroll, useWindowWidth } from '@/hooks'
 import { DevflowLogo } from '@/components/shared/devflowLogo'
 import { Theme as ThemeComponent } from '@/components/shared/header'
@@ -23,8 +22,6 @@ export default function Header() {
   const [isFocusSearch, setIsFocusSearch] = useState(false)
   const searchInput = useRef<HTMLInputElement>(null)
   const wrapperSearch = useRef<HTMLDivElement>(null)
-
-  const { resolvedTheme } = useTheme()
 
   const { scrollYBoundedProgress } = useBoundedScroll(300)
   const scrollYBoundedProgressThrottled = useTransform(scrollYBoundedProgress, [0, 0.5, 1], [0, 0, 1])
@@ -69,13 +66,6 @@ export default function Header() {
             [0, 1],
             [HeaderHeight.Expanded, HeaderHeight.Collapsed]
           ),
-          backgroundColor: useMotionTemplate`rgb(${
-            resolvedTheme === Theme.LIGHT ? '255 255 255' : resolvedTheme === Theme.DARK ? '15 17 23' : 'none'
-          } / ${useTransform(
-            scrollYBoundedProgressThrottled,
-            [0, 1],
-            [1, resolvedTheme === Theme.LIGHT ? 0.3 : 0.7]
-          )})`,
         }}
         className="background-light900_dark200 light-border fixed inset-x-0 top-0 z-20 flex h-[88px] items-center border-b shadow-light-header backdrop-blur-md dark:shadow-none"
       >

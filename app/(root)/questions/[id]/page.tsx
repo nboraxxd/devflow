@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { auth } from '@clerk/nextjs'
 
+import { ParamsProps } from '@/types'
 import { PATH } from '@/constants/path'
 import { formatNumberToSocialStyle, getTimestamp } from '@/lib/utils'
 import { getQuestionById } from '@/lib/actions/question.actions'
@@ -11,15 +12,14 @@ import { PrimaryButton, SubjectTag } from '@/components/shared/button'
 import { Answer } from '@/components/forms'
 import { AnswerList } from '@/components/shared/answerList'
 import { Author } from '@/components/shared/author'
+import { Votes } from '@/components/shared/votes'
 
-export default async function Page({ params }: { params: { id: string } }) {
-  const question = await getQuestionById(params.id)
+export default async function Page({ params }: ParamsProps) {
   const { userId: clerkId } = auth()
 
-  let mongoUser
-  if (clerkId) {
-    mongoUser = await getUserByClerkId(clerkId)
-  }
+  const mongoUser = clerkId ? await getUserByClerkId(clerkId) : undefined
+
+  const question = await getQuestionById(params.id)
 
   return (
     <main className="py-8 md:py-16">
@@ -34,7 +34,19 @@ export default async function Page({ params }: { params: { id: string } }) {
           authorClassName="paragraph-semibold text-dark300_light700 mt-1"
         />
 
-        <div className="flex justify-end">Voting</div>
+        <div className="flex justify-end">
+          {/* TODO: Change question.upvotes to ObjectId */}
+          <Votes
+            type="question"
+            itemId={question._id.toString()}
+            userId={mongoUser?._id?.toString()}
+            upvotes={question.upvotes.length}
+            hasUpvoted={question.upvotes.includes(mongoUser?._id?.toString())}
+            downvotes={question.downvotes.length}
+            hasDownvoted={question.downvotes.includes(mongoUser?._id.toString())}
+            hasSaved={mongoUser?.saved?.map((s) => s.toString()).includes(question._id.toString())}
+          />
+        </div>
       </section>
 
       <article className="mt-3.5">
@@ -72,7 +84,7 @@ export default async function Page({ params }: { params: { id: string } }) {
       </article>
 
       <AnswerList
-        mongoUserId={mongoUser?._id.toString()}
+        mongoUserId={mongoUser?._id?.toString()}
         questionId={question._id.toString()}
         totalAnswers={question.answers.length}
       />
@@ -86,7 +98,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           </PrimaryButton>
         </div>
 
-        <Answer mongoUserId={mongoUser?._id.toString()} questionId={question._id.toString()} />
+        <Answer mongoUserId={mongoUser?._id?.toString()} questionId={question._id.toString()} />
       </div>
     </main>
   )

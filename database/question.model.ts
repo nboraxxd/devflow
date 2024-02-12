@@ -1,7 +1,7 @@
 import { Document, Schema, models, model } from 'mongoose'
 
 import { envConfig } from '@/constants/config'
-import { ITag } from './tag.model'
+import { ITag } from '@/database/tag.model'
 
 export interface IQuestion extends Document {
   title: string

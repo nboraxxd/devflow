@@ -34,7 +34,7 @@ export default async function AnswerList({ questionId, totalAnswers, page, pageS
         <article key={answer._id.toString()}>
           <div className="mt-5 flex flex-col-reverse gap-5 sm:flex-row sm:items-center sm:justify-between sm:gap-2 md:mt-8">
             <div className="flex w-fit flex-col gap-1.5 sm:flex-row sm:items-center">
-              <Author author={answer.author} authorClassName="body-medium text-dark400_light700" />
+              {/* <Author author={answer.author} authorClassName="body-medium text-dark400_light700" /> */}
               <span className="mt-0.5 max-sm:hidden">•</span>
               <p className="small-regular text-dark400_light700 text-right sm:mt-0.5">
                 Answered <span className="lowercase">{getTimestamp(answer.createdAt)}</span>

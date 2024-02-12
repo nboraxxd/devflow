@@ -44,10 +44,7 @@ export async function getAnswers(params: GetAnswersParams) {
 
     const { questionId } = params
 
-    const answers = await Answer.find({ question: new ObjectId(questionId) }).populate({
-      path: 'author',
-      select: '_id clerkId name picture',
-    })
+    const answers = await Answer.find({ question: new ObjectId(questionId) })
 
     return answers as GetAnswersReturn
   } catch (error) {

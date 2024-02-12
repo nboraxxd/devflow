@@ -26,6 +26,7 @@ export default function Author(props: Props) {
     authorClassName,
     authorTag: Element = 'span',
   } = props
+
   return (
     <Link href={`${PATH.USERS}/${author.clerkId}`} className={cn('flex items-center gap-1.5', linkClassName)}>
       <Image

@@ -19,7 +19,7 @@ export async function createAnswer(params: CreateAnswerParams) {
   const { author, content, path, questionId } = params
 
   try {
-    const newAnswer = await Answer.create({ content, author, questionId })
+    const newAnswer = await Answer.create({ content, author, question: questionId })
 
     await Question.findByIdAndUpdate(
       questionId,
@@ -44,7 +44,7 @@ export async function getAnswers(params: GetAnswersParams) {
 
     const { questionId } = params
 
-    const answers = await Answer.find({ questionId: new ObjectId(questionId) }).populate({
+    const answers = await Answer.find({ question: new ObjectId(questionId) }).populate({
       path: 'author',
       select: '_id clerkId name picture',
     })

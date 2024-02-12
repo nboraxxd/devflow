@@ -14,12 +14,12 @@ interface Props {
   sortBy?: string
 }
 
-export default async function AnswerList({ mongoUserId, questionId, totalAnswers, page, pageSize, sortBy }: Props) {
-  // const answers = await getAnswers({ questionId, page, pageSize, sortBy })
+export default async function AnswerList({ questionId, totalAnswers, page, pageSize, sortBy }: Props) {
+  const answers = await getAnswers({ questionId, page, pageSize, sortBy })
 
   return (
     <section className="mt-9">
-      {/* <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between sm:gap-2">
+      <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between sm:gap-2">
         <p className="primary-text-gradient paragraph-medium">
           {totalAnswers} {totalAnswers > 1 ? 'answers' : 'answer'}
         </p>
@@ -46,7 +46,7 @@ export default async function AnswerList({ mongoUserId, questionId, totalAnswers
 
           <ParseHTML html={answer.content} />
         </article>
-      ))} */}
+      ))}
     </section>
   )
 }

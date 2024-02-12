@@ -43,10 +43,8 @@ export default function QuestionCard({ question }: { question: Omit<Question, 'c
 
       <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-1.5">
-          <Author author={author} />
-
+          <Author author={author} authorClassName="body-medium text-dark400_light700" />
           <span className="mt-0.5 max-md:hidden">•</span>
-
           <p className="small-regular text-dark400_light700 mt-0.5 max-md:hidden">asked {getTimestamp(createdAt)}</p>
         </div>
 
@@ -58,13 +56,13 @@ export default function QuestionCard({ question }: { question: Omit<Question, 'c
             title="vote"
             titles="votes"
           />
-          {/* <Metric
+          <Metric
             iconUrl="/assets/icons/message.svg"
             alt="Answers"
             value={formatNumberToSocialStyle(answers.length)}
             title="answer"
             titles="answers"
-          /> */}
+          />
           <Metric
             iconUrl="/assets/icons/eye.svg"
             alt="Views"

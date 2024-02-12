@@ -43,7 +43,7 @@ export default function Answer({ mongoUserId, questionId }: AnswerProps) {
     try {
       setStatus(ServiceStatus.pending)
 
-      await createAnswer({ content, author: mongoUserId, questionId, path: pathname })
+      await createAnswer({ content, author: mongoUserId, question: questionId, path: pathname })
 
       setStatus(ServiceStatus.successful)
       form.reset()

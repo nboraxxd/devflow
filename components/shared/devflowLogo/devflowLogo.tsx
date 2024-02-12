@@ -25,9 +25,9 @@ export default function DevflowLogo({ wrapperClassName, textClassName, style, wi
       style={style as CSSProperties} // Explicitly type the style prop as CSSProperties
     >
       <Image src="/assets/images/site-logo.svg" width={width} height={height} alt="DevFlow" />
-      <p className={cn('h2-bold text-dark100_light900 font-spaceGrotesk max-xs:hidden', textClassName)}>
+      <h2 className={cn('h2-bold text-dark100_light900 font-spaceGrotesk max-xs:hidden', textClassName)}>
         Dev<span className="text-primary-500">flow</span>
-      </p>
+      </h2>
     </MotionLink>
   )
 }

@@ -11,11 +11,12 @@ import { PrimaryButton, SubjectTag } from '@/components/shared/button'
 import { Answer } from '@/components/forms'
 import { AnswerList } from '@/components/shared/answerList'
 import { Author } from '@/components/shared/author'
+import { Votes } from '@/components/shared/votes'
 
 export default async function Page({ params }: { params: { id: string } }) {
-  const question = await getQuestionById(params.id)
   const { userId: clerkId } = auth()
 
+  const question = await getQuestionById(params.id)
   const mongoUser = clerkId ? await getUserByClerkId(clerkId) : undefined
 
   return (
@@ -31,7 +32,19 @@ export default async function Page({ params }: { params: { id: string } }) {
           authorClassName="paragraph-semibold text-dark300_light700 mt-1"
         />
 
-        <div className="flex justify-end">Voting</div>
+        <div className="flex justify-end">
+          {/* TODO: Change question.upvotes to ObjectId */}
+          <Votes
+            type="question"
+            itemId={question._id.toString()}
+            userId={mongoUser?._id.toString()}
+            upvotes={question.upvotes.length}
+            hasUpvoted={question.upvotes.includes(mongoUser?._id.toString())}
+            downvotes={question.downvotes.length}
+            hasDownvoted={question.downvotes.includes(mongoUser?._id.toString())}
+            hasSaved={mongoUser?.saved.map((s) => s.toString()).includes(question._id.toString())}
+          />
+        </div>
       </section>
 
       <article className="mt-3.5">

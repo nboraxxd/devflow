@@ -39,14 +39,14 @@ export default function Votes(props: Props) {
         <div className="flex items-center gap-1.5">
           <PrimaryButton>
             <Image
-              src={`${hasUpvoted ? '/assets/icons/downvoted.svg' : '/assets/icons/downvote.svg'}`}
+              src={`${hasDownvoted ? '/assets/icons/downvoted.svg' : '/assets/icons/downvote.svg'}`}
               alt="Downvote"
               width={18}
               height={18}
             />
           </PrimaryButton>
           <div className="background-light700_dark400 subtle-medium text-dark400_light900 flex-center h-[18px] w-[18px] rounded-sm">
-            {upvotes}
+            {downvotes}
           </div>
         </div>
       </div>

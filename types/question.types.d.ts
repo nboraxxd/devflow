@@ -33,8 +33,8 @@ export type Question = {
   tags: Tag[]
   author: User
   answers: string[]
-  upvotes: string[]
-  downvotes: string[]
+  upvotes: ObjectId[]
+  downvotes: ObjectId[]
   views: number
   createdAt: Date
   updatedAt: Date

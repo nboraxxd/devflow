@@ -109,7 +109,7 @@ export async function upvoteQuestion(params: QuestionVoteParams) {
     } else if (hasDownvoted) {
       updateQuery = {
         $pull: { downvotes: userId },
-        $push: { upvotes: userId },
+        $addToSet: { upvotes: userId },
       }
     } else {
       updateQuery = { $addToSet: { upvotes: userId } }
@@ -143,7 +143,7 @@ export async function downvoteQuestion(params: QuestionVoteParams) {
     } else if (hasUpvoted) {
       updateQuery = {
         $pull: { upvotes: userId },
-        $push: { downvotes: userId },
+        $addToSet: { downvotes: userId },
       }
     } else {
       updateQuery = { $addToSet: { downvotes: userId } }

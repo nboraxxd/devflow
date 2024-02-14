@@ -1,10 +1,13 @@
 'use client'
 
-import { PrimaryButton } from '@/components/shared/button'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
+
+import { downvoteQuestion, upvoteQuestion } from '@/lib/actions/question.actions'
+import { PrimaryButton } from '@/components/shared/button'
 
 interface Props {
-  type: string
+  type: 'question' | 'answer'
   itemId: string
   userId: string
   upvotes: number
@@ -17,15 +20,44 @@ interface Props {
 export default function Votes(props: Props) {
   const { type, itemId, userId, upvotes, hasUpvoted, downvotes, hasDownvoted, hasSaved } = props
 
+  const pathname = usePathname()
+
+  async function handleVote(action: 'upvote' | 'downvote') {
+    if (!userId) {
+      return
+    }
+    
+    if (action === 'upvote') {
+      if (type === 'question') {
+        await upvoteQuestion({ userId, questionId: itemId, hasUpvoted, hasDownvoted, path: pathname })
+      } else if (type === 'answer') {
+        // await upvoteAnswer({ userId, answerId: itemId, hasUpvoted, hasDownvoted, path: pathname })
+      }
+
+      // TODO: Show toast
+      return
+    }
+
+    if (action === 'downvote') {
+      if (type === 'question') {
+        await downvoteQuestion({ userId, questionId: itemId, hasUpvoted, hasDownvoted, path: pathname })
+      } else if (type === 'answer') {
+        // await downvoteAnswer({ userId, answerId: itemId, hasUpvoted, hasDownvoted, path: pathname })
+      }
+
+      // TODO: Show toast
+    }
+  }
+
   return (
     <div className="flex items-center gap-4">
       <div className="flex items-center gap-2.5">
         {/* Upvote */}
         <div className="flex items-center gap-1.5">
-          <PrimaryButton>
+          <PrimaryButton onClick={() => handleVote('upvote')}>
             <Image
               src={`${hasUpvoted ? '/assets/icons/upvoted.svg' : '/assets/icons/upvote.svg'}`}
-              alt="Upvote"
+              alt="upvote"
               width={18}
               height={18}
             />
@@ -37,10 +69,10 @@ export default function Votes(props: Props) {
 
         {/* Downvote */}
         <div className="flex items-center gap-1.5">
-          <PrimaryButton>
+          <PrimaryButton onClick={() => handleVote('downvote')}>
             <Image
               src={`${hasDownvoted ? '/assets/icons/downvoted.svg' : '/assets/icons/downvote.svg'}`}
-              alt="Downvote"
+              alt="downvote"
               width={18}
               height={18}
             />
@@ -55,7 +87,7 @@ export default function Votes(props: Props) {
       <PrimaryButton>
         <Image
           src={`${hasSaved ? '/assets/icons/star-filled.svg' : '/assets/icons/star-red.svg'}`}
-          alt="Saved"
+          alt="save"
           width={18}
           height={18}
         />

@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb'
 import { User } from '@/types/user.types'
 import { Tag } from '@/types'
 
-export type CreateQuestionReqBody = {
+export type CreateQuestionParams = {
   title: string
   content: string
   tags: string[]
@@ -16,6 +16,14 @@ export type GetQuestionsParams = {
   pageSize?: string
   searchQuery?: string
   filter?: string
+}
+
+export interface QuestionVoteParams {
+  questionId: string;
+  userId: string;
+  hasUpvoted: boolean;
+  hasDownvoted: boolean;
+  path: string;
 }
 
 export type Question = {

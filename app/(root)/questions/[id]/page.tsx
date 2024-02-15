@@ -33,7 +33,6 @@ export default async function Page({ params }: { params: { id: string } }) {
         />
 
         <div className="flex justify-end">
-          {/* TODO: Change question.upvotes to ObjectId */}
           <Votes
             type="question"
             itemId={question._id.toString()}

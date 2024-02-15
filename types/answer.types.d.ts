@@ -12,6 +12,14 @@ export type GetAnswersParams = {
   pageSize?: number
 }
 
+export interface AnswerVoteParams {
+  answerId: string;
+  userId: string;
+  hasUpvoted: boolean;
+  hasDownvoted: boolean;
+  path: string;
+}
+
 export type Answer = {
   _id: ObjectId
   content: string

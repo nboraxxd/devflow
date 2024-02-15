@@ -5,11 +5,12 @@ import { usePathname } from 'next/navigation'
 
 import { downvoteQuestion, upvoteQuestion } from '@/lib/actions/question.actions'
 import { PrimaryButton } from '@/components/shared/button'
+import { downvoteAnswer, upvoteAnswer } from '@/lib/actions/answer.action'
 
 interface Props {
   type: 'question' | 'answer'
   itemId: string
-  userId: string
+  userId?: string
   upvotes: number
   hasUpvoted: boolean
   downvotes: number
@@ -23,15 +24,13 @@ export default function Votes(props: Props) {
   const pathname = usePathname()
 
   async function handleVote(action: 'upvote' | 'downvote') {
-    if (!userId) {
-      return
-    }
-    
+    if (!userId) return
+
     if (action === 'upvote') {
       if (type === 'question') {
         await upvoteQuestion({ userId, questionId: itemId, hasUpvoted, hasDownvoted, path: pathname })
       } else if (type === 'answer') {
-        // await upvoteAnswer({ userId, answerId: itemId, hasUpvoted, hasDownvoted, path: pathname })
+        await upvoteAnswer({ userId, answerId: itemId, hasUpvoted, hasDownvoted, path: pathname })
       }
 
       // TODO: Show toast
@@ -42,7 +41,7 @@ export default function Votes(props: Props) {
       if (type === 'question') {
         await downvoteQuestion({ userId, questionId: itemId, hasUpvoted, hasDownvoted, path: pathname })
       } else if (type === 'answer') {
-        // await downvoteAnswer({ userId, answerId: itemId, hasUpvoted, hasDownvoted, path: pathname })
+        await downvoteAnswer({ userId, answerId: itemId, hasUpvoted, hasDownvoted, path: pathname })
       }
 
       // TODO: Show toast
@@ -84,14 +83,16 @@ export default function Votes(props: Props) {
       </div>
 
       {/* Save */}
-      <PrimaryButton>
-        <Image
-          src={`${hasSaved ? '/assets/icons/star-filled.svg' : '/assets/icons/star-red.svg'}`}
-          alt="save"
-          width={18}
-          height={18}
-        />
-      </PrimaryButton>
+      {type === 'question' && (
+        <PrimaryButton>
+          <Image
+            src={`${hasSaved ? '/assets/icons/star-filled.svg' : '/assets/icons/star-red.svg'}`}
+            alt="save"
+            width={18}
+            height={18}
+          />
+        </PrimaryButton>
+      )}
     </div>
   )
 }

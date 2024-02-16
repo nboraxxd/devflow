@@ -15,6 +15,12 @@ export type GetAllUsersParams = {
   searchQuery?: string
 }
 
+export interface ToggleSaveQuestionParams {
+  userId: string
+  questionId: string
+  path: string
+}
+
 export type UpdateUserParams = {
   clerkId: string
   updateData: Partial<IUser>

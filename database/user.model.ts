@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb'
 import { Document, Schema, models, model, Model } from 'mongoose'
 import validator from 'validator'
 
@@ -21,7 +22,7 @@ export interface IUser extends Document {
   location?: string
   portfolioWebsite?: string
   reputation?: number
-  saved: Schema.Types.ObjectId[]
+  saved: ObjectId[]
 }
 
 const userSchema = new Schema<IUser>(

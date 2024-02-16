@@ -1,7 +1,16 @@
+'use server'
+
 import { revalidatePath } from 'next/cache'
+import { ObjectId } from 'mongodb'
 
 import { connectToDatabase } from '@/lib/mongoose'
-import { CreateUserParams, DeleteUserParams, GetAllUsersParams, UpdateUserParams } from '@/types/user.types'
+import {
+  CreateUserParams,
+  DeleteUserParams,
+  GetAllUsersParams,
+  ToggleSaveQuestionParams,
+  UpdateUserParams,
+} from '@/types/user.types'
 import User from '@/database/user.model'
 import Question from '@/database/question.model'
 
@@ -47,6 +56,35 @@ export async function getUserByClerkId(clerkId: string) {
   } catch (err) {
     console.log(err)
     throw err
+  }
+}
+
+export async function toggleSaveQuestion(params: ToggleSaveQuestionParams) {
+  try {
+    await connectToDatabase()
+
+    const { userId, questionId, path } = params
+
+    const user = await User.findById(userId)
+
+    if (!user) {
+      throw new Error('User not found')
+    }
+
+    const isQuestionSaved = user.saved.includes(new ObjectId(questionId))
+
+    if (isQuestionSaved) {
+      // Remove the question from the saved list
+      await User.findByIdAndUpdate(userId, { $pull: { saved: questionId } }, { new: true })
+    } else {
+      // Add the question to the saved list
+      await User.findByIdAndUpdate(userId, { $addToSet: { saved: questionId } }, { new: true })
+    }
+
+    revalidatePath(path)
+  } catch (error) {
+    console.log(error)
+    throw error
   }
 }
 

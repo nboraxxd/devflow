@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import { downvoteQuestion, upvoteQuestion } from '@/lib/actions/question.actions'
 import { PrimaryButton } from '@/components/shared/button'
 import { downvoteAnswer, upvoteAnswer } from '@/lib/actions/answer.action'
+import { toggleSaveQuestion } from '@/lib/actions/user.action'
 
 interface Props {
   type: 'question' | 'answer'
@@ -48,6 +49,12 @@ export default function Votes(props: Props) {
     }
   }
 
+  async function handleSave() {
+    if (!userId) return
+
+    await toggleSaveQuestion({ userId, questionId: itemId, path: pathname })
+  }
+
   return (
     <div className="flex items-center gap-4">
       <div className="flex items-center gap-2.5">
@@ -84,7 +91,7 @@ export default function Votes(props: Props) {
 
       {/* Save */}
       {type === 'question' && (
-        <PrimaryButton>
+        <PrimaryButton onClick={handleSave}>
           <Image
             src={`${hasSaved ? '/assets/icons/star-filled.svg' : '/assets/icons/star-red.svg'}`}
             alt="save"

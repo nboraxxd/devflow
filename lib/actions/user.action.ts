@@ -2,15 +2,19 @@
 
 import { revalidatePath } from 'next/cache'
 import { ObjectId } from 'mongodb'
+import { FilterQuery } from 'mongoose'
 
 import { connectToDatabase } from '@/lib/mongoose'
 import {
   CreateUserParams,
   DeleteUserParams,
   GetAllUsersParams,
+  GetSavedQuestionsParams,
   ToggleSaveQuestionParams,
   UpdateUserParams,
 } from '@/types/user.types'
+import { GetQuestionByIdReturn } from '@/lib/actions/question.actions'
+import { envConfig } from '@/constants/config'
 import User from '@/database/user.model'
 import Question from '@/database/question.model'
 
@@ -82,6 +86,40 @@ export async function toggleSaveQuestion(params: ToggleSaveQuestionParams) {
     }
 
     revalidatePath(path)
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export async function getSavedQuestions(params: GetSavedQuestionsParams) {
+  try {
+    connectToDatabase()
+
+    const { clerkId, page = 1, pageSize = 10, filter, searchQuery } = params
+
+    const query: FilterQuery<typeof Question> = searchQuery ? { title: { $regex: new RegExp(searchQuery, 'i') } } : {}
+
+    const users = await User.findOne({ clerkId }).populate({
+      path: 'saved',
+      model: envConfig.dbQuestionCollection,
+      match: query,
+      options: {
+        sort: { createdAt: -1 },
+      },
+      populate: [
+        { path: 'tags', model: envConfig.dbTagCollection, select: '_id name' },
+        { path: 'author', model: envConfig.dbUserCollection, select: '_id clerkId name picture' },
+      ],
+    })
+
+    if (!users) {
+      throw new Error('User not found')
+    }
+
+    const savedQuestions = users.saved as unknown as GetQuestionByIdReturn[]
+
+    return { savedQuestions }
   } catch (error) {
     console.log(error)
     throw error

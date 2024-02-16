@@ -21,6 +21,14 @@ export interface ToggleSaveQuestionParams {
   path: string
 }
 
+export interface GetSavedQuestionsParams {
+  clerkId: string;
+  page?: number;
+  pageSize?: number;
+  filter?: string;
+  searchQuery?: string;
+}
+
 export type UpdateUserParams = {
   clerkId: string
   updateData: Partial<IUser>

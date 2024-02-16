@@ -28,8 +28,8 @@ export default async function Page() {
           ))
         ) : (
           <NoResult
-            title="There's no question to show"
-            description="Join the conversation! 🚀 Sign up now to be part of our community and start sharing ideas. Don't miss out! 💡"
+            title="There's no user to show"
+            description="Join the community! 🚀 Sign up now to be part of our community and start sharing ideas. Don't miss out! 💡"
             link={PATH.SIGN_UP}
             linkTitle="Sign up now"
           />

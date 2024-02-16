@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { ObjectId } from 'mongodb'
 
 import { Question } from '@/types/question.types'
 import { PATH } from '@/constants/path'
@@ -8,7 +9,22 @@ import { PrimaryButton, SubjectTag } from '@/components/shared/button'
 import { Metric } from '@/components/shared/metric'
 import { Author } from '@/components/shared/author'
 
-export default function QuestionCard({ question }: { question: Omit<Question, 'content' | '__v'> }) {
+type Props = {
+  question: Omit<Question, 'content' | 'tags' | 'author' | '__v'> & {
+    tags: {
+      _id: ObjectId
+      name: string
+    }[]
+    author: {
+      _id: ObjectId
+      clerkId: string
+      name: string
+      picture: string
+    }
+  }
+}
+
+export default function QuestionCard({ question }: Props) {
   const { _id, title, author, tags, upvotes, views, answers, createdAt } = question
 
   return (
@@ -35,7 +51,7 @@ export default function QuestionCard({ question }: { question: Omit<Question, 'c
 
       <div className="mt-3.5 flex flex-wrap gap-2">
         {tags.map((tag) => (
-          <SubjectTag key={tag._id} href={`${PATH.TAGS}/${tag._id}`}>
+          <SubjectTag key={tag._id.toString()} href={`${PATH.TAGS}/${tag._id}`}>
             {tag.name}
           </SubjectTag>
         ))}

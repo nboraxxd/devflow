@@ -14,7 +14,7 @@ import Question from '@/database/question.model'
 import Tag from '@/database/tag.model'
 import User from '@/database/user.model'
 
-type GetQuestionByIdReturn = Omit<QuestionType, 'tags' | 'author'> & {
+export type GetQuestionByIdReturn = Omit<QuestionType, 'tags' | 'author'> & {
   tags: {
     _id: ObjectId
     name: string

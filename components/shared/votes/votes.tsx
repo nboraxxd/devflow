@@ -1,12 +1,14 @@
 'use client'
 
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 import { downvoteQuestion, upvoteQuestion } from '@/lib/actions/question.actions'
 import { PrimaryButton } from '@/components/shared/button'
 import { downvoteAnswer, upvoteAnswer } from '@/lib/actions/answer.action'
 import { toggleSaveQuestion } from '@/lib/actions/user.action'
+import { useEffect } from 'react'
+import { viewQuestion } from '@/lib/actions/interaction.action'
 
 interface Props {
   type: 'question' | 'answer'
@@ -23,6 +25,7 @@ export default function Votes(props: Props) {
   const { type, itemId, userId, upvotes, hasUpvoted, downvotes, hasDownvoted, hasSaved } = props
 
   const pathname = usePathname()
+  const router = useRouter()
 
   async function handleVote(action: 'upvote' | 'downvote') {
     if (!userId) return
@@ -54,6 +57,12 @@ export default function Votes(props: Props) {
 
     await toggleSaveQuestion({ userId, questionId: itemId, path: pathname })
   }
+
+  useEffect(() => {
+    viewQuestion({ questionId: itemId, userId })
+
+    router.refresh()
+  }, [itemId, userId, router])
 
   return (
     <div className="flex items-center gap-4">

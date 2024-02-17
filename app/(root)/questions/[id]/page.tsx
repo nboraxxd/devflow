@@ -62,7 +62,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             <Metric
               iconUrl="/assets/icons/eye.svg"
               alt="Views"
-              value={formatNumberToSocialStyle(412844)}
+              value={formatNumberToSocialStyle(question.views)}
               title="view"
               titles="views"
             />

@@ -18,7 +18,7 @@ export default function TagCard({ _id, name, count }: TagCardProps) {
       </SubjectTag>
 
       <div className="mt-5 flex items-baseline gap-1.5">
-        <span className="body-semibold primary-text-gradient">{count}+</span>
+        <span className="body-semibold primary-text-gradient">{count}</span>
         <span className="small-medium text-dark400_light500 mb-px">Questions</span>
       </div>
     </section>

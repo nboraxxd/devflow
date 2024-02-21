@@ -26,7 +26,7 @@ export function getTimestamp(createdAt: Date): string {
   const year = 365 * day
 
   if (timeDifference < minute) {
-    return 'Just now'
+    return 'just now'
   } else if (timeDifference < hour) {
     const minutes = Math.floor(timeDifference / minute)
 

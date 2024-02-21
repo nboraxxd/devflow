@@ -33,12 +33,19 @@ export async function createQuestion(params: CreateQuestionParams) {
 
     const { title, content, author, path } = params
 
+    // Create the question
+    const question = await Question.create({
+      title,
+      content,
+      author,
+    })
+
     // Create the tags or get them if they already exist
     const tags = await Promise.all(
       params.tags.map((tag) => {
         return Tag.findOneAndUpdate(
           { name: { $regex: new RegExp(`^${tag}$`, 'i') } },
-          { $setOnInsert: { name: tag } },
+          { $setOnInsert: { name: tag }, $push: { questions: question._id } },
           { upsert: true, new: true }
         )
       })
@@ -46,13 +53,10 @@ export async function createQuestion(params: CreateQuestionParams) {
 
     const tagIds: ObjectId[] = tags.map((tag) => tag._id)
 
-    // Create the question
-    const _question = await Question.create({
-      title,
-      content,
-      tags: tagIds,
-      author,
-    })
+    // Update the question's tags field using $push and $each
+    await Question.findByIdAndUpdate(question._id, {
+      $push: { tags: { $each: tagIds } },
+    });
 
     revalidatePath(path)
   } catch (err) {

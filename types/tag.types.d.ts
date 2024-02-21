@@ -4,8 +4,15 @@ export type GetTopInteractedTagsParams = {
 }
 
 export type GetAllTagsParams = {
+  page?: number
+  pageSize?: number
+  filter?: string
+  searchQuery?: string
+}
+
+export interface GetQuestionsByTagIdParams {
+  tagId: string;
   page?: number;
   pageSize?: number;
-  filter?: string;
   searchQuery?: string;
 }

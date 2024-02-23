@@ -10,7 +10,7 @@ export default authMiddleware({
     PATH.API.WEBHOOK,
     PATH.TAGS,
     `${PATH.TAGS}/:id`,
-    `${PATH.USERS}/:id`,
+    `${PATH.PROFILES}/:id`,
     `${PATH.QUESTIONS}/:id`,
     PATH.COMMUNITY,
     PATH.JOBS,

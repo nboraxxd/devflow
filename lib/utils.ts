@@ -57,3 +57,14 @@ export function getTimestamp(createdAt: Date): string {
 export function formatNumberToSocialStyle(value: number) {
   return new Intl.NumberFormat('en', { notation: 'compact', maximumFractionDigits: 1 }).format(value)
 }
+
+export function getJoinedDate(date: Date) {
+  // Get the month and year from the Date object
+  const month = date.toLocaleString('default', { month: 'long' })
+  const year = date.getFullYear()
+
+  // Join month and year
+  const joinedDate = `${month} ${year}`
+
+  return joinedDate
+}

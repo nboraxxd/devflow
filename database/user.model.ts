@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb'
-import { Document, Schema, models, model, Model } from 'mongoose'
+import { Document, Schema, models, model } from 'mongoose'
 import validator from 'validator'
 
 import {
@@ -77,7 +77,6 @@ const userSchema = new Schema<IUser>(
   { timestamps: true }
 )
 
-const User = (models[envConfig.dbUserCollection] ||
-  model<IUser>(envConfig.dbUserCollection, userSchema)) as Model<IUser>
+const User = models[envConfig.dbUserCollection] || model<IUser>(envConfig.dbUserCollection, userSchema)
 
 export default User

@@ -28,7 +28,7 @@ export default function Author(props: Props) {
   } = props
 
   return (
-    <Link href={`${PATH.USERS}/${author.clerkId}`} className={cn('flex items-center gap-1.5', linkClassName)}>
+    <Link href={`${PATH.PROFILES}/${author.clerkId}`} className={cn('flex items-center gap-1.5', linkClassName)}>
       <Image
         src={author.picture}
         alt={author.name}

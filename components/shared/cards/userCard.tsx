@@ -27,7 +27,7 @@ export default async function UserCard({ _id, clerkId, name, picture, username }
       />
       <h2 className="text-dark200_light900 h3-bold mt-5 line-clamp-1 break-all">{name}</h2>
       <Link
-        href={`${PATH.USERS}/${clerkId}`}
+        href={`${PATH.PROFILES}/${clerkId}`}
         className="text-dark500_light500 body-regular mt-1.5 line-clamp-1 break-all"
       >
         @{username}

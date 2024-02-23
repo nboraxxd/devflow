@@ -1,4 +1,5 @@
 import { IUser } from '@/database/user.model'
+import { ObjectId } from 'mongodb'
 
 export type CreateUserParams = {
   clerkId: string
@@ -40,7 +41,7 @@ export type DeleteUserParams = {
 }
 
 export type User = {
-  _id: string
+  _id: ObjectId
   clerkId: string
   name: string
   username: string

@@ -12,11 +12,19 @@ import {
   GetSavedQuestionsParams,
   ToggleSaveQuestionParams,
   UpdateUserParams,
+  User as UserType,
 } from '@/types/user.types'
 import { GetQuestionByIdReturn } from '@/lib/actions/question.actions'
 import { envConfig } from '@/constants/config'
 import User from '@/database/user.model'
 import Question from '@/database/question.model'
+import Answer from '@/database/answer.model'
+
+export type GetUserInfoReturn = {
+  user: UserType
+  totalQuestions: number
+  totalAnswers: number
+}
 
 export async function createUser(userData: CreateUserParams) {
   try {
@@ -60,6 +68,30 @@ export async function getUserByClerkId(clerkId: string) {
   } catch (err) {
     console.log(err)
     throw err
+  }
+}
+
+export async function getUserInfo(userId: string): Promise<GetUserInfoReturn> {
+  try {
+    connectToDatabase()
+
+    const user = await User.findOne({ clerkId: userId })
+
+    if (!user) {
+      throw new Error('User not found')
+    }
+
+    const totalQuestions = await Question.countDocuments({ author: user._id })
+    const totalAnswers = await Answer.countDocuments({ author: user._id })
+
+    return {
+      user,
+      totalQuestions,
+      totalAnswers,
+    }
+  } catch (error) {
+    console.log(error)
+    throw error
   }
 }
 

@@ -1,12 +1,10 @@
 'use server'
 
-import { FilterQuery } from 'mongoose'
-
-import { GetAllTagsParams, GetQuestionsByTagIdParams, GetTopInteractedTagsParams } from '@/types/tag.types'
-import { GetQuestionByIdReturn } from '@/lib/actions/question.actions'
+import { GetAllTagsParams, GetQuestionsByTagIdParams, GetTopInteractedTagsParams, Tag as TagType } from '@/types/tag.types'
 import { connectToDatabase } from '@/lib/mongoose'
+import { GetQuestionByIdReturn } from '@/lib/actions/question.actions'
 import User from '@/database/user.model'
-import Tag, { ITag } from '@/database/tag.model'
+import Tag from '@/database/tag.model'
 import Question from '@/database/question.model'
 
 export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
@@ -35,7 +33,7 @@ export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
   }
 }
 
-export async function getAllTags(_params: GetAllTagsParams) {
+export async function getAllTags(_params: GetAllTagsParams): Promise<{ tags: TagType[] }> {
   try {
     connectToDatabase()
 
@@ -62,7 +60,7 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
         sort: { createdAt: -1 },
       },
       populate: [
-        { path: 'tags', model:Tag, select: '_id name' },
+        { path: 'tags', model: Tag, select: '_id name' },
         { path: 'author', model: User, select: '_id clerkId name picture' },
       ],
     })
@@ -71,7 +69,7 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
       throw new Error('Tag not found')
     }
 
-    const questions = tag.questions as unknown as GetQuestionByIdReturn[]
+    const questions = tag.questions as GetQuestionByIdReturn[]
 
     return { tagTitle: tag.name, questions }
   } catch (error) {

@@ -38,9 +38,9 @@ export default async function Page({ params }: { params: { id: string } }) {
             itemId={question._id.toString()}
             userId={mongoUser?._id.toString()}
             upvotes={question.upvotes.length}
-            hasUpvoted={question.upvotes.includes(mongoUser?._id.toString())}
+            hasUpvoted={mongoUser?._id ? question.upvotes.includes(mongoUser._id) : false}
             downvotes={question.downvotes.length}
-            hasDownvoted={question.downvotes.includes(mongoUser?._id.toString())}
+            hasDownvoted={mongoUser?._id ? question.downvotes.includes(mongoUser._id) : false}
             hasSaved={mongoUser?.saved.map((s) => s.toString()).includes(question._id.toString())}
           />
         </div>

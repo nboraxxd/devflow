@@ -1,10 +1,15 @@
 import { ReactNode } from 'react'
 
+import { getQuestions } from '@/lib/actions/question.actions'
+import { getAllTags } from '@/lib/actions/tag.action'
 import { Header } from '@/components/shared/header'
 import { LeftSidebar } from '@/components/shared/leftSidebar'
 import { RightSidebar } from '@/components/shared/rightSidebar'
 
-export default function Layout({ children }: { children: ReactNode }) {
+export default async function Layout({ children }: { children: ReactNode }) {
+  const { questions } = await getQuestions({})
+  const { tags } = await getAllTags({})
+
   return (
     <>
       <Header />
@@ -13,7 +18,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 
         <section className="grid gap-5 px-5 pt-[88px] lg:grid-cols-[1fr_280px]">
           {children}
-          <RightSidebar />
+          <RightSidebar questions={questions} tags={tags} />
         </section>
       </main>
     </>

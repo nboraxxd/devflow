@@ -56,7 +56,7 @@ export async function createQuestion(params: CreateQuestionParams) {
     // Update the question's tags field using $push and $each
     await Question.findByIdAndUpdate(question._id, {
       $push: { tags: { $each: tagIds } },
-    });
+    })
 
     revalidatePath(path)
   } catch (err) {
@@ -65,16 +65,16 @@ export async function createQuestion(params: CreateQuestionParams) {
   }
 }
 
-export async function getQuestions(_params: GetQuestionsParams) {
+export async function getQuestions(_params: GetQuestionsParams): Promise<{ questions: GetQuestionByIdReturn[] }> {
   try {
     connectToDatabase()
 
     const questions = await Question.find({})
-      .populate({ path: 'tags', model: Tag })
-      .populate({ path: 'author', model: User })
+      .populate({ path: 'tags', model: Tag, select: '_id name' })
+      .populate({ path: 'author', model: User, select: '_id clerkId name picture' })
       .sort({ createdAt: -1 })
 
-    return { questions }
+    return { questions: questions as GetQuestionByIdReturn[] }
   } catch (err) {
     console.log(err)
     throw err

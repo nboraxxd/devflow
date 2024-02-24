@@ -6,14 +6,6 @@ export type SidebarLink = {
   label: string
 }
 
-export type Tag = {
-  _id: string
-  name: string
-  createdAt: Date
-  followers: string[]
-  questions: string[]
-}
-
 export type Job = {
   id?: string
   employer_name?: string

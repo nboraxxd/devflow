@@ -1,7 +1,6 @@
 import { ObjectId } from 'mongodb'
 
 import { User } from '@/types/user.types'
-import { Tag } from '@/types'
 
 export type CreateQuestionParams = {
   title: string

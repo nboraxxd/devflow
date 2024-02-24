@@ -1,5 +1,5 @@
 import { envConfig } from '@/constants/config'
-import { Document, Model, Schema, models, model } from 'mongoose'
+import { Document, Schema, models, model } from 'mongoose'
 
 export interface ITag extends Document {
   name: string
@@ -22,6 +22,6 @@ const tagSchema = new Schema<ITag>(
   }
 )
 
-const Tag: Model<ITag> = models[envConfig.dbTagCollection] || model<ITag>(envConfig.dbTagCollection, tagSchema)
+const Tag = models[envConfig.dbTagCollection] || model<ITag>(envConfig.dbTagCollection, tagSchema)
 
 export default Tag

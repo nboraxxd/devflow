@@ -1,27 +1,30 @@
-import { QuestionLink, RightSidebarSection } from '@/components/shared/rightSidebar'
+import { Tag } from '@/types/tag.types'
+import { Question } from '@/types/question.types'
 import { SubjectTag } from '@/components/shared/button'
+import { QuestionLink, RightSidebarSection } from '@/components/shared/rightSidebar'
 
-export default function RightSidebar() {
+interface Props {
+  questions?: Pick<Question, '_id' | 'title'>[]
+  tags: Pick<Tag, '_id' | 'name' | 'questions'>[]
+}
+
+export default function RightSidebar({ questions, tags }: Props) {
   return (
     <nav className="mt-12 flex flex-col gap-10 max-lg:hidden">
-      <RightSidebarSection title="Hot Network">
-        <QuestionLink>How to make a div fill a remaining horizontal space?</QuestionLink>
-        <QuestionLink>
-          Would it be appropriate to point out an error in another paper during a referee report?
-        </QuestionLink>
-        <QuestionLink>How can an airconditioning machine exist?</QuestionLink>
-        <QuestionLink>Interrogated every time crossing UK Border as citizen</QuestionLink>
-        <QuestionLink>Low digit addition generator</QuestionLink>
-        <QuestionLink>What is an example of 3 numbers that do not make up a vector?</QuestionLink>
-        <QuestionLink>How to make a div fill a remaining horizontal space?</QuestionLink>
-      </RightSidebarSection>
+      {questions && (
+        <RightSidebarSection title="Top questions">
+          {questions.map((question) => (
+            <QuestionLink key={question._id.toString()}>{question.title}</QuestionLink>
+          ))}
+        </RightSidebarSection>
+      )}
 
-      <RightSidebarSection title="Popular Tags" childrenWrapperClassName="gap-4">
-        <SubjectTag count={120}>Javascript</SubjectTag>
-        <SubjectTag count={51}>HTML</SubjectTag>
-        <SubjectTag count={224}>React</SubjectTag>
-        <SubjectTag count={85}>CSS</SubjectTag>
-        <SubjectTag count={45}>Next.js</SubjectTag>
+      <RightSidebarSection title="Popular tags" childrenWrapperClassName="gap-4">
+        {tags.map((tag) => (
+          <SubjectTag key={tag._id.toString()} count={tag.questions.length}>
+            {tag.name}
+          </SubjectTag>
+        ))}
       </RightSidebarSection>
     </nav>
   )

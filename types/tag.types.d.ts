@@ -1,3 +1,5 @@
+import { ObjectId } from 'mongodb'
+
 export type GetTopInteractedTagsParams = {
   userId: string
   limit?: number
@@ -11,8 +13,16 @@ export type GetAllTagsParams = {
 }
 
 export interface GetQuestionsByTagIdParams {
-  tagId: string;
-  page?: number;
-  pageSize?: number;
-  searchQuery?: string;
+  tagId: string
+  page?: number
+  pageSize?: number
+  searchQuery?: string
+}
+
+export type Tag = {
+  _id: ObjectId
+  name: string
+  createdAt: Date
+  followers: ObjectId[]
+  questions: ObjectId[]
 }

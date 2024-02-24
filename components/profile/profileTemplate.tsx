@@ -4,6 +4,7 @@ import { getUserInfo } from '@/lib/actions/user.action'
 import { getJoinedDate } from '@/lib/utils'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ProfileLink } from '@/components/profile'
+import { Stats } from '@/components/shared/stats'
 
 interface Props {
   userId: string
@@ -14,7 +15,7 @@ export default async function ProfileTemplate({ userId, children }: Props) {
   const { user: userInfo, totalAnswers, totalQuestions } = await getUserInfo(userId)
 
   return (
-    <main className="py-14">
+    <div className="py-14">
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-center gap-4">
           <Image
@@ -26,9 +27,14 @@ export default async function ProfileTemplate({ userId, children }: Props) {
           />
 
           <section>
+            {/* Name */}
             <h1 className="h1-bold text-dark100_light900">{userInfo.name}</h1>
-            <h2 className="paragraph-regular text-dark200_light800 mt-2">@{userInfo.username}</h2>
+
+            {/* Username */}
+            <p className="paragraph-regular text-dark200_light800 mt-2">@{userInfo.username}</p>
+
             <div className="mt-5 flex items-center gap-5">
+              {/* Portfolio website */}
               {userInfo.portfolioWebsite && (
                 <ProfileLink
                   iconUrl="/assets/icons/link.svg"
@@ -38,10 +44,12 @@ export default async function ProfileTemplate({ userId, children }: Props) {
                 />
               )}
 
+              {/* Location */}
               {userInfo.location && (
                 <ProfileLink iconUrl="/assets/icons/location.svg" iconAlt="User location" title={userInfo.location} />
               )}
 
+              {/* Joined date */}
               <ProfileLink
                 iconUrl="/assets/icons/calendar.svg"
                 iconAlt="User join"
@@ -51,10 +59,15 @@ export default async function ProfileTemplate({ userId, children }: Props) {
           </section>
         </div>
 
+        {/* Edit button */}
         {userInfo.clerkId === userId && children}
       </div>
+
+      {/* Bio */}
       {userInfo.bio && <p>{userInfo.bio}</p>}
-      Stats
+      
+      {/* Stats */}
+      <Stats totalAnswers={totalAnswers} totalQuestions={totalQuestions} />
       <div className="flex">
         <Tabs defaultValue="top-posts" className="flex-1">
           <TabsList className="p-0">
@@ -74,6 +87,6 @@ export default async function ProfileTemplate({ userId, children }: Props) {
           </TabsContent>
         </Tabs>
       </div>
-    </main>
+    </div>
   )
 }

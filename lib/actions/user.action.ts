@@ -54,7 +54,7 @@ export async function getAllUsers(_params: GetAllUsersParams) {
   }
 }
 
-export async function getUserByClerkId(clerkId: string) {
+export async function getUserByClerkId(clerkId: string): Promise<UserType> {
   try {
     connectToDatabase()
 

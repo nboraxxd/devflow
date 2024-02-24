@@ -11,7 +11,7 @@ export const PATH = {
   TAGS: '/tags',
   MY_PROFILE: '/my-profile',
   EDIT_PROFILE: '/my-profile/edit',
-  PROFILES: '/profile',
+  PROFILES: '/profiles',
   ASK_QUESTION: '/ask-question',
   API: {
     WEBHOOK: API + '/webhook',

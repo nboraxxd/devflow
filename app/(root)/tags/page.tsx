@@ -15,7 +15,9 @@ export default async function Page() {
 
       <section className="mt-12 flex flex-wrap gap-4">
         {tags.length > 0 ? (
-          tags.map((tag) => <TagCard key={tag._id} _id={tag._id} name={tag.name} count={tag.questions.length} />)
+          tags.map((tag) => (
+            <TagCard key={tag._id.toString()} _id={tag._id.toString()} name={tag.name} count={tag.questions.length} />
+          ))
         ) : (
           <NoResult
             title="There's no tag to show"

@@ -23,7 +23,7 @@ export default async function Home() {
         {questions.length > 0 ? (
           questions.map((question) => (
             <QuestionCard
-              key={question._id}
+              key={question._id.toString()}
               question={{
                 _id: question._id,
                 title: question.title,

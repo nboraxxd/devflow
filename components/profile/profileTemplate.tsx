@@ -16,19 +16,21 @@ export default async function ProfileTemplate({ userId, children }: Props) {
 
   return (
     <div className="py-14">
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex items-center gap-4">
-          <Image
-            src={userInfo.picture}
-            alt={userInfo.username}
-            width={140}
-            height={140}
-            className="rounded-full object-cover"
-          />
+      <div className="flex gap-4 max-md:flex-col-reverse md:items-start md:justify-between">
+        <div className="flex gap-4 max-sm:flex-col sm:items-center">
+          <div className="max-xs:flex max-xs:justify-center">
+            <Image
+              src={userInfo.picture}
+              alt={userInfo.username}
+              width={140}
+              height={140}
+              className="rounded-full object-cover"
+            />
+          </div>
 
           <section>
             {/* Name */}
-            <h1 className="h1-bold text-dark100_light900">{userInfo.name}</h1>
+            <h1 className="h3-bold md:h1-bold text-dark100_light900 line-clamp-1">{userInfo.name}</h1>
 
             {/* Username */}
             <p className="paragraph-regular text-dark200_light800 mt-2">@{userInfo.username}</p>
@@ -65,10 +67,11 @@ export default async function ProfileTemplate({ userId, children }: Props) {
 
       {/* Bio */}
       {userInfo.bio && <p>{userInfo.bio}</p>}
-      
+
       {/* Stats */}
       <Stats totalAnswers={totalAnswers} totalQuestions={totalQuestions} />
-      <div className="flex">
+
+      <div className="mt-10 flex">
         <Tabs defaultValue="top-posts" className="flex-1">
           <TabsList className="p-0">
             <TabsTrigger value="top-posts" className="tab rounded-none rounded-l-lg px-6 py-3 !shadow-none">

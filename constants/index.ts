@@ -51,6 +51,24 @@ export const sidebarLinks: SidebarLink[] = [
   },
 ]
 
+export const BAGDE_CARDS = [
+  {
+    title: 'Gold badge',
+    iconUrl: '/assets/icons/gold-medal.svg',
+    type: 'GOLD',
+  },
+  {
+    title: 'Silver badge',
+    iconUrl: '/assets/icons/silver-medal.svg',
+    type: 'SILVER',
+  },
+  {
+    title: 'Bronze badge',
+    iconUrl: '/assets/icons/bronze-medal.svg',
+    type: 'BRONZE',
+  },
+] as const
+
 export const BADGE_CRITERIA = {
   QUESTION_COUNT: {
     BRONZE: 10,

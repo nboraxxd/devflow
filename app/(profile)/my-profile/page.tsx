@@ -12,12 +12,14 @@ export default async function Page() {
 
   return (
     <ProfileTemplate userId={userId}>
-      <Link
-        href={PATH.EDIT_PROFILE}
-        className="paragraph-medium flex-center background-light800_dark400 text-dark300_light900 mt-3 min-h-[46px] min-w-[173px] rounded-lg border-light-b p-4 py-1 transition-opacity duration-200 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-      >
-        Edit Profile
-      </Link>
+      <div className="flex justify-end">
+        <Link
+          href={PATH.EDIT_PROFILE}
+          className="paragraph-medium flex-center background-light800_dark400 text-dark300_light900 min-h-[46px] w-[173px] rounded-lg border-light-b p-4 py-1 transition-opacity duration-200 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 md:mt-3"
+        >
+          Edit Profile
+        </Link>
+      </div>
     </ProfileTemplate>
   )
 }

@@ -1,10 +1,14 @@
 import Image from 'next/image'
 
+import { PATH } from '@/constants/path'
 import { getUserInfo } from '@/lib/actions/user.action'
+import { getAllTags } from '@/lib/actions/tag.action'
 import { getJoinedDate } from '@/lib/utils'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ProfileLink } from '@/components/profile'
 import { Stats } from '@/components/shared/stats'
+import { QuestionTab } from '@/components/shared/questionTab'
+import { SubjectTag } from '@/components/shared/button'
 
 interface Props {
   userId: string
@@ -13,6 +17,7 @@ interface Props {
 
 export default async function ProfileTemplate({ userId, children }: Props) {
   const { user: userInfo, totalAnswers, totalQuestions } = await getUserInfo(userId)
+  const { tags } = await getAllTags({})
 
   return (
     <div className="py-14">
@@ -71,7 +76,7 @@ export default async function ProfileTemplate({ userId, children }: Props) {
       {/* Stats */}
       <Stats totalAnswers={totalAnswers} totalQuestions={totalQuestions} />
 
-      <div className="mt-10 flex">
+      <div className="mt-10 lg:grid lg:grid-cols-[minmax(0,1fr)_200px] lg:gap-5 xl:gap-10">
         <Tabs defaultValue="top-posts" className="flex-1">
           <TabsList className="p-0">
             <TabsTrigger value="top-posts" className="tab rounded-none rounded-l-lg px-6 py-3 !shadow-none">
@@ -81,14 +86,24 @@ export default async function ProfileTemplate({ userId, children }: Props) {
               Answers
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="top-posts" className="">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea, reprehenderit!
+          <TabsContent value="top-posts" className="mt-5">
+            <QuestionTab userId={userId} />
           </TabsContent>
           <TabsContent value="answers" className="">
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci odit voluptates quam repellendus
             consectetur numquam?
           </TabsContent>
         </Tabs>
+        <section className="max-lg:hidden">
+          <h2 className="h3-bold text-dark200_light900 pt-2">Top Tags</h2>
+          <div className="mt-6 flex flex-col gap-4">
+            {tags.map((tag) => (
+              <SubjectTag key={tag._id.toString()} count={tag.questions.length} href={`${PATH.TAGS}/${tag._id}`}>
+                {tag.name}
+              </SubjectTag>
+            ))}
+          </div>
+        </section>
       </div>
     </div>
   )

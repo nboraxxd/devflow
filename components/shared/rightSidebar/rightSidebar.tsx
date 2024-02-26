@@ -1,5 +1,6 @@
 import { Tag } from '@/types/tag.types'
 import { Question } from '@/types/question.types'
+import { PATH } from '@/constants/path'
 import { SubjectTag } from '@/components/shared/button'
 import { QuestionLink, RightSidebarSection } from '@/components/shared/rightSidebar'
 
@@ -21,7 +22,7 @@ export default function RightSidebar({ questions, tags }: Props) {
 
       <RightSidebarSection title="Popular tags" childrenWrapperClassName="gap-4">
         {tags.map((tag) => (
-          <SubjectTag key={tag._id.toString()} count={tag.questions.length}>
+          <SubjectTag key={tag._id.toString()} count={tag.questions.length} href={`${PATH.TAGS}/${tag._id}`}>
             {tag.name}
           </SubjectTag>
         ))}

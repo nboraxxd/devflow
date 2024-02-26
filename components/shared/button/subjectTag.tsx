@@ -12,18 +12,20 @@ interface SubjectTagProps {
 
 export default function SubjectTag({ children, href, className, count }: SubjectTagProps) {
   return href ? (
-    <Link
-      href={href}
+    <div
       className={cn(
         'flex-between group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
         className
       )}
     >
-      <span className="flex-center background-light800_dark400 text-light400_light500 subtle-medium h-[29px] rounded-md px-4 py-1 uppercase transition-all duration-300 group-hover:!bg-light-700 group-hover:dark:!bg-dark-500">
+      <Link
+        href={href}
+        className="flex-center background-light800_dark400 text-light400_light500 subtle-medium h-[29px] rounded-md px-4 py-1 uppercase transition-all duration-300 group-hover:!bg-light-700 group-hover:dark:!bg-dark-500"
+      >
         {children}
-      </span>
+      </Link>
       {count && <span className="small-medium text-dark500_light500">{count}</span>}
-    </Link>
+    </div>
   ) : (
     <div
       className={cn(

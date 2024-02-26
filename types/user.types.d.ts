@@ -30,6 +30,12 @@ export interface GetSavedQuestionsParams {
   searchQuery?: string;
 }
 
+export interface GetUserStatsParams {
+  userId: string;
+  page?: number;
+  pageSize?: number;
+}
+
 export type UpdateUserParams = {
   clerkId: string
   updateData: Partial<IUser>

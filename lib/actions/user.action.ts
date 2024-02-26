@@ -10,6 +10,7 @@ import {
   DeleteUserParams,
   GetAllUsersParams,
   GetSavedQuestionsParams,
+  GetUserStatsParams,
   ToggleSaveQuestionParams,
   UpdateUserParams,
   User as UserType,
@@ -19,11 +20,21 @@ import { envConfig } from '@/constants/config'
 import User from '@/database/user.model'
 import Question from '@/database/question.model'
 import Answer from '@/database/answer.model'
+import Tag from '@/database/tag.model'
 
 export type GetUserInfoReturn = {
   user: UserType
   totalQuestions: number
   totalAnswers: number
+}
+
+type GetSavedQuestionsReturn = {
+  savedQuestions: GetQuestionByIdReturn[]
+}
+
+type GetUserQuestionsReturn = {
+  questions: GetQuestionByIdReturn[]
+  totalQuestions: number
 }
 
 export async function createUser(userData: CreateUserParams) {
@@ -124,7 +135,7 @@ export async function toggleSaveQuestion(params: ToggleSaveQuestionParams) {
   }
 }
 
-export async function getSavedQuestions(params: GetSavedQuestionsParams) {
+export async function getSavedQuestions(params: GetSavedQuestionsParams): Promise<GetSavedQuestionsReturn> {
   try {
     connectToDatabase()
 
@@ -149,9 +160,29 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
       throw new Error('User not found')
     }
 
-    const savedQuestions = users.saved as unknown as GetQuestionByIdReturn[]
+    const savedQuestions = users.saved
 
     return { savedQuestions }
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export async function getUserQuestions(params: GetUserStatsParams): Promise<GetUserQuestionsReturn> {
+  try {
+    connectToDatabase()
+
+    const { userId, page = 1, pageSize = 10 } = params
+
+    const user = await User.findOne({ clerkId: userId })
+
+    const userQuestions = await Question.find({ author: user._id })
+      .sort({ view: -1, upvotes: -1 })
+      .populate({ path: 'tags', model: Tag, select: '_id name' })
+      .populate({ path: 'author', model: User, select: '_id clerkId name picture' })
+
+    return { questions: userQuestions as GetQuestionByIdReturn[], totalQuestions: userQuestions.length }
   } catch (error) {
     console.log(error)
     throw error

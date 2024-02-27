@@ -15,6 +15,7 @@ import {
   UpdateUserParams,
   User as UserType,
 } from '@/types/user.types'
+import { Answer as AnswerType } from '@/types/answer.types'
 import { GetQuestionByIdReturn } from '@/lib/actions/question.actions'
 import { envConfig } from '@/constants/config'
 import User from '@/database/user.model'
@@ -34,7 +35,23 @@ type GetSavedQuestionsReturn = {
 
 type GetUserQuestionsReturn = {
   questions: GetQuestionByIdReturn[]
-  totalQuestions: number
+}
+
+export type AnswerReturnType = Omit<AnswerType, 'author' | 'question'> & {
+  author: {
+    _id: ObjectId
+    clerkId: string
+    name: string
+    picture: string
+  }
+  question: {
+    _id: ObjectId
+    title: string
+  }
+}
+
+type GetUserAnswersReturn = {
+  answers: AnswerReturnType[]
 }
 
 export async function createUser(userData: CreateUserParams) {
@@ -182,7 +199,27 @@ export async function getUserQuestions(params: GetUserStatsParams): Promise<GetU
       .populate({ path: 'tags', model: Tag, select: '_id name' })
       .populate({ path: 'author', model: User, select: '_id clerkId name picture' })
 
-    return { questions: userQuestions as GetQuestionByIdReturn[], totalQuestions: userQuestions.length }
+    return { questions: userQuestions as GetQuestionByIdReturn[] }
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export async function getUserAnswers(params: GetUserStatsParams): Promise<GetUserAnswersReturn> {
+  try {
+    connectToDatabase()
+
+    const { userId, page = 1, pageSize = 10 } = params
+
+    const user = await User.findOne({ clerkId: userId })
+
+    const userAnswers = await Answer.find({ author: user._id })
+      .sort({ upvotes: -1 })
+      .populate({ path: 'question', model: Question, select: '_id title' })
+      .populate({ path: 'author', model: User, select: '_id clerkId name picture' })
+
+    return { answers: userAnswers as AnswerReturnType[] }
   } catch (error) {
     console.log(error)
     throw error

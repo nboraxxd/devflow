@@ -24,7 +24,7 @@ export type Answer = {
   _id: ObjectId
   content: string
   author: ObjectId
-  questionId: ObjectId
+  question: ObjectId
   upvotes: ObjectId[]
   downvotes: ObjectId[]
   createdAt: Date

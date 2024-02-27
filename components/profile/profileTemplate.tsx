@@ -7,8 +7,9 @@ import { getJoinedDate } from '@/lib/utils'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ProfileLink } from '@/components/profile'
 import { Stats } from '@/components/shared/stats'
-import { QuestionTab } from '@/components/shared/questionTab'
+import { QuestionsTab } from '@/components/shared/questionsTab'
 import { SubjectTag } from '@/components/shared/button'
+import { AnswersTab } from '@/components/shared/answersTab'
 
 interface Props {
   userId: string
@@ -86,12 +87,11 @@ export default async function ProfileTemplate({ userId, children }: Props) {
               Answers
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="top-posts" className="mt-5">
-            <QuestionTab userId={userId} />
+          <TabsContent value="top-posts" className="mt-6 flex w-full flex-col gap-6">
+            <QuestionsTab userId={userId} />
           </TabsContent>
-          <TabsContent value="answers" className="">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Adipisci odit voluptates quam repellendus
-            consectetur numquam?
+          <TabsContent value="answers" className="mt-6 flex w-full flex-col gap-6">
+            <AnswersTab userId={userId} />
           </TabsContent>
         </Tabs>
         <section className="max-lg:hidden">

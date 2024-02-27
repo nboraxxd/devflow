@@ -32,8 +32,8 @@ export default async function AnswerList({ mongoUserId, questionId, totalAnswers
       </div>
 
       {answers.map((answer) => (
-        <article key={answer._id.toString()}>
-          <div className="mt-5 flex flex-col-reverse gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-2 md:mt-8">
+        <div key={answer._id.toString()} id={answer._id.toString()} className="mt-5 scroll-mt-[88px] md:mt-8">
+          <div className="flex flex-col-reverse gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-2">
             <div className="flex w-fit flex-col gap-1.5 sm:flex-row sm:items-center">
               <Author author={answer.author} authorClassName="body-medium text-dark400_light700" />
               <span className="mt-0.5 max-sm:hidden">•</span>
@@ -56,7 +56,7 @@ export default async function AnswerList({ mongoUserId, questionId, totalAnswers
           </div>
 
           <ParseHTML html={answer.content} />
-        </article>
+        </div>
       ))}
     </section>
   )

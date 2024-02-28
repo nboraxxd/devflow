@@ -97,8 +97,8 @@ export const BADGE_CRITERIA = {
   },
 } as const
 
-export const editorOptions = (resolvedTheme: string | undefined) => ({
-  initialValue: '',
+export const editorOptions = (resolvedTheme?: string, initialValue?: string) => ({
+  initialValue: initialValue || '',
   init: {
     skin: resolvedTheme === Theme.LIGHT ? 'oxide' : 'oxide-dark',
     content_css: resolvedTheme === Theme.LIGHT ? 'default' : 'dark',

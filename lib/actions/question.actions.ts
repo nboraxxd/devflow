@@ -5,6 +5,8 @@ import { ObjectId } from 'mongodb'
 
 import {
   CreateQuestionParams,
+  DeleteQuestionParams,
+  EditQuestionParams,
   GetQuestionsParams,
   Question as QuestionType,
   QuestionVoteParams,
@@ -64,6 +66,23 @@ export async function createQuestion(params: CreateQuestionParams) {
     throw err
   }
 }
+
+export async function updateQuestion(params: EditQuestionParams) {
+  try {
+    connectToDatabase()
+
+    const { questionId, title, content, path } = params
+
+    await Question.findByIdAndUpdate(questionId, { title, content }, { new: true })
+
+    revalidatePath(path)
+  } catch (err) {
+    console.log(err)
+    throw err
+  }
+}
+
+export async function deleteQuestion(params: DeleteQuestionParams) {}
 
 export async function getQuestions(_params: GetQuestionsParams): Promise<{ questions: GetQuestionByIdReturn[] }> {
   try {

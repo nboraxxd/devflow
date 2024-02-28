@@ -1,10 +1,10 @@
+import { ElementType } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
 import { User } from '@/types/user.types'
 import { PATH } from '@/constants/path'
 import { cn } from '@/lib/utils'
-import { ElementType } from 'react'
 
 interface Props {
   author: Pick<User, 'name' | 'picture' | 'clerkId'>

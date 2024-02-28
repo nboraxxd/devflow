@@ -1,11 +1,10 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import { ObjectId } from 'mongodb'
 
 import { Question } from '@/types/question.types'
 import { PATH } from '@/constants/path'
 import { formatNumberToSocialStyle, getTimestamp } from '@/lib/utils'
-import { PrimaryButton, SubjectTag } from '@/components/shared/button'
+import { EditDelBtnGroup, SubjectTag } from '@/components/shared/button'
 import { Metric } from '@/components/shared/metric'
 import { Author } from '@/components/shared/author'
 
@@ -39,14 +38,7 @@ export default function QuestionCard({ question }: Props) {
           </h2>
         </div>
 
-        <div className="flex shrink-0 items-center max-md:justify-end md:ml-auto">
-          <PrimaryButton className="p-1">
-            <Image src="/assets/icons/edit.svg" alt="Edit" width={16} height={16} />
-          </PrimaryButton>
-          <PrimaryButton className="p-1">
-            <Image src="/assets/icons/trash.svg" alt="Delete" width={16} height={16} />
-          </PrimaryButton>
-        </div>
+        <EditDelBtnGroup questionId={_id.toString()} />
       </div>
 
       <div className="mt-3.5 flex flex-wrap gap-2">

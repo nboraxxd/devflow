@@ -12,19 +12,23 @@ import { useTheme } from 'next-themes'
 
 import { envConfig } from '@/constants/config'
 import { PATH } from '@/constants/path'
+import { editorOptions } from '@/constants'
 import { ServiceStatus, QuestionFormType } from '@/constants/enums'
 import { QuestionSchema } from '@/lib/validation'
-import { createQuestion } from '@/lib/actions/question.actions'
+import { GetQuestionByIdReturn, createQuestion, updateQuestion } from '@/lib/actions/question.actions'
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { LinkGradient, PrimaryButton } from '@/components/shared/button'
-import { editorOptions } from '@/constants'
 
 type TagsField = ControllerRenderProps<z.infer<typeof QuestionSchema>, 'tags'>
 
-const questionFormType: QuestionFormType = QuestionFormType.create
+type Props = {
+  mongoUserId: string
+  type: QuestionFormType
+  question?: string
+}
 
-export default function Question({ mongoUserId }: { mongoUserId: string }) {
+export default function Question({ mongoUserId, type, question }: Props) {
   const [status, setStatus] = useState<ServiceStatus>(ServiceStatus.idle)
   const router = useRouter()
   const pathname = usePathname()
@@ -32,12 +36,15 @@ export default function Question({ mongoUserId }: { mongoUserId: string }) {
   const { resolvedTheme } = useTheme()
   const editorRef = useRef<TinyMCEEditor | null>(null)
 
+  const parsedQuestion: GetQuestionByIdReturn | null = question ? JSON.parse(question) : null
+  const groupedTags = parsedQuestion?.tags.map((tag) => tag.name)
+
   const form = useForm<z.infer<typeof QuestionSchema>>({
     resolver: zodResolver(QuestionSchema),
     defaultValues: {
-      title: '',
-      content: '',
-      tags: [],
+      title: parsedQuestion?.title || '',
+      content: parsedQuestion?.content || '',
+      tags: groupedTags || [],
     },
   })
 
@@ -86,10 +93,16 @@ export default function Question({ mongoUserId }: { mongoUserId: string }) {
     const { content, tags, title } = values
 
     try {
-      setStatus(ServiceStatus.pending)
-      await createQuestion({ content, tags, title, path: pathname, author: mongoUserId })
-      setStatus(ServiceStatus.successful)
-      router.push(PATH.HOMEPAGE)
+      if (type === QuestionFormType.create) {
+        setStatus(ServiceStatus.pending)
+        await createQuestion({ content, tags, title, path: pathname, author: mongoUserId })
+        setStatus(ServiceStatus.successful)
+        router.push(PATH.HOMEPAGE)
+      } else {
+        setStatus(ServiceStatus.pending)
+        await updateQuestion({ content, questionId: parsedQuestion!._id.toString(), title, path: pathname })
+        router.push(`${PATH.QUESTIONS}/${parsedQuestion?._id}`)
+      }
     } catch (error) {
       console.log(error)
     }
@@ -137,7 +150,7 @@ export default function Question({ mongoUserId }: { mongoUserId: string }) {
                   onInit={(_evt, editor) => (editorRef.current = editor)}
                   onBlur={field.onBlur}
                   onEditorChange={(content: string) => field.onChange(content)}
-                  {...editorOptions(resolvedTheme)}
+                  {...editorOptions(resolvedTheme, parsedQuestion?.content || '')}
                 />
               </FormControl>
               <FormDescription className="body-regular mt-2.5 text-light-500">
@@ -163,6 +176,7 @@ export default function Question({ mongoUserId }: { mongoUserId: string }) {
                     className="background-light850_dark300 mt-3 h-auto border-light-700 px-4 py-3 dark:border-dark-400 md:px-6 md:py-4"
                     onKeyDown={(e) => handleSubmitTag(e, field)}
                     placeholder="Press Enter or Spacebar to add tag"
+                    disabled={type === QuestionFormType.edit}
                   />
 
                   {field.value.length > 0 && (
@@ -173,19 +187,21 @@ export default function Question({ mongoUserId }: { mongoUserId: string }) {
                           className="flex-center background-light800_dark400 text-light400_light500 subtle-medium relative min-h-[29px] rounded-md px-4 py-1 uppercase transition-all duration-300 hover:!bg-light-700 hover:dark:!bg-dark-500"
                         >
                           <span className="text-dark500_light800">{tag}</span>
-                          <PrimaryButton
-                            type="button"
-                            className="absolute right-0 top-0 z-50 -translate-y-1/3 translate-x-1/3 rounded-full bg-dark-500 p-[1px] dark:bg-light-800"
-                            onClick={() => handleDeteleTag(tag, field)}
-                          >
-                            <Image
-                              src="/assets/icons/close.svg"
-                              alt="Close icon"
-                              width={10}
-                              height={10}
-                              className="object-contain invert dark:invert-0"
-                            />
-                          </PrimaryButton>
+                          {type !== QuestionFormType.edit && (
+                            <PrimaryButton
+                              type="button"
+                              className="absolute right-0 top-0 z-50 -translate-y-1/3 translate-x-1/3 rounded-full bg-dark-500 p-[1px] dark:bg-light-800"
+                              onClick={() => handleDeteleTag(tag, field)}
+                            >
+                              <Image
+                                src="/assets/icons/close.svg"
+                                alt="Close icon"
+                                width={10}
+                                height={10}
+                                className="object-contain invert dark:invert-0"
+                              />
+                            </PrimaryButton>
+                          )}
                         </div>
                       ))}
                     </div>
@@ -211,11 +227,13 @@ export default function Question({ mongoUserId }: { mongoUserId: string }) {
             <div className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent text-light-900" />
           )}
           <span className="mt-1">
-            {status === ServiceStatus.pending ? (
-              <>{questionFormType === QuestionFormType.create ? 'Posting...' : 'Editing...'}</>
-            ) : (
-              <>{questionFormType === QuestionFormType.create ? 'Ask a Question' : 'Edit Question'}</>
-            )}
+            {status === ServiceStatus.pending
+              ? type === QuestionFormType.create
+                ? 'Posting...'
+                : 'Editing...'
+              : type === QuestionFormType.create
+              ? 'Ask a Question'
+              : 'Edit Question'}
           </span>
         </LinkGradient>
       </form>

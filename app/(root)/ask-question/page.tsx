@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 import { auth } from '@clerk/nextjs'
 
 import { PATH } from '@/constants/path'
+import { QuestionFormType } from '@/constants/enums'
 import { getUserByClerkId } from '@/lib/actions/user.action'
 import { Question } from '@/components/forms'
 
@@ -16,7 +17,7 @@ export default async function AskQuestionPage() {
       <h1 className="h1-bold text-dark100_light900">Ask a public quesiton</h1>
 
       <div className="mt-4 md:mt-9">
-        <Question mongoUserId={mongoUser._id.toString()} />
+        <Question mongoUserId={mongoUser._id.toString()} type={QuestionFormType.create} />
       </div>
     </section>
   )

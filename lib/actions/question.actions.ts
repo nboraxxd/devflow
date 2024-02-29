@@ -119,6 +119,19 @@ export async function getQuestionById(questionId: string): Promise<GetQuestionBy
   }
 }
 
+export async function getTopQuestions(): Promise<QuestionType[]> {
+  try {
+    connectToDatabase()
+
+    const topQuestions = await Question.find({}).sort({ views: -1, upvotes: -1 }).limit(5)
+
+    return topQuestions
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
 export async function upvoteQuestion(params: QuestionVoteParams) {
   try {
     connectToDatabase()

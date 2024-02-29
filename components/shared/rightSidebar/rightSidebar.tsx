@@ -15,7 +15,9 @@ export default function RightSidebar({ questions, tags }: Props) {
       {questions && (
         <RightSidebarSection title="Top questions">
           {questions.map((question) => (
-            <QuestionLink key={question._id.toString()}>{question.title}</QuestionLink>
+            <QuestionLink key={question._id.toString()} id={question._id.toString()}>
+              {question.title}
+            </QuestionLink>
           ))}
         </RightSidebarSection>
       )}

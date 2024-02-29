@@ -226,11 +226,11 @@ export async function getUserAnswers(params: GetUserStatsParams): Promise<GetUse
   }
 }
 
-export async function updateUser(userData: UpdateUserParams) {
+export async function updateUser(params: UpdateUserParams) {
   try {
     connectToDatabase()
 
-    const { clerkId, path, updateData } = userData
+    const { clerkId, path, updateData } = params
 
     await User.findOneAndUpdate({ clerkId }, updateData, { new: true })
 

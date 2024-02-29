@@ -4,6 +4,7 @@ import { Webhook } from 'svix'
 import { WebhookEvent } from '@clerk/nextjs/server'
 
 import { envConfig } from '@/constants/config'
+import { PATH } from '@/constants/path'
 import { createUser, deleteUser, updateUser } from '@/lib/actions/user.action'
 
 export async function POST(req: Request) {
@@ -78,7 +79,7 @@ export async function POST(req: Request) {
         username: username!,
         picture: image_url,
       },
-      path: `profile/${id}`,
+      path: PATH.MY_PROFILE,
     })
 
     return NextResponse.json({ message: 'OK', user: mongoUser })

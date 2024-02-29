@@ -41,7 +41,7 @@ export default async function ProfileTemplate({ userId, children }: Props) {
             {/* Username */}
             <p className="paragraph-regular text-dark200_light800 mt-2">@{userInfo.username}</p>
 
-            <div className="mt-5 flex items-center gap-5">
+            <div className="mt-5 flex flex-wrap items-center gap-5">
               {/* Portfolio website */}
               {userInfo.portfolioWebsite && (
                 <ProfileLink
@@ -72,7 +72,7 @@ export default async function ProfileTemplate({ userId, children }: Props) {
       </div>
 
       {/* Bio */}
-      {userInfo.bio && <p>{userInfo.bio}</p>}
+      {userInfo.bio && <p className="paragraph-regular text-dark400_light800 mt-3 sm:ml-32">{userInfo.bio}</p>}
 
       {/* Stats */}
       <Stats totalAnswers={totalAnswers} totalQuestions={totalQuestions} />

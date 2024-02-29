@@ -49,6 +49,7 @@ export default function Answer({ mongoUserId, questionId }: AnswerProps) {
       form.reset()
       if (editorRef.current) editorRef.current.setContent('')
     } catch (error) {
+      setStatus(ServiceStatus.rejected)
       console.log(error)
     }
   }

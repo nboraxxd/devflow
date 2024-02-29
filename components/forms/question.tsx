@@ -104,6 +104,7 @@ export default function Question({ mongoUserId, type, question }: Props) {
         router.push(`${PATH.QUESTIONS}/${parsedQuestion?._id}`)
       }
     } catch (error) {
+      setStatus(ServiceStatus.rejected)
       console.log(error)
     }
   }

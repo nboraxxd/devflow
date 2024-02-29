@@ -1,5 +1,6 @@
-import { IUser } from '@/database/user.model'
 import { ObjectId } from 'mongodb'
+
+import { IUser } from '@/database/user.model'
 
 export type CreateUserParams = {
   clerkId: string

@@ -1,11 +1,24 @@
 'use server'
 
-import { GetAllTagsParams, GetQuestionsByTagIdParams, GetTopInteractedTagsParams, Tag as TagType } from '@/types/tag.types'
+import { ObjectId } from 'mongodb'
+
+import {
+  GetAllTagsParams,
+  GetQuestionsByTagIdParams,
+  GetTopInteractedTagsParams,
+  Tag as TagType,
+} from '@/types/tag.types'
 import { connectToDatabase } from '@/lib/mongoose'
 import { GetQuestionByIdReturn } from '@/lib/actions/question.actions'
 import User from '@/database/user.model'
 import Tag from '@/database/tag.model'
 import Question from '@/database/question.model'
+
+export type GetTopPopularTagReturn = {
+  _id: ObjectId
+  name: string
+  numberOfQuestions: number
+}
 
 export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
   try {
@@ -40,6 +53,23 @@ export async function getAllTags(_params: GetAllTagsParams): Promise<{ tags: Tag
     const tags = await Tag.find({})
 
     return { tags }
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+export async function getTopPopularTags() {
+  try {
+    connectToDatabase()
+
+    const popularTags = await Tag.aggregate<GetTopPopularTagReturn>([
+      { $project: { name: 1, numberOfQuestions: { $size: '$questions' } } },
+      { $sort: { numberOfQuestions: -1 } },
+      { $limit: 10 },
+    ])
+
+    return popularTags
   } catch (error) {
     console.log(error)
     throw error

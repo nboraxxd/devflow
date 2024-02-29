@@ -1,12 +1,12 @@
-import { Tag } from '@/types/tag.types'
 import { Question } from '@/types/question.types'
+import { GetTopPopularTagReturn } from '@/lib/actions/tag.action'
 import { PATH } from '@/constants/path'
 import { SubjectTag } from '@/components/shared/button'
 import { QuestionLink, RightSidebarSection } from '@/components/shared/rightSidebar'
 
 interface Props {
   questions?: Pick<Question, '_id' | 'title'>[]
-  tags: Pick<Tag, '_id' | 'name' | 'questions'>[]
+  tags: GetTopPopularTagReturn[]
 }
 
 export default function RightSidebar({ questions, tags }: Props) {
@@ -24,7 +24,11 @@ export default function RightSidebar({ questions, tags }: Props) {
 
       <RightSidebarSection title="Popular tags" childrenWrapperClassName="gap-4">
         {tags.map((tag) => (
-          <SubjectTag key={tag._id.toString()} count={tag.questions.length} href={`${PATH.TAGS}/${tag._id}`}>
+          <SubjectTag
+            key={tag._id.toString()}
+            count={tag.numberOfQuestions}
+            href={`${PATH.TAGS}/${tag._id.toString()}`}
+          >
             {tag.name}
           </SubjectTag>
         ))}

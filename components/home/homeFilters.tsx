@@ -1,6 +1,7 @@
 'use client'
 
 import { HomePageFilters } from '@/constants/filters'
+import { PATH } from '@/constants/path'
 import { FilterTag } from '@/components/shared/button'
 import { PrimarySearch } from '@/components/shared/search'
 import { Filter } from '@/components/shared/filter'
@@ -11,7 +12,7 @@ export default function HomeFilters() {
       <div className="mt-8 flex flex-col gap-3 xs:flex-row xs:items-center xs:justify-between">
         <PrimarySearch className="background-light800_dark300 border-light-700 dark:border-none">
           <PrimarySearch.SearchIcon iconSrc="/assets/icons/search.svg" iconAlt="Search" />
-          <PrimarySearch.SearchInput placeholder="Search for questions here..." className="" />
+          <PrimarySearch.SearchInput placeholder="Search for questions here..." route={PATH.HOMEPAGE} />
         </PrimarySearch>
 
         <Filter

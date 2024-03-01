@@ -39,6 +39,12 @@ export type URLProps = {
   searchParams: { [key: string]: string | undefined }
 }
 
+export type URLQueryParams = {
+  params: string
+  key: string
+  value: string | null
+}
+
 export type BadgeCounts = {
   GOLD: number
   SILVER: number

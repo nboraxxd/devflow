@@ -15,6 +15,7 @@ import { connectToDatabase } from '@/lib/mongoose'
 import Question from '@/database/question.model'
 import Tag from '@/database/tag.model'
 import User from '@/database/user.model'
+import { FilterQuery } from 'mongoose'
 
 export type GetQuestionByIdReturn = Omit<QuestionType, 'tags' | 'author'> & {
   tags: {
@@ -84,11 +85,22 @@ export async function updateQuestion(params: EditQuestionParams) {
 
 export async function deleteQuestion(params: DeleteQuestionParams) {}
 
-export async function getQuestions(_params: GetQuestionsParams): Promise<{ questions: GetQuestionByIdReturn[] }> {
+export async function getQuestions(params: GetQuestionsParams): Promise<{ questions: GetQuestionByIdReturn[] }> {
   try {
     connectToDatabase()
 
-    const questions = await Question.find({})
+    const { searchQuery } = params
+
+    const query: FilterQuery<typeof Question> = {}
+
+    if (searchQuery) {
+      query.$or = [
+        { title: { $regex: new RegExp(searchQuery, 'i') } },
+        { content: { $regex: new RegExp(searchQuery, 'i') } },
+      ]
+    }
+
+    const questions = await Question.find(query)
       .populate({ path: 'tags', model: Tag, select: '_id name' })
       .populate({ path: 'author', model: User, select: '_id clerkId name picture' })
       .sort({ createdAt: -1 })

@@ -1,3 +1,4 @@
+import { SearchParamsProps } from '@/types'
 import { PATH } from '@/constants/path'
 import { getQuestions } from '@/lib/actions/question.actions'
 import { HomeFilters } from '@/components/home'
@@ -5,8 +6,10 @@ import { LinkGradient } from '@/components/shared/button'
 import { QuestionCard } from '@/components/shared/cards'
 import { NoResult } from '@/components/shared/noResult'
 
-export default async function Home() {
-  const { questions } = await getQuestions({})
+export default async function Home({ searchParams }: SearchParamsProps) {
+  const { questions } = await getQuestions({
+    searchQuery: searchParams.q
+  })
 
   return (
     <div className="py-8 md:py-16">

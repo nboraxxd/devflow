@@ -1,5 +1,6 @@
 import { auth } from '@clerk/nextjs'
 
+import { SearchParamsProps } from '@/types'
 import { PATH } from '@/constants/path'
 import { QuestionFilters } from '@/constants/filters'
 import { getSavedQuestions } from '@/lib/actions/user.action'
@@ -7,12 +8,12 @@ import { QuestionCard } from '@/components/shared/cards'
 import { FilterGroup } from '@/components/shared/filter'
 import { NoResult } from '@/components/shared/noResult'
 
-export default async function Page() {
+export default async function Page({ searchParams }: SearchParamsProps) {
   const { userId: clerkId } = auth()
 
   if (!clerkId) return null
 
-  const { savedQuestions: questions } = await getSavedQuestions({ clerkId })
+  const { savedQuestions: questions } = await getSavedQuestions({ clerkId, searchQuery: searchParams.q })
 
   return (
     <div className="py-8 md:py-16">

@@ -1,6 +1,7 @@
 'use server'
 
 import { ObjectId } from 'mongodb'
+import { FilterQuery } from 'mongoose'
 
 import {
   GetAllTagsParams,
@@ -46,11 +47,15 @@ export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
   }
 }
 
-export async function getAllTags(_params: GetAllTagsParams): Promise<{ tags: TagType[] }> {
+export async function getAllTags(params: GetAllTagsParams): Promise<{ tags: TagType[] }> {
   try {
     connectToDatabase()
 
-    const tags = await Tag.find({})
+    const { searchQuery } = params
+
+    const query: FilterQuery<typeof Tag> = searchQuery ? { name: { $regex: new RegExp(searchQuery, 'i') } } : {}
+
+    const tags = await Tag.find(query)
 
     return { tags }
   } catch (error) {
@@ -80,12 +85,21 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
   try {
     connectToDatabase()
 
-    const { tagId, page = 1, pageSize = 10, searchQuery } = params
+    const { tagId, searchQuery } = params
+
+    const query: FilterQuery<typeof Question> = {}
+
+    if (searchQuery) {
+      query.$or = [
+        { title: { $regex: new RegExp(searchQuery, 'i') } },
+        { content: { $regex: new RegExp(searchQuery, 'i') } },
+      ]
+    }
 
     const tag = await Tag.findById(tagId).populate({
       path: 'questions',
       model: Question,
-      match: searchQuery ? { title: { $regex: searchQuery, $option: 'i' } } : {},
+      match: query,
       options: {
         sort: { createdAt: -1 },
       },
@@ -101,7 +115,7 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
 
     const questions = tag.questions as GetQuestionByIdReturn[]
 
-    return { tagTitle: tag.name, questions }
+    return { tagTitle: tag.name as string, questions }
   } catch (error) {
     console.log(error)
     throw error

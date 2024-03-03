@@ -1,3 +1,4 @@
+import { SearchParamsProps } from '@/types'
 import { TagFilters } from '@/constants/filters'
 import { PATH } from '@/constants/path'
 import { getAllTags } from '@/lib/actions/tag.action'
@@ -5,8 +6,8 @@ import { TagCard } from '@/components/shared/cards'
 import { FilterGroup } from '@/components/shared/filter'
 import { NoResult } from '@/components/shared/noResult'
 
-export default async function Page() {
-  const { tags } = await getAllTags({})
+export default async function Page({ searchParams }: SearchParamsProps) {
+  const { tags } = await getAllTags({ searchQuery: searchParams.q })
 
   return (
     <div className="py-8 md:py-16">

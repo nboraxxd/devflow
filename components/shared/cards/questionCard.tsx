@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { ObjectId } from 'mongodb'
+import { auth } from '@clerk/nextjs'
 
 import { Question } from '@/types/question.types'
 import { PATH } from '@/constants/path'
@@ -26,6 +27,8 @@ type Props = {
 export default function QuestionCard({ question }: Props) {
   const { _id, title, author, tags, upvotes, views, answers, createdAt } = question
 
+  const { userId } = auth()
+
   return (
     <section className="card-wrapper rounded-[10px] p-5 md:px-11 md:py-9">
       <div className="flex flex-col-reverse gap-2.5 md:flex-row">
@@ -38,7 +41,7 @@ export default function QuestionCard({ question }: Props) {
           </h2>
         </div>
 
-        <EditDelBtnGroup questionId={_id.toString()} />
+        {author.clerkId === userId && <EditDelBtnGroup questionId={_id.toString()} />}
       </div>
 
       <div className="mt-3.5 flex flex-wrap gap-2">

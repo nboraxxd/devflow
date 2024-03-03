@@ -5,7 +5,6 @@ import { ObjectId } from 'mongodb'
 
 import {
   CreateQuestionParams,
-  DeleteQuestionParams,
   EditQuestionParams,
   GetQuestionsParams,
   Question as QuestionType,
@@ -82,8 +81,6 @@ export async function updateQuestion(params: EditQuestionParams) {
     throw err
   }
 }
-
-export async function deleteQuestion(params: DeleteQuestionParams) {}
 
 export async function getQuestions(params: GetQuestionsParams): Promise<{ questions: GetQuestionByIdReturn[] }> {
   try {

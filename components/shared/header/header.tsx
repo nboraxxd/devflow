@@ -7,6 +7,7 @@ import { m, LazyMotion, domAnimation, useTransform } from 'framer-motion'
 
 import { cn } from '@/lib/utils'
 import { HeaderHeight } from '@/constants/enums'
+import { PATH } from '@/constants/path'
 import { useBoundedScroll, useWindowWidth } from '@/hooks'
 import { DevflowLogo } from '@/components/shared/devflowLogo'
 import { Theme as ThemeComponent } from '@/components/shared/header'
@@ -82,7 +83,7 @@ export default function Header() {
             style={{ scale: motionScale }}
           >
             <PrimarySearch.SearchIcon iconSrc="/assets/icons/search.svg" iconAlt="Search" />
-            <PrimarySearch.SearchInput ref={searchInput} placeholder="Search anything globally" />
+            <PrimarySearch.SearchInput ref={searchInput} route={PATH.HOMEPAGE} placeholder="Search anything globally" />
           </PrimarySearch>
 
           <nav className={cn('flex-between shrink-0 md:gap-5', { 'gap-3': !isFocusSearch })}>

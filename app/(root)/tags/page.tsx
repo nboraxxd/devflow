@@ -1,4 +1,5 @@
 import { TagFilters } from '@/constants/filters'
+import { PATH } from '@/constants/path'
 import { getAllTags } from '@/lib/actions/tag.action'
 import { TagCard } from '@/components/shared/cards'
 import { FilterGroup } from '@/components/shared/filter'
@@ -11,7 +12,7 @@ export default async function Page() {
     <div className="py-8 md:py-16">
       <h1 className="h1-bold text-dark100_light900">Tags</h1>
 
-      <FilterGroup inputPlacehoder="Search by tag name..." filters={TagFilters} />
+      <FilterGroup inputPlacehoder="Search by tag name..." route={PATH.TAGS} filters={TagFilters} />
 
       <section className="mt-12 flex flex-wrap gap-4">
         {tags.length > 0 ? (

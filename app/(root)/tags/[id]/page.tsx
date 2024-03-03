@@ -14,13 +14,12 @@ export default async function Page({ params, searchParams }: URLProps) {
     page: 1,
     pageSize: 10,
   })
-  console.log({ tagTitle })
 
   return (
     <div className="py-8 md:py-16">
       <h1 className="h1-bold text-dark100_light900">{capitalizeFirstLetter(tagTitle)}</h1>
 
-      <FilterGroup inputPlacehoder="Search tag questions..." filters={TagFilters} />
+      <FilterGroup inputPlacehoder="Search tag questions..." route={PATH.TAGS} filters={TagFilters} />
 
       <section className="mt-10 flex w-full flex-col gap-6">
         {questions.length > 0 ? (

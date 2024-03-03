@@ -1,3 +1,4 @@
+import { SearchParamsProps } from '@/types'
 import { PATH } from '@/constants/path'
 import { UserFilters } from '@/constants/filters'
 import { getAllUsers } from '@/lib/actions/user.action'
@@ -5,14 +6,14 @@ import { UserCard } from '@/components/shared/cards'
 import { FilterGroup } from '@/components/shared/filter'
 import { NoResult } from '@/components/shared/noResult'
 
-export default async function Page() {
-  const { users } = await getAllUsers({})
+export default async function Page({ searchParams }: SearchParamsProps) {
+  const { users } = await getAllUsers({ searchQuery: searchParams.q })
 
   return (
     <div className="py-8 md:py-16">
       <h1 className="h1-bold text-dark100_light900">All Users</h1>
 
-      <FilterGroup inputPlacehoder="Search by username..." filters={UserFilters} />
+      <FilterGroup inputPlacehoder="Search by username..." route={PATH.COMMUNITY} filters={UserFilters} />
 
       <section className="mt-12 flex flex-wrap gap-4">
         {users.length > 0 ? (

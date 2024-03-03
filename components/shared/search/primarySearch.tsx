@@ -18,7 +18,7 @@ import { cn, formUrlQuery, removeKeysFromQuery } from '@/lib/utils'
 
 interface SearchInputProps extends InputProps {
   placeholder: string
-  route?: string
+  route: string
   className?: string
 }
 

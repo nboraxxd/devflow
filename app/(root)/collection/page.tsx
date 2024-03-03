@@ -18,7 +18,7 @@ export default async function Page() {
     <div className="py-8 md:py-16">
       <h1 className="h1-bold text-dark100_light900">Saved Questions</h1>
 
-      <FilterGroup inputPlacehoder="Search amazing minds here..." filters={QuestionFilters} />
+      <FilterGroup inputPlacehoder="Search amazing minds here..." route={PATH.COLLECTION} filters={QuestionFilters} />
 
       <section className="mt-10 flex w-full flex-col gap-6">
         {questions.length > 0 ? (

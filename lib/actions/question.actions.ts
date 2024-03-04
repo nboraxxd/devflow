@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { ObjectId } from 'mongodb'
+import { FilterQuery, SortOrder } from 'mongoose'
 
 import {
   CreateQuestionParams,
@@ -14,7 +15,6 @@ import { connectToDatabase } from '@/lib/mongoose'
 import Question from '@/database/question.model'
 import Tag from '@/database/tag.model'
 import User from '@/database/user.model'
-import { FilterQuery } from 'mongoose'
 
 export type GetQuestionByIdReturn = Omit<QuestionType, 'tags' | 'author'> & {
   tags: {
@@ -86,9 +86,29 @@ export async function getQuestions(params: GetQuestionsParams): Promise<{ questi
   try {
     connectToDatabase()
 
-    const { searchQuery } = params
+    const { searchQuery, filter } = params
 
     const query: FilterQuery<typeof Question> = {}
+
+    let sortOptions: Record<string, SortOrder> = { createdAt: -1 }
+
+    switch (filter) {
+      case 'newest':
+        sortOptions = { createdAt: -1 }
+        break
+      case 'frequent':
+        sortOptions = { views: -1 }
+        break
+      case 'recommended':
+        sortOptions = { answers: -1 }
+        break
+      case 'unanswered':
+        query.answers = { $size: 0 }
+        break
+
+      default:
+        break
+    }
 
     if (searchQuery) {
       query.$or = [
@@ -100,7 +120,7 @@ export async function getQuestions(params: GetQuestionsParams): Promise<{ questi
     const questions = await Question.find(query)
       .populate({ path: 'tags', model: Tag, select: '_id name' })
       .populate({ path: 'author', model: User, select: '_id clerkId name picture' })
-      .sort({ createdAt: -1 })
+      .sort(sortOptions)
 
     return { questions: questions as GetQuestionByIdReturn[] }
   } catch (err) {

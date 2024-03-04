@@ -1,11 +1,13 @@
 import Image from 'next/image'
 
-import { HomePageFilters } from '@/constants/filters'
 import { cn } from '@/lib/utils'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 interface FilterProps {
-  filters: typeof HomePageFilters
+  filters: ReadonlyArray<{
+    readonly name: string
+    readonly value: string
+  }>
   filterClassName?: string
   containerClassName?: string
 }

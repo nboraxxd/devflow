@@ -3,7 +3,7 @@ export const AnswerFilters = [
   { name: 'Lowest Upvotes', value: 'lowestUpvotes' },
   { name: 'Most Recent', value: 'recent' },
   { name: 'Oldest', value: 'old' },
-]
+] as const
 
 export const UserFilters = [
   { name: 'New Users', value: 'new_users' },

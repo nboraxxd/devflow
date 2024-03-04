@@ -1,12 +1,15 @@
+import { HomePageFilters } from '@/constants/filters'
 import { cn } from '@/lib/utils'
 
 interface Props {
   children: string
+  value: (typeof HomePageFilters)[number]['value']
+  handleClickFilter: (item: Props['value']) => void
   isActive?: boolean
   className?: string
 }
 
-export default function FilterTag({ children, isActive, className }: Props) {
+export default function FilterTag({ children, isActive, className, handleClickFilter, value }: Props) {
   return (
     <button
       className={cn(
@@ -17,6 +20,7 @@ export default function FilterTag({ children, isActive, className }: Props) {
         },
         className
       )}
+      onClickCapture={() => handleClickFilter(value)}
     >
       <span className={cn('body-medium text-light-500', { 'primary-text-gradient': isActive })}>{children}</span>
     </button>

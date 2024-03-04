@@ -1,12 +1,38 @@
 'use client'
 
+import { useRouter, useSearchParams } from 'next/navigation'
+
 import { HomePageFilters } from '@/constants/filters'
 import { PATH } from '@/constants/path'
+import { formUrlQuery } from '@/lib/utils'
 import { FilterTag } from '@/components/shared/button'
 import { PrimarySearch } from '@/components/shared/search'
 import { Filter } from '@/components/shared/filter'
 
 export default function HomeFilters() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+
+  function handleClickFilter(item: (typeof HomePageFilters)[number]['value']) {
+    if (searchParams.get('filter') === item) {
+      const newUrl = formUrlQuery({
+        key: 'filter',
+        params: searchParams.toString(),
+        value: null,
+      })
+
+      router.push(newUrl, { scroll: false })
+    } else {
+      const newUrl = formUrlQuery({
+        key: 'filter',
+        params: searchParams.toString(),
+        value: item,
+      })
+
+      router.push(newUrl, { scroll: false })
+    }
+  }
+
   return (
     <>
       <div className="mt-8 flex flex-col gap-3 xs:flex-row xs:items-center xs:justify-between">
@@ -25,7 +51,13 @@ export default function HomeFilters() {
       <ul className="mt-8 flex gap-3 max-md:hidden">
         {HomePageFilters.map((item) => (
           <li key={item.value}>
-            <FilterTag>{item.name}</FilterTag>
+            <FilterTag
+              handleClickFilter={handleClickFilter}
+              value={item.value}
+              isActive={item.value === searchParams.get('filter')}
+            >
+              {item.name}
+            </FilterTag>
           </li>
         ))}
       </ul>

@@ -31,7 +31,7 @@ export const HomePageFilters = [
   { name: 'Recommended', value: 'recommended' },
   { name: 'Frequent', value: 'frequent' },
   { name: 'Unanswered', value: 'unanswered' },
-]
+] as const
 
 export const GlobalSearchFilters = [
   { name: 'Question', value: 'question' },

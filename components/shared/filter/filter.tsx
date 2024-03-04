@@ -1,10 +1,11 @@
-import { cn } from '@/lib/utils'
-
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import Image from 'next/image'
 
+import { HomePageFilters } from '@/constants/filters'
+import { cn } from '@/lib/utils'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+
 interface FilterProps {
-  filters: { name: string; value: string }[]
+  filters: typeof HomePageFilters
   filterClassName?: string
   containerClassName?: string
 }

@@ -7,7 +7,7 @@ import { FilterGroup } from '@/components/shared/filter'
 import { NoResult } from '@/components/shared/noResult'
 
 export default async function Page({ searchParams }: SearchParamsProps) {
-  const { users } = await getAllUsers({ searchQuery: searchParams.q })
+  const { users } = await getAllUsers({ searchQuery: searchParams.q, filter: searchParams.filter })
 
   return (
     <div className="py-8 md:py-16">

@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { ObjectId } from 'mongodb'
-import { FilterQuery } from 'mongoose'
+import { FilterQuery, SortOrder } from 'mongoose'
 
 import { connectToDatabase } from '@/lib/mongoose'
 import {
@@ -71,9 +71,28 @@ export async function getAllUsers(params: GetAllUsersParams) {
   try {
     connectToDatabase()
 
-    const { searchQuery } = params
+    const { searchQuery, filter } = params
 
     const query: FilterQuery<typeof User> = {}
+
+    let sortOptions: Record<string, SortOrder> = { createdAt: -1 }
+
+    if (filter) {
+      switch (filter) {
+        case 'new_users':
+          sortOptions = { createdAt: -1 }
+          break
+        case 'old_users':
+          sortOptions = { createdAt: 1 }
+          break
+        case 'top_contributors':
+          sortOptions = { reputation: -1 }
+          break
+
+        default:
+          break
+      }
+    }
 
     if (searchQuery) {
       query.$or = [
@@ -82,7 +101,7 @@ export async function getAllUsers(params: GetAllUsersParams) {
       ]
     }
 
-    const users = await User.find(query).sort({ createdAt: -1 })
+    const users = await User.find(query).sort(sortOptions)
 
     return { users }
   } catch (error) {

@@ -13,8 +13,10 @@ export default function HomeFilters() {
   const router = useRouter()
   const searchParams = useSearchParams()
 
+  const paramsFilter = searchParams.get('filter')
+
   function handleClickFilter(item: (typeof HomePageFilters)[number]['value']) {
-    if (searchParams.get('filter') === item) {
+    if (paramsFilter === item) {
       const newUrl = formUrlQuery({
         key: 'filter',
         params: searchParams.toString(),
@@ -54,7 +56,7 @@ export default function HomeFilters() {
             <FilterTag
               handleClickFilter={handleClickFilter}
               value={item.value}
-              isActive={item.value === searchParams.get('filter')}
+              isActive={item.value === paramsFilter}
             >
               {item.name}
             </FilterTag>

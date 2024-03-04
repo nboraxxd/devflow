@@ -6,7 +6,10 @@ import { Filter } from '@/components/shared/filter'
 interface FilterGroupProps {
   inputPlacehoder: string
   route: string
-  filters: { name: string; value: string; }[]
+  filters: ReadonlyArray<{
+    readonly name: string
+    readonly value: string
+  }>
 }
 
 export default function FilterGroup({ inputPlacehoder, route, filters }: FilterGroupProps) {

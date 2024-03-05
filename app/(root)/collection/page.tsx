@@ -13,7 +13,11 @@ export default async function Page({ searchParams }: SearchParamsProps) {
 
   if (!clerkId) return null
 
-  const { savedQuestions: questions } = await getSavedQuestions({ clerkId, searchQuery: searchParams.q })
+  const { savedQuestions: questions } = await getSavedQuestions({
+    clerkId,
+    searchQuery: searchParams.q,
+    filter: searchParams.filter,
+  })
 
   return (
     <div className="py-8 md:py-16">

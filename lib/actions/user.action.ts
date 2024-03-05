@@ -184,9 +184,33 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams): Promis
   try {
     connectToDatabase()
 
-    const { clerkId, searchQuery } = params
+    const { clerkId, searchQuery, filter } = params
 
     const query: FilterQuery<typeof Question> = {}
+
+    let sortOptions: Record<string, SortOrder> = { createdAt: -1 }
+
+    //
+    switch (filter) {
+      case 'most_recent':
+        sortOptions = { createdAt: -1 }
+        break
+      case 'oldest':
+        sortOptions = { createdAt: 1 }
+        break
+      case 'most_voted':
+        sortOptions = { upvotes: -1 }
+        break
+      case 'most_viewed':
+        sortOptions = { views: -1 }
+        break
+      case 'most_answered':
+        sortOptions = { answers: -1 }
+        break
+
+      default:
+        break
+    }
 
     if (searchQuery) {
       query.$or = [
@@ -200,7 +224,7 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams): Promis
       model: envConfig.dbQuestionCollection,
       match: query,
       options: {
-        sort: { createdAt: -1 },
+        sort: sortOptions,
       },
       populate: [
         { path: 'tags', model: envConfig.dbTagCollection, select: '_id name' },

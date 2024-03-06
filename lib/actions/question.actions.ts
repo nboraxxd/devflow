@@ -82,11 +82,15 @@ export async function updateQuestion(params: EditQuestionParams) {
   }
 }
 
-export async function getQuestions(params: GetQuestionsParams): Promise<{ questions: GetQuestionByIdReturn[] }> {
+export async function getQuestions(
+  params: GetQuestionsParams
+): Promise<{ questions: GetQuestionByIdReturn[]; isNext: boolean }> {
   try {
     connectToDatabase()
 
-    const { searchQuery, filter } = params
+    const { searchQuery, filter, page = 1, pageSize = 5 } = params
+
+    const skipAmount = (page - 1) * pageSize
 
     const query: FilterQuery<typeof Question> = {}
 
@@ -117,12 +121,28 @@ export async function getQuestions(params: GetQuestionsParams): Promise<{ questi
       ]
     }
 
-    const questions = await Question.find(query)
-      .populate({ path: 'tags', model: Tag, select: '_id name' })
-      .populate({ path: 'author', model: User, select: '_id clerkId name picture' })
-      .sort(sortOptions)
+    const [questions, totalQuestions] = await Promise.all([
+      Question.find(query)
+        .populate({ path: 'tags', model: Tag, select: '_id name' })
+        .populate({ path: 'author', model: User, select: '_id clerkId name picture' })
+        .skip(skipAmount)
+        .limit(pageSize)
+        .sort(sortOptions),
+      Question.countDocuments(query),
+    ])
 
-    return { questions: questions as GetQuestionByIdReturn[] }
+    // const questions = await Question.find(query)
+    //   .populate({ path: 'tags', model: Tag, select: '_id name' })
+    //   .populate({ path: 'author', model: User, select: '_id clerkId name picture' })
+    //   .skip(skipAmount)
+    //   .limit(pageSize)
+    //   .sort(sortOptions)
+
+    // const totalQuestions = await Question.countDocuments(query)
+
+    const isNext = totalQuestions > skipAmount + questions.length
+
+    return { questions: questions as GetQuestionByIdReturn[], isNext }
   } catch (err) {
     console.log(err)
     throw err

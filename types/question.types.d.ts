@@ -23,8 +23,8 @@ export interface EditQuestionParams {
 }
 
 export type GetQuestionsParams = {
-  page?: string
-  pageSize?: string
+  page?: number
+  pageSize?: number
   searchQuery?: string
   filter?: string
 }

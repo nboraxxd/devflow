@@ -8,9 +8,10 @@ import { NoResult } from '@/components/shared/noResult'
 import { Pagination } from '@/components/shared/pagination'
 
 export default async function Home({ searchParams }: SearchParamsProps) {
-  const { questions } = await getQuestions({
+  const { questions, isNext } = await getQuestions({
     searchQuery: searchParams.q,
     filter: searchParams.filter,
+    page: searchParams.page ? +searchParams.page : 1,
   })
 
   return (
@@ -54,7 +55,7 @@ export default async function Home({ searchParams }: SearchParamsProps) {
         )}
       </section>
 
-      {questions.length > 0 && <Pagination isNext={false} pageNumber={searchParams?.page ? +searchParams.page : 1} />}
+      {questions.length > 0 && <Pagination isNext={isNext} pageNumber={searchParams?.page ? +searchParams.page : 1} />}
     </div>
   )
 }

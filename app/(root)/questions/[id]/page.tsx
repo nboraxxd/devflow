@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { auth } from '@clerk/nextjs'
 
+import { URLProps } from '@/types'
 import { PATH } from '@/constants/path'
 import { formatNumberToSocialStyle, getTimestamp } from '@/lib/utils'
 import { getQuestionById } from '@/lib/actions/question.actions'
@@ -13,7 +14,7 @@ import { AnswerList } from '@/components/shared/answerList'
 import { Author } from '@/components/shared/author'
 import { Votes } from '@/components/shared/votes'
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page({ params, searchParams }: URLProps) {
   const { userId: clerkId } = auth()
 
   const question = await getQuestionById(params.id)
@@ -84,6 +85,7 @@ export default async function Page({ params }: { params: { id: string } }) {
         mongoUserId={mongoUser?._id.toString()}
         questionId={question._id.toString()}
         totalAnswers={question.answers.length}
+        filter={searchParams?.filter}
       />
 
       <div className="mt-8">

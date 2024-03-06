@@ -7,7 +7,7 @@ export interface CreateAnswerParams {
 
 export type GetAnswersParams = {
   question: string
-  sortBy?: string
+  filter?: string
   page?: number
   pageSize?: number
 }

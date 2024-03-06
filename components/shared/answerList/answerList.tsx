@@ -12,11 +12,11 @@ interface Props {
   totalAnswers: number
   page?: number
   pageSize?: number
-  sortBy?: string
+  filter?: string
 }
 
-export default async function AnswerList({ mongoUserId, questionId, totalAnswers, page, pageSize, sortBy }: Props) {
-  const answers = await getAnswers({ question: questionId, page, pageSize, sortBy })
+export default async function AnswerList({ mongoUserId, questionId, totalAnswers, page, pageSize, filter }: Props) {
+  const answers = await getAnswers({ question: questionId, page, pageSize, filter })
 
   return (
     <section className="mt-9">

@@ -1,6 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
+import { SortOrder } from 'mongoose'
 
 import { connectToDatabase } from '@/lib/mongoose'
 import { Answer as AnswerType, AnswerVoteParams, CreateAnswerParams, GetAnswersParams } from '@/types/answer.types'
@@ -41,9 +42,29 @@ export async function getAnswers(params: GetAnswersParams) {
   try {
     connectToDatabase()
 
-    const { question } = params
+    const { question, filter } = params
 
-    const answers = await Answer.find({ question }).populate('author', '_id clerkId name picture')
+    let sortOptions: Record<string, SortOrder> = {}
+
+    switch (filter) {
+      case 'highestUpvotes':
+        sortOptions = { upvotes: -1 }
+        break
+      case 'lowestUpvotes':
+        sortOptions = { upvotes: 1 }
+        break
+      case 'recent':
+        sortOptions = { createdAt: -1 }
+        break
+      case 'old':
+        sortOptions = { createdAt: 1 }
+        break
+
+      default:
+        break
+    }
+
+    const answers = await Answer.find({ question }).populate('author', '_id clerkId name picture').sort(sortOptions)
 
     return answers as GetAnswersReturn
   } catch (error) {

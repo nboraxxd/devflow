@@ -5,6 +5,7 @@ import { HomeFilters } from '@/components/home'
 import { LinkGradient } from '@/components/shared/button'
 import { QuestionCard } from '@/components/shared/cards'
 import { NoResult } from '@/components/shared/noResult'
+import { Pagination } from '@/components/shared/pagination'
 
 export default async function Home({ searchParams }: SearchParamsProps) {
   const { questions } = await getQuestions({
@@ -23,7 +24,7 @@ export default async function Home({ searchParams }: SearchParamsProps) {
 
       <HomeFilters />
 
-      <section className="mt-10 flex w-full flex-col gap-6">
+      <section className="mb-9 mt-10 flex w-full flex-col gap-6">
         {questions.length > 0 ? (
           questions.map((question) => (
             <QuestionCard
@@ -52,6 +53,8 @@ export default async function Home({ searchParams }: SearchParamsProps) {
           />
         )}
       </section>
+
+      {questions.length > 0 && <Pagination isNext={false} pageNumber={searchParams?.page ? +searchParams.page : 1} />}
     </div>
   )
 }

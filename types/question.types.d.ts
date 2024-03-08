@@ -11,15 +11,15 @@ export type CreateQuestionParams = {
 }
 
 export interface DeleteQuestionParams {
-  questionId: string;
-  path: string;
+  questionId: string
+  path: string
 }
 
 export interface EditQuestionParams {
-  questionId: string;
-  title: string;
-  content: string;
-  path: string;
+  questionId: string
+  title: string
+  content: string
+  path: string
 }
 
 export type GetQuestionsParams = {
@@ -30,11 +30,11 @@ export type GetQuestionsParams = {
 }
 
 export interface QuestionVoteParams {
-  questionId: string;
-  userId: string;
-  hasUpvoted: boolean;
-  hasDownvoted: boolean;
-  path: string;
+  questionId: string
+  userId: string
+  hasUpvoted: boolean
+  hasDownvoted: boolean
+  path: string
 }
 
 export type Question = {
@@ -42,7 +42,7 @@ export type Question = {
   title: string
   content: string
   tags: Tag[]
-  author: User
+  author: Pick<User, '_id' | 'clerkId' | 'name' | 'picture'>
   answers: string[]
   upvotes: ObjectId[]
   downvotes: ObjectId[]

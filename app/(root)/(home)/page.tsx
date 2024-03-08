@@ -12,6 +12,7 @@ export default async function Home({ searchParams }: SearchParamsProps) {
     searchQuery: searchParams.q,
     filter: searchParams.filter,
     page: searchParams.page ? +searchParams.page : 1,
+    pageSize: 5,
   })
 
   return (
@@ -25,7 +26,7 @@ export default async function Home({ searchParams }: SearchParamsProps) {
 
       <HomeFilters />
 
-      <section className="mb-9 mt-10 flex w-full flex-col gap-6">
+      <section className="mt-10 flex w-full flex-col gap-6">
         {questions.length > 0 ? (
           questions.map((question) => (
             <QuestionCard

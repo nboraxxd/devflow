@@ -16,6 +16,7 @@ export interface GetQuestionsByTagIdParams {
   tagId: string
   page?: number
   pageSize?: number
+  filter?: string
   searchQuery?: string
 }
 

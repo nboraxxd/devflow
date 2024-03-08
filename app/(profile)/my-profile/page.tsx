@@ -2,16 +2,17 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { auth } from '@clerk/nextjs'
 
+import { SearchParamsProps } from '@/types'
 import { PATH } from '@/constants/path'
 import { ProfileTemplate } from '@/components/profile'
 
-export default async function Page() {
+export default async function Page({ searchParams }: SearchParamsProps) {
   const { userId } = auth()
 
   if (!userId) redirect(PATH.SIGN_IN)
 
   return (
-    <ProfileTemplate userId={userId}>
+    <ProfileTemplate userId={userId} pageNumber={searchParams.page ? +searchParams.page : 1}>
       <div className="flex justify-end">
         <Link
           href={PATH.EDIT_PROFILE}

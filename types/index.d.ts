@@ -43,6 +43,7 @@ export type URLQueryParams = {
   params: string
   key: string
   value: string | null
+  omit?: string[]
 }
 
 export type BadgeCounts = {

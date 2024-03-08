@@ -38,11 +38,11 @@ export async function createAnswer(params: CreateAnswerParams) {
   }
 }
 
-export async function getAnswers(params: GetAnswersParams) {
+export async function getAnswers(params: GetAnswersParams): Promise<{ answers: GetAnswersReturn; isNext: boolean }> {
   try {
     connectToDatabase()
 
-    const { question, filter } = params
+    const { question, filter, page = 1, pageSize = 20 } = params
 
     let sortOptions: Record<string, SortOrder> = {}
 
@@ -64,9 +64,20 @@ export async function getAnswers(params: GetAnswersParams) {
         break
     }
 
-    const answers = await Answer.find({ question }).populate('author', '_id clerkId name picture').sort(sortOptions)
+    const skipAmount = (page - 1) * pageSize
 
-    return answers as GetAnswersReturn
+    const [answers, totalAnswers] = await Promise.all([
+      Answer.find({ question })
+        .populate('author', '_id clerkId name picture')
+        .sort(sortOptions)
+        .skip(skipAmount)
+        .limit(pageSize),
+      Answer.countDocuments({ question }),
+    ])
+
+    const isNext = totalAnswers > skipAmount + answers.length
+
+    return { answers: answers as GetAnswersReturn, isNext }
   } catch (error) {
     console.log(error)
     throw error

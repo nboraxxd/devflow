@@ -5,9 +5,15 @@ import { getAllUsers } from '@/lib/actions/user.action'
 import { UserCard } from '@/components/shared/cards'
 import { FilterGroup } from '@/components/shared/filter'
 import { NoResult } from '@/components/shared/noResult'
+import { Pagination } from '@/components/shared/pagination'
 
 export default async function Page({ searchParams }: SearchParamsProps) {
-  const { users } = await getAllUsers({ searchQuery: searchParams.q, filter: searchParams.filter })
+  const { users, isNext } = await getAllUsers({
+    searchQuery: searchParams.q,
+    filter: searchParams.filter,
+    page: searchParams.page ? +searchParams.page : 1,
+    pageSize: 5,
+  })
 
   return (
     <div className="py-8 md:py-16">
@@ -20,7 +26,7 @@ export default async function Page({ searchParams }: SearchParamsProps) {
           users.map((user) => (
             <UserCard
               key={JSON.stringify(user._id)}
-              _id={user._id}
+              _id={user._id.toString()}
               clerkId={user.clerkId}
               name={user.name}
               picture={user.picture}
@@ -36,6 +42,8 @@ export default async function Page({ searchParams }: SearchParamsProps) {
           />
         )}
       </section>
+
+      {users.length > 0 && <Pagination isNext={isNext} pageNumber={searchParams?.page ? +searchParams.page : 1} />}
     </div>
   )
 }

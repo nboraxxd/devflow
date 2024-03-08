@@ -5,6 +5,7 @@ import { Filter } from '@/components/shared/filter'
 import { Author } from '@/components/shared/author'
 import { ParseHTML } from '@/components/shared/parseHTML'
 import { Votes } from '@/components/shared/votes'
+import { Pagination } from '@/components/shared/pagination'
 
 interface Props {
   mongoUserId?: string
@@ -16,7 +17,7 @@ interface Props {
 }
 
 export default async function AnswerList({ mongoUserId, questionId, totalAnswers, page, pageSize, filter }: Props) {
-  const answers = await getAnswers({ question: questionId, page, pageSize, filter })
+  const { answers, isNext } = await getAnswers({ question: questionId, page, pageSize, filter })
 
   return (
     <section className="mt-9">
@@ -58,6 +59,8 @@ export default async function AnswerList({ mongoUserId, questionId, totalAnswers
           <ParseHTML html={answer.content} />
         </div>
       ))}
+
+      {answers.length > 0 && <Pagination isNext={isNext} pageNumber={page || 1} />}
     </section>
   )
 }

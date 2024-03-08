@@ -47,13 +47,15 @@ export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
   }
 }
 
-export async function getAllTags(params: GetAllTagsParams): Promise<{ tags: TagType[] }> {
+export async function getAllTags(params: GetAllTagsParams): Promise<{ tags: TagType[]; isNext: boolean }> {
   try {
     connectToDatabase()
 
-    const { searchQuery, filter } = params
+    const { searchQuery, filter, page = 1, pageSize = 20 } = params
 
     const query: FilterQuery<typeof Tag> = searchQuery ? { name: { $regex: new RegExp(searchQuery, 'i') } } : {}
+
+    const skipAmount = (page - 1) * pageSize
 
     let sortOptions: Record<string, SortOrder> = { createdAt: -1 }
 
@@ -75,9 +77,14 @@ export async function getAllTags(params: GetAllTagsParams): Promise<{ tags: TagT
         break
     }
 
-    const tags = await Tag.find(query).sort(sortOptions)
+    const [tags, totalTags] = await Promise.all([
+      Tag.find(query).sort(sortOptions).skip(skipAmount).limit(pageSize),
+      Tag.countDocuments(query),
+    ])
 
-    return { tags }
+    const isNext = totalTags > skipAmount + tags.length
+
+    return { tags, isNext }
   } catch (error) {
     console.log(error)
     throw error
@@ -105,7 +112,7 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
   try {
     connectToDatabase()
 
-    const { tagId, searchQuery } = params
+    const { tagId, searchQuery, filter, page = 1, pageSize = 20 } = params
 
     const query: FilterQuery<typeof Question> = {}
 
@@ -116,12 +123,36 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
       ]
     }
 
+    let sortOptions: Record<string, SortOrder> = { createdAt: -1 }
+
+    switch (filter) {
+      case 'popular':
+        sortOptions = { views: -1 }
+        break
+      case 'recent':
+        sortOptions = { createdAt: -1 }
+        break
+      case 'name':
+        sortOptions = { title: 1 }
+        break
+      case 'old':
+        sortOptions = { createdAt: 1 }
+        break
+
+      default:
+        break
+    }
+
+    const skipAmount = (page - 1) * pageSize
+
     const tag = await Tag.findById(tagId).populate({
       path: 'questions',
       model: Question,
       match: query,
       options: {
-        sort: { createdAt: -1 },
+        sort: sortOptions,
+        skip: skipAmount,
+        limit: pageSize + 1, // +1 to check if there is next page
       },
       populate: [
         { path: 'tags', model: Tag, select: '_id name' },
@@ -133,9 +164,14 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
       throw new Error('Tag not found')
     }
 
-    const questions = tag.questions as GetQuestionByIdReturn[]
+    // Extract the questions from the tag
+    const questions = tag.questions.slice(0, pageSize) as GetQuestionByIdReturn[]
 
-    return { tagTitle: tag.name as string, questions }
+    // Calculate the isNext indicator
+    const isNext = tag.questions.length > pageSize
+
+
+    return { tagTitle: tag.name as string, questions, isNext }
   } catch (error) {
     console.log(error)
     throw error

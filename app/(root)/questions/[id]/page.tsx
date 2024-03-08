@@ -86,6 +86,8 @@ export default async function Page({ params, searchParams }: URLProps) {
         questionId={question._id.toString()}
         totalAnswers={question.answers.length}
         filter={searchParams?.filter}
+        page={searchParams?.page ? +searchParams.page : 1}
+        pageSize={20}
       />
 
       <div className="mt-8">

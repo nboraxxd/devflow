@@ -31,10 +31,12 @@ export type GetUserInfoReturn = {
 
 type GetSavedQuestionsReturn = {
   savedQuestions: GetQuestionByIdReturn[]
+  isNext: boolean
 }
 
 type GetUserQuestionsReturn = {
   questions: GetQuestionByIdReturn[]
+  isNext: boolean
 }
 
 export type AnswerReturnType = Omit<AnswerType, 'author' | 'question'> & {
@@ -52,6 +54,7 @@ export type AnswerReturnType = Omit<AnswerType, 'author' | 'question'> & {
 
 type GetUserAnswersReturn = {
   answers: AnswerReturnType[]
+  isNext: boolean
 }
 
 export async function createUser(userData: CreateUserParams) {
@@ -67,11 +70,13 @@ export async function createUser(userData: CreateUserParams) {
   }
 }
 
-export async function getAllUsers(params: GetAllUsersParams) {
+export async function getAllUsers(params: GetAllUsersParams): Promise<{ users: UserType[]; isNext: boolean }> {
   try {
     connectToDatabase()
 
-    const { searchQuery, filter } = params
+    const { searchQuery, filter, page = 1, pageSize = 20 } = params
+
+    const skipAmount = (page - 1) * pageSize
 
     const query: FilterQuery<typeof User> = {}
 
@@ -101,9 +106,14 @@ export async function getAllUsers(params: GetAllUsersParams) {
       ]
     }
 
-    const users = await User.find(query).sort(sortOptions)
+    const [users, totalUsers] = await Promise.all([
+      User.find(query).sort(sortOptions).skip(skipAmount).limit(pageSize),
+      User.countDocuments(query),
+    ])
 
-    return { users }
+    const isNext = totalUsers > skipAmount + users.length
+
+    return { users, isNext }
   } catch (error) {
     console.log(error)
     throw error
@@ -184,13 +194,14 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams): Promis
   try {
     connectToDatabase()
 
-    const { clerkId, searchQuery, filter } = params
+    const { clerkId, searchQuery, filter, page = 1, pageSize = 20 } = params
+
+    const skipAmount = (page - 1) * pageSize
 
     const query: FilterQuery<typeof Question> = {}
 
     let sortOptions: Record<string, SortOrder> = { createdAt: -1 }
 
-    //
     switch (filter) {
       case 'most_recent':
         sortOptions = { createdAt: -1 }
@@ -225,6 +236,8 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams): Promis
       match: query,
       options: {
         sort: sortOptions,
+        skip: skipAmount,
+        limit: pageSize + 1, // +1 to check if there is next page
       },
       populate: [
         { path: 'tags', model: envConfig.dbTagCollection, select: '_id name' },
@@ -236,9 +249,13 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams): Promis
       throw new Error('User not found')
     }
 
-    const savedQuestions = users.saved
+    // Extract the saved questions from the user
+    const savedQuestions = users.saved.slice(0, pageSize)
 
-    return { savedQuestions }
+    // Calculate the isNext indicator
+    const isNext = users.saved.length > pageSize
+
+    return { savedQuestions, isNext }
   } catch (error) {
     console.log(error)
     throw error
@@ -249,16 +266,25 @@ export async function getUserQuestions(params: GetUserStatsParams): Promise<GetU
   try {
     connectToDatabase()
 
-    const { userId, page = 1, pageSize = 10 } = params
+    const { userId, page = 1, pageSize = 20 } = params
+
+    const skipAmount = (page - 1) * pageSize
 
     const user = await User.findOne({ clerkId: userId })
 
-    const userQuestions = await Question.find({ author: user._id })
-      .sort({ view: -1, upvotes: -1 })
-      .populate({ path: 'tags', model: Tag, select: '_id name' })
-      .populate({ path: 'author', model: User, select: '_id clerkId name picture' })
+    const [userQuestions, totalUserQuestions] = await Promise.all([
+      Question.find({ author: user._id })
+        .sort({ view: -1, upvotes: -1 })
+        .populate({ path: 'tags', model: Tag, select: '_id name' })
+        .populate({ path: 'author', model: User, select: '_id clerkId name picture' })
+        .skip(skipAmount)
+        .limit(pageSize),
+      Question.countDocuments({ author: user._id }),
+    ])
 
-    return { questions: userQuestions as GetQuestionByIdReturn[] }
+    const isNext = totalUserQuestions > skipAmount + userQuestions.length
+
+    return { questions: userQuestions as GetQuestionByIdReturn[], isNext }
   } catch (error) {
     console.log(error)
     throw error
@@ -269,16 +295,25 @@ export async function getUserAnswers(params: GetUserStatsParams): Promise<GetUse
   try {
     connectToDatabase()
 
-    const { userId, page = 1, pageSize = 10 } = params
+    const { userId, page = 1, pageSize = 20 } = params
+
+    const skipAmount = (page - 1) * pageSize
 
     const user = await User.findOne({ clerkId: userId })
 
-    const userAnswers = await Answer.find({ author: user._id })
-      .sort({ upvotes: -1 })
-      .populate({ path: 'question', model: Question, select: '_id title' })
-      .populate({ path: 'author', model: User, select: '_id clerkId name picture' })
+    const [userAnswers, totalUserAnswers] = await Promise.all([
+      Answer.find({ author: user._id })
+        .sort({ upvotes: -1 })
+        .populate({ path: 'question', model: Question, select: '_id title' })
+        .populate({ path: 'author', model: User, select: '_id clerkId name picture' })
+        .skip(skipAmount)
+        .limit(pageSize),
+      Answer.countDocuments({ author: user._id }),
+    ])
 
-    return { answers: userAnswers as AnswerReturnType[] }
+    const isNext = totalUserAnswers > skipAmount + userAnswers.length
+
+    return { answers: userAnswers as AnswerReturnType[], isNext }
   } catch (error) {
     console.log(error)
     throw error

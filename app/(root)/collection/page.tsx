@@ -7,16 +7,19 @@ import { getSavedQuestions } from '@/lib/actions/user.action'
 import { QuestionCard } from '@/components/shared/cards'
 import { FilterGroup } from '@/components/shared/filter'
 import { NoResult } from '@/components/shared/noResult'
+import { Pagination } from '@/components/shared/pagination'
 
 export default async function Page({ searchParams }: SearchParamsProps) {
   const { userId: clerkId } = auth()
 
   if (!clerkId) return null
 
-  const { savedQuestions: questions } = await getSavedQuestions({
+  const { savedQuestions: questions, isNext } = await getSavedQuestions({
     clerkId,
     searchQuery: searchParams.q,
     filter: searchParams.filter,
+    page: searchParams.page ? +searchParams.page : 1,
+    pageSize: 5,
   })
 
   return (
@@ -51,6 +54,10 @@ export default async function Page({ searchParams }: SearchParamsProps) {
             link={PATH.HOMEPAGE}
             linkTitle="Explore Questions"
           />
+        )}
+
+        {questions.length > 0 && (
+          <Pagination isNext={isNext} pageNumber={searchParams?.page ? +searchParams.page : 1} />
         )}
       </section>
     </div>

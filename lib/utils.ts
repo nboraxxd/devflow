@@ -1,8 +1,9 @@
 import { twMerge } from 'tailwind-merge'
 import { type ClassValue, clsx } from 'clsx'
+import queryString from 'query-string'
+import omitLodash from 'lodash.omit'
 
 import { URLQueryParams } from '@/types'
-import queryString from 'query-string'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -72,8 +73,18 @@ export function getJoinedDate(date: Date) {
   return joinedDate
 }
 
-export function formUrlQuery({ params, key, value }: URLQueryParams) {
-  const currentUrl = queryString.parse(params)
+export function formUrlQuery({ params, key, value, omit }: URLQueryParams) {
+  let currentUrl = queryString.parse(params)
+
+  // if (omit) {
+  //   omit.forEach((key) => {
+  //     delete currentUrl[key]
+  //   })
+  // }
+
+  if (omit) {
+    currentUrl = omitLodash(currentUrl, omit)
+  }
 
   currentUrl[key] = value
 

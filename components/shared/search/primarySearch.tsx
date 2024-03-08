@@ -46,6 +46,7 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(function Sear
           params: searchParams.toString(),
           key: 'q',
           value: search,
+          omit: search !== searchParams.get('q') ? ['page', 'filter'] : undefined,
         })
 
         router.push(newUrl, { scroll: false })

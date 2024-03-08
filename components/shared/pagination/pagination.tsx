@@ -26,8 +26,10 @@ export default function Pagination({ pageNumber, isNext }: Props) {
     router.push(newUrl)
   }
 
+  if (!isNext && pageNumber === 1) return null
+
   return (
-    <div className="border-t border-t-light-800 pt-5 dark:border-t-dark-300">
+    <div className="mt-9 border-t border-t-light-800 pt-5 dark:border-t-dark-300">
       <div className="flex items-center justify-center gap-5">
         <PaginationBtn handleNavigate={() => handleNavigate('prev')} disabled={pageNumber <= 1}>
           Prev

@@ -88,7 +88,7 @@ export async function getQuestions(
   try {
     connectToDatabase()
 
-    const { searchQuery, filter, page = 1, pageSize = 5 } = params
+    const { searchQuery, filter, page = 1, pageSize = 20 } = params
 
     const skipAmount = (page - 1) * pageSize
 
@@ -125,20 +125,11 @@ export async function getQuestions(
       Question.find(query)
         .populate({ path: 'tags', model: Tag, select: '_id name' })
         .populate({ path: 'author', model: User, select: '_id clerkId name picture' })
+        .sort(sortOptions)
         .skip(skipAmount)
-        .limit(pageSize)
-        .sort(sortOptions),
+        .limit(pageSize),
       Question.countDocuments(query),
     ])
-
-    // const questions = await Question.find(query)
-    //   .populate({ path: 'tags', model: Tag, select: '_id name' })
-    //   .populate({ path: 'author', model: User, select: '_id clerkId name picture' })
-    //   .skip(skipAmount)
-    //   .limit(pageSize)
-    //   .sort(sortOptions)
-
-    // const totalQuestions = await Question.countDocuments(query)
 
     const isNext = totalQuestions > skipAmount + questions.length
 

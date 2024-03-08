@@ -13,10 +13,11 @@ import { AnswersTab } from '@/components/shared/answersTab'
 
 interface Props {
   userId: string
+  pageNumber: number
   children?: React.ReactNode
 }
 
-export default async function ProfileTemplate({ userId, children }: Props) {
+export default async function ProfileTemplate({ userId, pageNumber, children }: Props) {
   const { user: userInfo, totalAnswers, totalQuestions } = await getUserInfo(userId)
   const { tags } = await getAllTags({})
 
@@ -88,12 +89,13 @@ export default async function ProfileTemplate({ userId, children }: Props) {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="top-posts" className="mt-6 flex w-full flex-col gap-6">
-            <QuestionsTab userId={userId} />
+            <QuestionsTab userId={userId} pageNumber={pageNumber} />
           </TabsContent>
           <TabsContent value="answers" className="mt-6 flex w-full flex-col gap-6">
-            <AnswersTab userId={userId} />
+            <AnswersTab userId={userId} pageNumber={pageNumber} />
           </TabsContent>
         </Tabs>
+
         <section className="max-lg:hidden">
           <h2 className="h3-bold text-dark200_light900 pt-2">Top Tags</h2>
           <div className="mt-6 flex flex-col gap-4">

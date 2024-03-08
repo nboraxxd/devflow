@@ -6,13 +6,15 @@ import { capitalizeFirstLetter } from '@/lib/utils'
 import { FilterGroup } from '@/components/shared/filter'
 import { QuestionCard } from '@/components/shared/cards'
 import { NoResult } from '@/components/shared/noResult'
+import { Pagination } from '@/components/shared/pagination'
 
 export default async function Page({ params, searchParams }: URLProps) {
-  const { tagTitle, questions } = await getQuestionsByTagId({
+  const { tagTitle, questions, isNext } = await getQuestionsByTagId({
     tagId: params.id,
     searchQuery: searchParams.q,
-    page: 1,
-    pageSize: 10,
+    filter: searchParams.filter,
+    page: searchParams.page ? +searchParams.page : 1,
+    pageSize: 5,
   })
 
   return (
@@ -50,6 +52,8 @@ export default async function Page({ params, searchParams }: URLProps) {
           />
         )}
       </section>
+
+      {questions.length > 0 && <Pagination pageNumber={searchParams.page ? +searchParams.page : 1} isNext={isNext} />}
     </div>
   )
 }

@@ -5,9 +5,15 @@ import { getAllTags } from '@/lib/actions/tag.action'
 import { TagCard } from '@/components/shared/cards'
 import { FilterGroup } from '@/components/shared/filter'
 import { NoResult } from '@/components/shared/noResult'
+import { Pagination } from '@/components/shared/pagination'
 
 export default async function Page({ searchParams }: SearchParamsProps) {
-  const { tags } = await getAllTags({ searchQuery: searchParams.q, filter: searchParams.filter })
+  const { tags, isNext } = await getAllTags({
+    searchQuery: searchParams.q,
+    filter: searchParams.filter,
+    page: searchParams.page ? +searchParams.page : 1,
+    pageSize: 5,
+  })
 
   return (
     <div className="py-8 md:py-16">
@@ -30,6 +36,8 @@ export default async function Page({ searchParams }: SearchParamsProps) {
           />
         )}
       </section>
+
+      {tags.length > 0 && <Pagination pageNumber={searchParams.page ? +searchParams.page : 1} isNext={isNext} />}
     </div>
   )
 }

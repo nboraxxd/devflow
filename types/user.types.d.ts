@@ -55,8 +55,7 @@ export type User = {
   email: string
   picture: string
   reputation: number
-  saved: string[]
-  password?: string
+  saved: ObjectId[]
   bio?: string
   location?: string
   portfolioWebsite?: string

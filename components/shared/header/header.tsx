@@ -1,9 +1,10 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
+import { useEffect, useRef, useState } from 'react'
 import { SignedIn, UserButton } from '@clerk/nextjs'
 import { m, LazyMotion, domAnimation, useTransform } from 'framer-motion'
+import { useSearchParams } from 'next/navigation'
 
 import { cn } from '@/lib/utils'
 import { HeaderHeight } from '@/constants/enums'
@@ -20,6 +21,9 @@ const MD_BREAKPOINT = 768
 export default function Header() {
   const windowWidth = useWindowWidth(MD_BREAKPOINT)
 
+  const searchParams = useSearchParams()
+  const isGlobalSearch = searchParams.has('global')
+
   const [isFocusSearch, setIsFocusSearch] = useState(false)
   const searchInput = useRef<HTMLInputElement>(null)
   const wrapperSearch = useRef<HTMLDivElement>(null)
@@ -29,9 +33,17 @@ export default function Header() {
   const motionScale = useTransform(scrollYBoundedProgressThrottled, [0, 1], [1, 0.9])
 
   useEffect(() => {
+    if (isGlobalSearch) {
+      setIsFocusSearch(true)
+      handleShowPrimarySearch()
+    }
+  }, [isGlobalSearch])
+
+  useEffect(() => {
     function handleFocus() {
       setIsFocusSearch(true)
 
+      // Phải set style là flex trên màn hình lớn để khi thu nhỏ màn hình thì search input không bị ẩn
       if (windowWidth >= MD_BREAKPOINT) {
         wrapperSearch.current!.style.display = 'flex'
       }
@@ -83,7 +95,11 @@ export default function Header() {
             style={{ scale: motionScale }}
           >
             <PrimarySearch.SearchIcon iconSrc="/assets/icons/search.svg" iconAlt="Search" />
-            <PrimarySearch.GlobalSearchInput ref={searchInput} route={PATH.HOMEPAGE} placeholder="Search anything globally" />
+            <PrimarySearch.GlobalSearchInput
+              ref={searchInput}
+              route={PATH.HOMEPAGE}
+              placeholder="Search anything globally"
+            />
           </PrimarySearch>
 
           <nav className={cn('flex-between shrink-0 md:gap-5', { 'gap-3': !isFocusSearch })}>

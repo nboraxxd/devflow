@@ -140,7 +140,7 @@ const GlobalSearchInput = forwardRef<HTMLInputElement, SearchInputProps>(functio
           className
         )}
       />
-      <AnimatePresence>{true && <GlobalSearchResult />}</AnimatePresence>
+      <AnimatePresence>{isOpen && <GlobalSearchResult />}</AnimatePresence>
     </>
   )
 })

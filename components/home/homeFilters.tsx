@@ -13,14 +13,14 @@ export default function HomeFilters() {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  const paramsFilter = searchParams.get('filter')
+  const filterParams = searchParams.get('filter')
 
   function handleClickFilter(item: (typeof HomePageFilters)[number]['value']) {
     const newUrl = formUrlQuery({
       key: 'filter',
       params: searchParams.toString(),
-      value: paramsFilter === item ? null : item,
-      omit: paramsFilter === item ? ['filter'] : undefined,
+      value: filterParams === item ? null : item,
+      omit: filterParams === item ? ['filter'] : undefined,
     })
 
     router.push(newUrl, { scroll: false })
@@ -48,9 +48,9 @@ export default function HomeFilters() {
               label={item.name}
               handleClickFilter={handleClickFilter}
               value={item.value}
-              isActive={item.value === paramsFilter}
+              isActive={item.value === filterParams}
               childrenClassName={cn('body-medium text-light-500', {
-                'primary-text-gradient': item.value === paramsFilter,
+                'primary-text-gradient': item.value === filterParams,
               })}
             />
           </li>

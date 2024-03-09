@@ -11,7 +11,8 @@
   ],
   "rules": {
     "@typescript-eslint/no-unused-vars": ["warn", { "varsIgnorePattern": "^_", "argsIgnorePattern": "^_" }],
-    "camelcase": "off"
+    "camelcase": "off",
+    "no-extra-semi": "off"
   },
   "settings": {
     "tailwindcss": {

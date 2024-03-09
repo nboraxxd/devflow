@@ -4,8 +4,8 @@ import { useRouter, useSearchParams } from 'next/navigation'
 
 import { HomePageFilters } from '@/constants/filters'
 import { PATH } from '@/constants/path'
-import { formUrlQuery } from '@/lib/utils'
-import { FilterTag } from '@/components/shared/button'
+import { cn, formUrlQuery } from '@/lib/utils'
+import { FilterButton } from '@/components/shared/button'
 import { PrimarySearch } from '@/components/shared/search'
 import { Filter } from '@/components/shared/filter'
 
@@ -16,23 +16,14 @@ export default function HomeFilters() {
   const paramsFilter = searchParams.get('filter')
 
   function handleClickFilter(item: (typeof HomePageFilters)[number]['value']) {
-    if (paramsFilter === item) {
-      const newUrl = formUrlQuery({
-        key: 'filter',
-        params: searchParams.toString(),
-        value: null,
-      })
+    const newUrl = formUrlQuery({
+      key: 'filter',
+      params: searchParams.toString(),
+      value: paramsFilter === item ? null : item,
+      omit: paramsFilter === item ? ['filter'] : undefined,
+    })
 
-      router.push(newUrl, { scroll: false })
-    } else {
-      const newUrl = formUrlQuery({
-        key: 'filter',
-        params: searchParams.toString(),
-        value: item,
-      })
-
-      router.push(newUrl, { scroll: false })
-    }
+    router.push(newUrl, { scroll: false })
   }
 
   return (
@@ -53,9 +44,15 @@ export default function HomeFilters() {
       <ul className="mt-8 flex gap-3 max-md:hidden">
         {HomePageFilters.map((item) => (
           <li key={item.value}>
-            <FilterTag handleClickFilter={handleClickFilter} value={item.value} isActive={item.value === paramsFilter}>
-              {item.name}
-            </FilterTag>
+            <FilterButton
+              label={item.name}
+              handleClickFilter={handleClickFilter}
+              value={item.value}
+              isActive={item.value === paramsFilter}
+              childrenClassName={cn('body-medium text-light-500', {
+                'primary-text-gradient': item.value === paramsFilter,
+              })}
+            />
           </li>
         ))}
       </ul>

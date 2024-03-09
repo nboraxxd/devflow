@@ -11,10 +11,11 @@ import {
   useState,
 } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { MotionProps, m } from 'framer-motion'
+import { AnimatePresence, MotionProps, m } from 'framer-motion'
 
-import { Input, InputProps } from '@/components/ui/input'
 import { cn, formUrlQuery, removeKeysFromQuery } from '@/lib/utils'
+import { Input, InputProps } from '@/components/ui/input'
+import { GlobalSearchResult } from '@/components/shared/search'
 
 interface SearchInputProps extends InputProps {
   placeholder: string
@@ -60,7 +61,7 @@ const LocalSearchInput = forwardRef<HTMLInputElement, SearchInputProps>(function
           router.push(newUrl, { scroll: false })
         }
       }
-    }, 500)
+    }, 300)
 
     return () => clearTimeout(delayDebounceFn)
   }, [pathname, route, router, search, searchParams, searchQuery])
@@ -121,7 +122,7 @@ const GlobalSearchInput = forwardRef<HTMLInputElement, SearchInputProps>(functio
           router.push(newUrl, { scroll: false })
         }
       }
-    }, 500)
+    }, 300)
 
     return () => clearTimeout(delayDebounceFn)
   }, [pathname, router, search, searchParams, searchQuery])
@@ -139,19 +140,7 @@ const GlobalSearchInput = forwardRef<HTMLInputElement, SearchInputProps>(functio
           className
         )}
       />
-      {isOpen && (
-        <m.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.95 }}
-          transition={{ duration: 0.1 }}
-          className="background-light800_dark300 absolute left-0 top-full mt-3 w-full rounded-xl shadow-md"
-        >
-          <m.div className="p-4">
-            <p>Search for: {search}</p>
-          </m.div>
-        </m.div>
-      )}
+      <AnimatePresence>{true && <GlobalSearchResult />}</AnimatePresence>
     </>
   )
 })

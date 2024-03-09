@@ -33,9 +33,9 @@ export const HomePageFilters = [
   { name: 'Unanswered', value: 'unanswered' },
 ] as const
 
-export const GlobalSearchFilters = [
+export const globalSearchFilters = [
   { name: 'Question', value: 'question' },
   { name: 'Answer', value: 'answer' },
   { name: 'User', value: 'user' },
   { name: 'Tag', value: 'tag' },
-]
+] as const

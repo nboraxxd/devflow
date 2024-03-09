@@ -31,6 +31,10 @@
     @apply bg-light-800 dark:bg-dark-400 !important;
   }
 
+  .background-light700_dark500 {
+    @apply bg-light-700 dark:bg-dark-500;
+  }
+
   .background-light700_dark400 {
     @apply bg-light-700 dark:bg-dark-400;
   }
@@ -47,28 +51,44 @@
     @apply bg-light-800 dark:bg-dark-300 !important;
   }
 
-  .text-light900_dark400 {
-    @apply text-light-900 dark:text-dark-400;
-  }
-
   .text-dark100_light900 {
     @apply text-dark-100 dark:text-light-900 !important;
-  }
-
-  .text-dark200_light900 {
-    @apply text-dark-200 dark:text-light-900;
   }
 
   .text-dark200_light800 {
     @apply text-dark-200 dark:text-light-800 !important;
   }
 
+  .text-dark200_light900 {
+    @apply text-dark-200 dark:text-light-900;
+  }
+
   .text-dark300_light700 {
     @apply text-dark-300 dark:text-light-700;
   }
 
+  .text-dark300_light900 {
+    @apply text-dark-300 dark:text-light-900 !important;
+  }
+
+  .text-dark400_light500 {
+    @apply text-dark-400 dark:text-light-500;
+  }
+
   .text-dark400_light700 {
     @apply text-dark-400 dark:text-light-700;
+  }
+
+  .text-dark400_light800 {
+    @apply text-dark-400 dark:text-light-800;
+  }
+
+  .text-dark400_light900 {
+    @apply text-dark-400 dark:text-light-900 !important;
+  }
+
+  .text-dark500_light500 {
+    @apply text-dark-500 dark:text-light-500;
   }
 
   .text-dark500_light700 {
@@ -79,32 +99,16 @@
     @apply text-dark-500 dark:text-light-800 !important;
   }
 
-  .text-dark500_light500 {
-    @apply text-dark-500 dark:text-light-500;
-  }
-
-  .text-dark300_light900 {
-    @apply text-dark-300 dark:text-light-900 !important;
-  }
-
-  .text-dark400_light800 {
-    @apply text-dark-400 dark:text-light-800;
+  .text-dark500_light900 {
+    @apply text-dark-500 dark:text-light-900 !important;
   }
 
   .text-light400_light500 {
     @apply text-light-400 dark:text-light-500 !important;
   }
 
-  .text-dark400_light500 {
-    @apply text-dark-400 dark:text-light-500;
-  }
-
-  .text-dark400_light900 {
-    @apply text-dark-400 dark:text-light-900 !important;
-  }
-
-  .text-light400_light500 {
-    @apply text-light-400 dark:text-light-500 !important;
+  .text-light900_dark400 {
+    @apply text-light-900 dark:text-dark-400;
   }
 
   .light-border {

@@ -47,6 +47,7 @@ module.exports = {
       },
       boxShadow: {
         xs: '0px 1px 2px 0px rgba(16, 24, 40, 0.05)',
+        search: '0px 1px 20px 0px rgba(0, 0, 0, 0.13)',
         'light-100':
           '0px 12px 20px 0px rgba(184, 184, 184, 0.03), 0px 6px 12px 0px rgba(184, 184, 184, 0.02), 0px 2px 4px 0px rgba(184, 184, 184, 0.03)',
         'light-200': '-10px 10px 20px 0px rgba(218, 213, 213, 0.10)',

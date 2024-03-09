@@ -17,7 +17,7 @@ export default function FilterGroup({ inputPlacehoder, route, filters }: FilterG
     <div className="mt-8 flex flex-col gap-7 sm:flex-row sm:items-center sm:justify-between">
       <PrimarySearch className="background-light800_dark300 min-h-[56px] border-light-700 dark:border-none">
         <PrimarySearch.SearchIcon iconSrc="/assets/icons/search.svg" iconAlt="Search" />
-        <PrimarySearch.SearchInput route={route} placeholder={inputPlacehoder} />
+        <PrimarySearch.LocalSearchInput route={route} placeholder={inputPlacehoder} />
       </PrimarySearch>
 
       <Filter

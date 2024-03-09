@@ -40,7 +40,7 @@ export default function HomeFilters() {
       <div className="mt-8 flex flex-col gap-3 xs:flex-row xs:items-center xs:justify-between">
         <PrimarySearch className="background-light800_dark300 border-light-700 dark:border-none">
           <PrimarySearch.SearchIcon iconSrc="/assets/icons/search.svg" iconAlt="Search" />
-          <PrimarySearch.SearchInput placeholder="Search for questions here..." route={PATH.HOMEPAGE} />
+          <PrimarySearch.LocalSearchInput placeholder="Search for questions here..." route={PATH.HOMEPAGE} />
         </PrimarySearch>
 
         <Filter
@@ -53,11 +53,7 @@ export default function HomeFilters() {
       <ul className="mt-8 flex gap-3 max-md:hidden">
         {HomePageFilters.map((item) => (
           <li key={item.value}>
-            <FilterTag
-              handleClickFilter={handleClickFilter}
-              value={item.value}
-              isActive={item.value === paramsFilter}
-            >
+            <FilterTag handleClickFilter={handleClickFilter} value={item.value} isActive={item.value === paramsFilter}>
               {item.name}
             </FilterTag>
           </li>

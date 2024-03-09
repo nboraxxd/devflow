@@ -83,7 +83,7 @@ export default function Header() {
             style={{ scale: motionScale }}
           >
             <PrimarySearch.SearchIcon iconSrc="/assets/icons/search.svg" iconAlt="Search" />
-            <PrimarySearch.SearchInput ref={searchInput} route={PATH.HOMEPAGE} placeholder="Search anything globally" />
+            <PrimarySearch.GlobalSearchInput ref={searchInput} route={PATH.HOMEPAGE} placeholder="Search anything globally" />
           </PrimarySearch>
 
           <nav className={cn('flex-between shrink-0 md:gap-5', { 'gap-3': !isFocusSearch })}>

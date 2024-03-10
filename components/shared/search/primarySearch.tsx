@@ -1,12 +1,13 @@
 'use client'
 
 import Image from 'next/image'
-import {
+import React, {
   ForwardRefExoticComponent,
   ReactNode,
   RefAttributes,
   createContext,
   forwardRef,
+  useContext,
   useEffect,
   useState,
 } from 'react'
@@ -91,6 +92,7 @@ const GlobalSearchInput = forwardRef<HTMLInputElement, SearchInputProps>(functio
 
   const searchQuery = searchParams.get('global')
 
+  const { searchContainerRef } = useContext(SearchContext)
   const [search, setSearch] = useState(searchQuery || '')
   const [isOpen, setIsOpen] = useState(searchQuery || false)
 
@@ -101,6 +103,23 @@ const GlobalSearchInput = forwardRef<HTMLInputElement, SearchInputProps>(functio
 
     if (ev.target.value === '' && isOpen) setIsOpen(false)
   }
+
+  useEffect(() => {
+    setIsOpen(false)
+  }, [pathname])
+
+  useEffect(() => {
+    function handleOutsideClick(ev: MouseEvent) {
+      if (searchContainerRef?.current && !searchContainerRef.current.contains(ev.target as Node)) {
+        setIsOpen(false)
+        setSearch('')
+      }
+    }
+
+    document.addEventListener('click', handleOutsideClick)
+
+    return () => document.removeEventListener('click', handleOutsideClick)
+  }, [searchContainerRef])
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -125,7 +144,7 @@ const GlobalSearchInput = forwardRef<HTMLInputElement, SearchInputProps>(functio
     }, 300)
 
     return () => clearTimeout(delayDebounceFn)
-  }, [pathname, router, search, searchParams, searchQuery])
+  }, [router, search, searchParams, searchQuery])
 
   return (
     <>
@@ -156,8 +175,12 @@ interface PrimarySearchType extends ForwardRefExoticComponent<PrimarySearchProps
   SearchIcon: typeof SearchIcon
 }
 
+interface PrimarySearchContext {
+  searchContainerRef: React.RefObject<HTMLDivElement> | null
+}
+
 // Step 1. Create a context
-const SearchContext = createContext({})
+const SearchContext = createContext<PrimarySearchContext>({ searchContainerRef: null })
 
 // Step 2. Create parent component
 const PrimarySearch = forwardRef<HTMLDivElement, PrimarySearchProps>(function PrimarySearch(
@@ -165,7 +188,7 @@ const PrimarySearch = forwardRef<HTMLDivElement, PrimarySearchProps>(function Pr
   ref
 ) {
   return (
-    <SearchContext.Provider value={{}}>
+    <SearchContext.Provider value={{ searchContainerRef: ref as React.RefObject<HTMLDivElement> }}>
       <m.div
         style={style}
         className={cn(

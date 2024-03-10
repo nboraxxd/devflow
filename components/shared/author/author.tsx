@@ -34,7 +34,7 @@ export default function Author(props: Props) {
         alt={author.name}
         width={imageWidth}
         height={imageHeight}
-        className={cn('mb-px rounded-full', imageClassName)}
+        className={cn('mb-px aspect-square rounded-full', imageClassName)}
       />
       <Element className={cn(authorClassName)}>{author.name}</Element>
     </Link>

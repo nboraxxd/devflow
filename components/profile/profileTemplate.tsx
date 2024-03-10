@@ -25,47 +25,45 @@ export default async function ProfileTemplate({ userId, pageNumber, children }: 
     <div className="py-14">
       <div className="flex gap-4 max-md:flex-col-reverse md:items-start md:justify-between">
         <div className="flex gap-4 max-sm:flex-col sm:items-center">
-          <div className="max-xs:flex max-xs:justify-center">
+          <div className="max-sm:flex max-sm:justify-center">
             <Image
               src={userInfo.picture}
               alt={userInfo.username}
               width={140}
               height={140}
-              className="rounded-full object-cover"
+              className="h-[120px] w-[120px] rounded-full object-cover md:h-[140px] md:w-[140px]"
             />
           </div>
 
-          <section>
+          <div className="max-sm:flex-center max-sm:flex-col">
             {/* Name */}
-            <h1 className="h3-bold md:h1-bold text-dark100_light900 line-clamp-1">{userInfo.name}</h1>
-
-            {/* Username */}
-            <p className="paragraph-regular text-dark200_light800 mt-2">@{userInfo.username}</p>
-
-            <div className="mt-5 flex flex-wrap items-center gap-5">
-              {/* Portfolio website */}
-              {userInfo.portfolioWebsite && (
+            <section>
+              <h1 className="h3-bold md:h1-bold text-dark100_light900 line-clamp-1">{userInfo.name}</h1>
+              {/* Username */}
+              <p className="paragraph-regular text-dark200_light800 mt-2">@{userInfo.username}</p>
+              <div className="mt-5 flex flex-wrap items-center gap-5">
+                {/* Portfolio website */}
+                {userInfo.portfolioWebsite && (
+                  <ProfileLink
+                    iconUrl="/assets/icons/link.svg"
+                    iconAlt="User website"
+                    href={userInfo.portfolioWebsite}
+                    title="Website"
+                  />
+                )}
+                {/* Location */}
+                {userInfo.location && (
+                  <ProfileLink iconUrl="/assets/icons/location.svg" iconAlt="User location" title={userInfo.location} />
+                )}
+                {/* Joined date */}
                 <ProfileLink
-                  iconUrl="/assets/icons/link.svg"
-                  iconAlt="User website"
-                  href={userInfo.portfolioWebsite}
-                  title="Website"
+                  iconUrl="/assets/icons/calendar.svg"
+                  iconAlt="User join"
+                  title={getJoinedDate(userInfo.createdAt)}
                 />
-              )}
-
-              {/* Location */}
-              {userInfo.location && (
-                <ProfileLink iconUrl="/assets/icons/location.svg" iconAlt="User location" title={userInfo.location} />
-              )}
-
-              {/* Joined date */}
-              <ProfileLink
-                iconUrl="/assets/icons/calendar.svg"
-                iconAlt="User join"
-                title={getJoinedDate(userInfo.createdAt)}
-              />
-            </div>
-          </section>
+              </div>
+            </section>
+          </div>
         </div>
 
         {/* Edit button */}

@@ -5,12 +5,14 @@ import { SortOrder } from 'mongoose'
 
 import { connectToDatabase } from '@/lib/mongoose'
 import { Answer as AnswerType, AnswerVoteParams, CreateAnswerParams, GetAnswersParams } from '@/types/answer.types'
-import { User } from '@/types/user.types'
+import { User as UserType } from '@/types/user.types'
 import Answer from '@/database/answer.model'
 import Question from '@/database/question.model'
+import Interaction from '@/database/interaction.model'
+import User from '@/database/user.model'
 
 type GetAnswersReturn = (Omit<AnswerType, 'author'> & {
-  author: Pick<User, '_id' | 'clerkId' | 'name' | 'picture'>
+  author: Pick<UserType, '_id' | 'clerkId' | 'name' | 'picture'>
 })[]
 
 export async function createAnswer(params: CreateAnswerParams) {
@@ -21,7 +23,7 @@ export async function createAnswer(params: CreateAnswerParams) {
   try {
     const newAnswer = await Answer.create({ content, author, question })
 
-    await Question.findByIdAndUpdate(
+    const questionResult = await Question.findByIdAndUpdate(
       question,
       {
         $push: { answers: newAnswer._id },
@@ -29,7 +31,17 @@ export async function createAnswer(params: CreateAnswerParams) {
       { new: true }
     )
 
-    // TODO: Add interaction...
+    // Create an interaction record for the user's answer action
+    await Interaction.create({
+      user: author,
+      action: 'answer',
+      question,
+      answer: newAnswer._id,
+      tags: questionResult.tags,
+    })
+
+    // Increment the author's reputation by +10 for answering a question
+    await User.findByIdAndUpdate(author, { $inc: { reputation: 10 } })
 
     revalidatePath(path)
   } catch (error) {
@@ -109,7 +121,10 @@ export async function upvoteAnswer(params: AnswerVoteParams) {
       throw new Error('Answer not found')
     }
 
-    // TODO: Increment author's reputation
+    // Increment user's reputation by +1/-1 for upvoting/revoking an upvote to the answer
+    await User.findByIdAndUpdate(userId, { $inc: { reputation: hasUpvoted ? -1 : 1 } })
+    // Increment author's reputation by +5/-5 for upvoting/revoking an upvote to the answer
+    await User.findByIdAndUpdate(answer.author, { $inc: { reputation: hasUpvoted ? -5 : 5 } })
 
     revalidatePath(path)
   } catch (error) {
@@ -143,7 +158,10 @@ export async function downvoteAnswer(params: AnswerVoteParams) {
       throw new Error('Answer not found')
     }
 
-    // TODO: Increment author's reputation
+    // Increment user's reputation by +1/-1 for downvoting/revoking a downvote to the answer
+    await User.findByIdAndUpdate(userId, { $inc: { reputation: hasDownvoted ? -1 : 1 } })
+    // Increment author's reputation by -2/2 for downvoting/revoking a downvote to the answer
+    await User.findByIdAndUpdate(answer.author, { $inc: { reputation: hasDownvoted ? 2 : -2 } })
 
     revalidatePath(path)
   } catch (error) {

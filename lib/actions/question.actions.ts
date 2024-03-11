@@ -15,6 +15,7 @@ import { connectToDatabase } from '@/lib/mongoose'
 import Question from '@/database/question.model'
 import Tag from '@/database/tag.model'
 import User from '@/database/user.model'
+import Interaction from '@/database/interaction.model'
 
 export type GetQuestionByIdReturn = Omit<QuestionType, 'tags' | 'author'> & {
   tags: {
@@ -60,10 +61,21 @@ export async function createQuestion(params: CreateQuestionParams) {
       $push: { tags: { $each: tagIds } },
     })
 
+    // Create an interaction record for the user's ask_question action
+    await Interaction.create({
+      user: author,
+      action: 'ask_question',
+      question: question._id,
+      tags: tagIds,
+    })
+
+    // Increment author's reputation by +5 for creating a question
+    await User.findByIdAndUpdate(author, { $inc: { reputation: 5 } })
+
     revalidatePath(path)
-  } catch (err) {
-    console.log(err)
-    throw err
+  } catch (error) {
+    console.log(error)
+    throw error
   }
 }
 
@@ -197,7 +209,10 @@ export async function upvoteQuestion(params: QuestionVoteParams) {
       throw new Error('Question not found')
     }
 
-    // TODO: Increment author's reputation
+    // Increment user's reputation by +1/-1 for upvoting/revoking an upvote to the question
+    await User.findByIdAndUpdate(userId, { $inc: { reputation: hasUpvoted ? -1 : 1 } })
+    // Increment author's reputation by +10/-10 for upvoting/revoking an upvote to the question
+    await User.findByIdAndUpdate(question.author, { $inc: { reputation: hasUpvoted ? -10 : 10 } })
 
     revalidatePath(path)
   } catch (error) {
@@ -231,7 +246,10 @@ export async function downvoteQuestion(params: QuestionVoteParams) {
       throw new Error('Question not found')
     }
 
-    // TODO: Increment author's reputation
+    // Decrement user's reputation by -1/+1 for downvoting/revoking a downvote to the question
+    await User.findByIdAndUpdate(userId, { $inc: { reputation: hasDownvoted ? -1 : 1 } })
+    // Decrement author's reputation by +10/-10 for upvoting/revoking an upvote to the question
+    await User.findByIdAndUpdate(question.author, { $inc: { reputation: hasDownvoted ? 2 : -2 } })
 
     revalidatePath(path)
   } catch (error) {

@@ -274,7 +274,7 @@ export async function getUserQuestions(params: GetUserStatsParams): Promise<GetU
 
     const [userQuestions, totalUserQuestions] = await Promise.all([
       Question.find({ author: user._id })
-        .sort({ view: -1, upvotes: -1 })
+        .sort({ createdAt: -1, view: -1, upvotes: -1 })
         .populate({ path: 'tags', model: Tag, select: '_id name' })
         .populate({ path: 'author', model: User, select: '_id clerkId name picture' })
         .skip(skipAmount)
@@ -303,7 +303,7 @@ export async function getUserAnswers(params: GetUserStatsParams): Promise<GetUse
 
     const [userAnswers, totalUserAnswers] = await Promise.all([
       Answer.find({ author: user._id })
-        .sort({ upvotes: -1 })
+        .sort({ createdAt: -1, upvotes: -1 })
         .populate({ path: 'question', model: Question, select: '_id title' })
         .populate({ path: 'author', model: User, select: '_id clerkId name picture' })
         .skip(skipAmount)

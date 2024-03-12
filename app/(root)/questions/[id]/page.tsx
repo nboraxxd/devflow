@@ -1,8 +1,10 @@
 import Image from 'next/image'
+import { useState } from 'react'
 import { auth } from '@clerk/nextjs'
 
 import { URLProps } from '@/types'
 import { PATH } from '@/constants/path'
+import { ServiceStatus } from '@/constants/enums'
 import { formatNumberToSocialStyle, getTimestamp } from '@/lib/utils'
 import { getQuestionById } from '@/lib/actions/question.actions'
 import { getUserByClerkId } from '@/lib/actions/user.action'
@@ -17,8 +19,30 @@ import { Votes } from '@/components/shared/votes'
 export default async function Page({ params, searchParams }: URLProps) {
   const { userId: clerkId } = auth()
 
+  const [status, setStatus] = useState<ServiceStatus>(ServiceStatus.idle)
+
   const question = await getQuestionById(params.id)
   const mongoUser = clerkId ? await getUserByClerkId(clerkId) : undefined
+
+  async function generateAIAnswer() {
+    if (!mongoUser?._id) return
+
+    try {
+      setStatus(ServiceStatus.pending)
+      
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/chatgpt`, {
+        method: 'POST',
+        body: JSON.stringify({ question: question.title }),
+      })
+
+      const aiAnswer = await response.json()
+
+      console.log(aiAnswer.reply)
+    } catch (error) {
+      setStatus(ServiceStatus.rejected)
+      console.log(error)
+    }
+  }
 
   return (
     <main className="py-8 md:py-16">
@@ -93,7 +117,10 @@ export default async function Page({ params, searchParams }: URLProps) {
       <div className="mt-8">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between sm:gap-2">
           <p className="text-dark400_light800 paragraph-semibold">Write your answer here</p>
-          <PrimaryButton className="light-border-2 background-light800_dark300 flex-center flex items-center gap-1.5 rounded-md border px-4 py-2.5">
+          <PrimaryButton
+            className="light-border-2 background-light800_dark300 flex-center flex items-center gap-1.5 rounded-md border px-4 py-2.5"
+            onClick={generateAIAnswer}
+          >
             <Image src="/assets/icons/stars.svg" alt="Stars" width={12} height={12} />
             <span className="primary-text-gradient small-medium mt-px">Generate AI Answer</span>
           </PrimaryButton>

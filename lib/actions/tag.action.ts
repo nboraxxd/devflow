@@ -14,6 +14,7 @@ import { GetQuestionByIdReturn } from '@/lib/actions/question.actions'
 import User from '@/database/user.model'
 import Tag from '@/database/tag.model'
 import Question from '@/database/question.model'
+import Interaction from '@/database/interaction.model'
 
 export type GetTopPopularTagReturn = {
   _id: ObjectId
@@ -21,11 +22,11 @@ export type GetTopPopularTagReturn = {
   numberOfQuestions: number
 }
 
-export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
+export async function getTopInteractedTags(params: GetTopInteractedTagsParams): Promise<TagType[]> {
   try {
     connectToDatabase()
 
-    const { userId } = params
+    const { userId, limit = 3 } = params
 
     const user = await User.findById(userId)
 
@@ -33,14 +34,21 @@ export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
       throw new Error('User not found')
     }
 
-    // Find interactions for the user and group by tags...
-    // Interaction...
+    // Find interactions for the user and group by tags
+    const tagCountMap = await Interaction.aggregate([
+      { $match: { user: user._id, tags: { $exists: true, $ne: [] } } },
+      { $unwind: '$tags' },
+      { $group: { _id: '$tags', count: { $sum: 1 } } },
+      { $sort: { count: -1 } },
+      { $limit: limit },
+    ])
 
-    return [
-      { _id: '123', name: 'HTML' },
-      { _id: '234', name: 'CSS' },
-      { _id: '345', name: 'JavaScript' },
-    ]
+    const topTags = tagCountMap.map((tagCount) => tagCount._id)
+
+    // Find the tag documents for the top tags
+    const topTagDocuments = await Tag.find({ _id: { $in: topTags } })
+
+    return topTagDocuments
   } catch (error) {
     console.log(error)
     throw error
@@ -169,7 +177,6 @@ export async function getQuestionsByTagId(params: GetQuestionsByTagIdParams) {
 
     // Calculate the isNext indicator
     const isNext = tag.questions.length > pageSize
-
 
     return { tagTitle: tag.name as string, questions, isNext }
   } catch (error) {

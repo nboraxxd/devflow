@@ -15,9 +15,11 @@ import {
   UpdateUserParams,
   User as UserType,
 } from '@/types/user.types'
+import { BadgeCounts, CriteriaType } from '@/types'
 import { Answer as AnswerType } from '@/types/answer.types'
 import { GetQuestionByIdReturn } from '@/lib/actions/question.actions'
 import { envConfig } from '@/constants/config'
+import { assignBadges } from '@/lib/utils'
 import User from '@/database/user.model'
 import Question from '@/database/question.model'
 import Answer from '@/database/answer.model'
@@ -27,6 +29,7 @@ export type GetUserInfoReturn = {
   user: UserType
   totalQuestions: number
   totalAnswers: number
+  badgeCounts: BadgeCounts
 }
 
 type GetSavedQuestionsReturn = {
@@ -147,13 +150,37 @@ export async function getUserInfo(userId: string): Promise<GetUserInfoReturn> {
       throw new Error('User not found')
     }
 
-    const totalQuestions = await Question.countDocuments({ author: user._id })
-    const totalAnswers = await Answer.countDocuments({ author: user._id })
+    const [totalQuestions, totalAnswers, [questionUpvotes], [answerUpvotes], [questionViews]] = await Promise.all([
+      Question.countDocuments({ author: user._id }),
+      Answer.countDocuments({ author: user._id }),
+      Question.aggregate([
+        { $match: { author: user._id } },
+        { $project: { _id: 0, upvotes: { $size: '$upvotes' } } },
+        { $group: { _id: null, totalUpvotes: { $sum: '$upvotes' } } },
+      ]),
+      Answer.aggregate([
+        { $match: { author: user._id } },
+        { $project: { _id: 0, upvotes: { $size: '$upvotes' } } },
+        { $group: { _id: null, totalUpvotes: { $sum: '$upvotes' } } },
+      ]),
+      Question.aggregate([{ $match: { author: user._id } }, { $group: { _id: null, totalViews: { $sum: '$views' } } }]),
+    ])
+
+    const criteriaList: CriteriaType[] = [
+      { type: 'QUESTION_COUNT', count: totalQuestions },
+      { type: 'ANSWER_COUNT', count: totalAnswers },
+      { type: 'QUESTION_UPVOTES', count: questionUpvotes?.totalUpvotes || 0 },
+      { type: 'ANSWER_UPVOTES', count: answerUpvotes?.totalUpvotes || 0 },
+      { type: 'TOTAL_VIEWS', count: questionViews?.totalViews || 0 },
+    ]
+
+    const badgeCounts = assignBadges(criteriaList)
 
     return {
       user,
       totalQuestions,
       totalAnswers,
+      badgeCounts,
     }
   } catch (error) {
     console.log(error)

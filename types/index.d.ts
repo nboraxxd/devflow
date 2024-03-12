@@ -53,3 +53,5 @@ export type BadgeCounts = {
 }
 
 export type BadgeCriteriaType = keyof typeof BADGE_CRITERIA
+
+export type CriteriaType = { type: BadgeCriteriaType; count: number }

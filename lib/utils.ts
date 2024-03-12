@@ -3,7 +3,8 @@ import { type ClassValue, clsx } from 'clsx'
 import queryString from 'query-string'
 import omitLodash from 'lodash.omit'
 
-import { URLQueryParams } from '@/types'
+import { BadgeCounts, CriteriaType, URLQueryParams } from '@/types'
+import { BADGE_CRITERIA } from '@/constants'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -111,4 +112,26 @@ export function removeKeysFromQuery({ params, keysToRemove }: { params: string; 
     },
     { skipNull: true }
   )
+}
+
+export function assignBadges(criteriaList: CriteriaType[]) {
+  const badgesCounts: BadgeCounts = {
+    BRONZE: 0,
+    SILVER: 0,
+    GOLD: 0,
+  }
+
+  criteriaList.forEach((criteria) => {
+    const { count, type } = criteria
+
+    const badgeLevels: Record<string, number> = BADGE_CRITERIA[type]
+
+    Object.keys(badgeLevels).forEach((badge) => {
+      if (count >= badgeLevels[badge]) {
+        badgesCounts[badge as keyof BadgeCounts] += 1
+      }
+    })
+  })
+
+  return badgesCounts
 }

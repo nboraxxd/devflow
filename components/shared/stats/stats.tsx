@@ -1,13 +1,15 @@
+import { BadgeCounts } from '@/types'
+import { BAGDE_CARDS } from '@/constants'
 import { formatNumberToSocialStyle } from '@/lib/utils'
 import { StatsCard } from '@/components/shared/stats'
-import { BAGDE_CARDS } from '@/constants'
 
 interface Props {
   totalAnswers: number
   totalQuestions: number
+  badgeCounts: BadgeCounts
 }
 
-export default function Stats({ totalAnswers, totalQuestions }: Props) {
+export default function Stats({ totalAnswers, totalQuestions, badgeCounts }: Props) {
   return (
     <div className="mt-10 w-full">
       <h2 className="h3-semibold text-dark200_light900">Stats</h2>
@@ -29,7 +31,7 @@ export default function Stats({ totalAnswers, totalQuestions }: Props) {
         </div>
 
         {BAGDE_CARDS.map((badge) => (
-          <StatsCard key={badge.type} iconUrl={badge.iconUrl} title={badge.title} value={1500} />
+          <StatsCard key={badge.type} iconUrl={badge.iconUrl} title={badge.title} value={badgeCounts[badge.type]} />
         ))}
       </div>
     </div>

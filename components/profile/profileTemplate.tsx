@@ -18,7 +18,7 @@ interface Props {
 }
 
 export default async function ProfileTemplate({ userId, pageNumber, children }: Props) {
-  const { user: userInfo, totalAnswers, totalQuestions } = await getUserInfo(userId)
+  const { user: userInfo, totalAnswers, totalQuestions, badgeCounts } = await getUserInfo(userId)
   const { tags } = await getAllTags({})
 
   return (
@@ -74,7 +74,7 @@ export default async function ProfileTemplate({ userId, pageNumber, children }: 
       {userInfo.bio && <p className="paragraph-regular text-dark400_light800 mt-3 sm:ml-32">{userInfo.bio}</p>}
 
       {/* Stats */}
-      <Stats totalAnswers={totalAnswers} totalQuestions={totalQuestions} />
+      <Stats totalAnswers={totalAnswers} totalQuestions={totalQuestions} badgeCounts={badgeCounts} />
 
       <div className="mt-10 lg:grid lg:grid-cols-[minmax(0,1fr)_200px] lg:gap-5 xl:gap-10">
         <Tabs defaultValue="top-posts" className="flex-1">

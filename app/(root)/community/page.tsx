@@ -12,7 +12,7 @@ export default async function Page({ searchParams }: SearchParamsProps) {
     searchQuery: searchParams.q,
     filter: searchParams.filter,
     page: searchParams.page ? +searchParams.page : 1,
-    pageSize: 5,
+    pageSize: 20,
   })
 
   return (

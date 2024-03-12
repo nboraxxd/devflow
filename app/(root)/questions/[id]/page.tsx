@@ -56,7 +56,7 @@ export default async function Page({ params, searchParams }: URLProps) {
             <Metric
               iconUrl="/assets/icons/message.svg"
               alt="Answers"
-              value={formatNumberToSocialStyle(8746)}
+              value={formatNumberToSocialStyle(question.answers.length)}
               title="answer"
               titles="answers"
             />

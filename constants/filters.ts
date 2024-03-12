@@ -17,14 +17,14 @@ export const QuestionFilters = [
   { name: 'Most Voted', value: 'most_voted' },
   { name: 'Most Viewed', value: 'most_viewed' },
   { name: 'Most Answered', value: 'most_answered' },
-]
+] as const
 
 export const TagFilters = [
   { name: 'Popular', value: 'popular' },
   { name: 'Recent', value: 'recent' },
   { name: 'Name', value: 'name' },
   { name: 'Old', value: 'old' },
-]
+] as const
 
 export const HomePageFilters = [
   { name: 'Newest', value: 'newest' },

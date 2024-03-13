@@ -54,7 +54,10 @@ export default function Answer({ mongoUserId, question }: AnswerProps) {
 
       const aiAnswer = await response.json()
 
-      console.log(aiAnswer.reply)
+      // Convert plain text to HTML format
+      const formattedAnswer = aiAnswer.reply.replace(/\n/g, '<br>')
+      if (editorRef.current) editorRef.current.setContent(formattedAnswer)
+
       setGenerateAnswerStatus(ServiceStatus.successful)
     } catch (error) {
       setGenerateAnswerStatus(ServiceStatus.rejected)
@@ -90,7 +93,9 @@ export default function Answer({ mongoUserId, question }: AnswerProps) {
           disabled={generateAnswerStatus === ServiceStatus.pending}
         >
           <Image src="/assets/icons/stars.svg" alt="Stars" width={12} height={12} />
-          <span className="primary-text-gradient small-medium mt-px">Generate AI Answer</span>
+          <span className="primary-text-gradient small-medium mt-px">
+            {generateAnswerStatus === ServiceStatus.pending ? 'Generating...' : 'Generate AI answer'}
+          </span>
         </PrimaryButton>
       </div>
 

@@ -7,19 +7,21 @@ import { QuestionCard } from '@/components/shared/cards'
 import { NoResult } from '@/components/shared/noResult'
 import { Pagination } from '@/components/shared/pagination'
 
+const PAGE_SIZE = 10
+
 export default async function Home({ searchParams }: SearchParamsProps) {
   const { questions, isNext } = await getQuestions({
     searchQuery: searchParams.q,
     filter: searchParams.filter,
     page: searchParams.page ? +searchParams.page : 1,
-    pageSize: 5,
+    pageSize: PAGE_SIZE,
   })
 
   return (
     <div className="py-8 md:py-16">
       <div className="flex flex-col-reverse items-start max-sm:gap-2 sm:flex-row sm:items-center">
         <h1 className="h1-bold text-dark100_light900">All Questions</h1>
-        <LinkGradient href="/ask-question" className="ml-auto">
+        <LinkGradient href={PATH.ASK_QUESTION} className="ml-auto">
           Ask a Question
         </LinkGradient>
       </div>

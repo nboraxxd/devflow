@@ -21,7 +21,7 @@ export default async function Page({ searchParams }: SearchParamsProps) {
 
       <FilterGroup inputPlacehoder="Search by username..." route={PATH.COMMUNITY} filters={UserFilters} />
 
-      <section className="mt-12 flex flex-wrap gap-4">
+      <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {users.length > 0 ? (
           users.map((user) => (
             <UserCard
@@ -41,7 +41,7 @@ export default async function Page({ searchParams }: SearchParamsProps) {
             linkTitle="Sign up now"
           />
         )}
-      </section>
+      </div>
 
       {users.length > 0 && <Pagination isNext={isNext} pageNumber={searchParams?.page ? +searchParams.page : 1} />}
     </div>

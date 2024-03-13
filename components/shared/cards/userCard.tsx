@@ -14,10 +14,10 @@ interface UserCardProps {
 }
 
 export default async function UserCard({ _id, clerkId, name, picture, username }: UserCardProps) {
-  const interactedTags = await getTopInteractedTags({ userId: _id, limit: 3 })
+  const interactedTags = await getTopInteractedTags({ userId: _id, limit: 2 })
 
   return (
-    <section className="shadow-light100_darknone background-light900_dark200 flex flex-col items-center rounded-[10px] border border-light-b p-7 dark:border-dark-300 max-xs:min-w-full xs:w-[260px]">
+    <section className="shadow-light100_darknone background-light900_dark200 flex w-full flex-col items-center rounded-[10px] border border-light-b p-7 dark:border-dark-300">
       <Image
         src={picture}
         alt={name}
@@ -36,7 +36,7 @@ export default async function UserCard({ _id, clerkId, name, picture, username }
       <div className="flex-between mt-5 gap-2">
         {interactedTags.length > 0 ? (
           interactedTags.map((tag) => (
-            <SubjectTag key={tag._id.toString()}>
+            <SubjectTag key={tag._id.toString()} href={`${PATH.TAGS}/${tag._id.toString()}`}>
               {tag.name}
             </SubjectTag>
           ))

@@ -19,25 +19,26 @@ interface Props {
 
 export default async function ProfileTemplate({ userId, pageNumber, children }: Props) {
   const { user: userInfo, totalAnswers, totalQuestions, badgeCounts } = await getUserInfo(userId)
-  const { tags } = await getAllTags({})
+  const { tags } = await getAllTags({ pageSize: 10 })
 
   return (
     <div className="py-14">
       <div className="flex gap-4 max-md:flex-col-reverse md:items-start md:justify-between">
         <div className="flex gap-4 max-sm:flex-col sm:items-center">
-          <div className="max-sm:flex max-sm:justify-center">
+          <div className="shrink-0 max-sm:flex max-sm:justify-center">
             <Image
               src={userInfo.picture}
               alt={userInfo.username}
               width={140}
               height={140}
+              priority
               className="h-[120px] w-[120px] rounded-full object-cover md:h-[140px] md:w-[140px]"
             />
           </div>
 
           <div className="max-sm:flex-center max-sm:flex-col">
+            <section className="max-sm:flex max-sm:flex-col max-sm:items-center">
             {/* Name */}
-            <section>
               <h1 className="h3-bold md:h1-bold text-dark100_light900 line-clamp-1">{userInfo.name}</h1>
               {/* Username */}
               <p className="paragraph-regular text-dark200_light800 mt-2">@{userInfo.username}</p>

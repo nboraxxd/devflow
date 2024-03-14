@@ -9,7 +9,7 @@ interface TagCardProps {
 
 export default function TagCard({ _id, name, count }: TagCardProps) {
   return (
-    <section className="shadow-light100_darknone background-light900_dark200 flex flex-col items-center rounded-[10px] border border-light-b px-7 py-10 dark:border-dark-300 max-xs:min-w-full xs:w-[260px]">
+    <section className="shadow-light100_darknone background-light900_dark200 flex w-full flex-col items-center rounded-[10px] border border-light-b px-7 py-10 dark:border-dark-300">
       <SubjectTag
         href={`${PATH.TAGS}/${_id}`}
         className="text-dark500_light500 body-regular mt-1.5 line-clamp-1 break-all"

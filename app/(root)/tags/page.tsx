@@ -21,7 +21,7 @@ export default async function Page({ searchParams }: SearchParamsProps) {
 
       <FilterGroup inputPlacehoder="Search by tag name..." route={PATH.TAGS} filters={TagFilters} />
 
-      <section className="mt-12 flex flex-wrap gap-4">
+      <section className="mt-12 grid grid-cols-1 gap-4 xs:grid-cols-2 sm:grid-cols-3 xl:grid-cols-4">
         {tags.length > 0 ? (
           tags.map((tag) => (
             <TagCard key={tag._id.toString()} _id={tag._id.toString()} name={tag.name} count={tag.questions.length} />

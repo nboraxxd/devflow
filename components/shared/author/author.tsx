@@ -1,6 +1,7 @@
-import { ElementType } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { ElementType } from 'react'
+import { auth } from '@clerk/nextjs'
 
 import { User } from '@/types/user.types'
 import { PATH } from '@/constants/path'
@@ -27,8 +28,13 @@ export default function Author(props: Props) {
     authorTag: Element = 'span',
   } = props
 
+  const { userId: clerkId } = auth()
+
   return (
-    <Link href={`${PATH.PROFILES}/${author.clerkId}`} className={cn('flex items-center gap-1.5', linkClassName)}>
+    <Link
+      href={author.clerkId === clerkId ? PATH.MY_PROFILE : `${PATH.PROFILES}/${author.clerkId}`}
+      className={cn('flex items-center gap-1.5', linkClassName)}
+    >
       <Image
         src={author.picture}
         alt={author.name}

@@ -7,7 +7,7 @@ import { getQuestionById } from '@/lib/actions/question.actions'
 import { getUserByClerkId } from '@/lib/actions/user.action'
 import { Metric } from '@/components/shared/metric'
 import { ParseHTML } from '@/components/shared/parseHTML'
-import {  SubjectTag } from '@/components/shared/button'
+import { SubjectTag } from '@/components/shared/button'
 import { Answer } from '@/components/forms'
 import { AnswerList } from '@/components/shared/answerList'
 import { Author } from '@/components/shared/author'
@@ -90,10 +90,7 @@ export default async function Page({ params, searchParams }: URLProps) {
       />
 
       <div className="mt-8">
-        <Answer
-          mongoUserId={mongoUser?._id.toString()}
-          question={JSON.stringify(question)}
-        />
+        <Answer mongoUserId={mongoUser?._id.toString()} question={JSON.stringify(question)} />
       </div>
     </main>
   )

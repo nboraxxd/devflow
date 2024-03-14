@@ -2,6 +2,7 @@ import { ReactNode } from 'react'
 
 import { getTopQuestions } from '@/lib/actions/question.actions'
 import { getTopPopularTags } from '@/lib/actions/tag.action'
+import { Toaster } from '@/components/ui/toaster'
 import { Header } from '@/components/shared/header'
 import { LeftSidebar } from '@/components/shared/leftSidebar'
 import { RightSidebar } from '@/components/shared/rightSidebar'
@@ -20,6 +21,8 @@ export default async function Layout({ children }: { children: ReactNode }) {
           {children}
           <RightSidebar questions={topQuestions} tags={popularTags} />
         </section>
+
+        <Toaster />
       </main>
     </>
   )

@@ -1,14 +1,15 @@
 'use client'
 
 import Image from 'next/image'
+import { useEffect } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 
 import { downvoteQuestion, upvoteQuestion } from '@/lib/actions/question.actions'
-import { PrimaryButton } from '@/components/shared/button'
 import { downvoteAnswer, upvoteAnswer } from '@/lib/actions/answer.action'
 import { toggleSaveQuestion } from '@/lib/actions/user.action'
-import { useEffect } from 'react'
 import { viewQuestion } from '@/lib/actions/interaction.action'
+import { toast } from '@/components/ui/use-toast'
+import { PrimaryButton } from '@/components/shared/button'
 
 interface Props {
   type: 'question' | 'answer'
@@ -28,7 +29,9 @@ export default function Votes(props: Props) {
   const router = useRouter()
 
   async function handleVote(action: 'upvote' | 'downvote') {
-    if (!userId) return
+    if (!userId) {
+      return toast({ title: 'Login to vote', description: 'Please login or create an account to vote' })
+    }
 
     if (action === 'upvote') {
       if (type === 'question') {
@@ -37,8 +40,10 @@ export default function Votes(props: Props) {
         await upvoteAnswer({ userId, answerId: itemId, hasUpvoted, hasDownvoted, path: pathname })
       }
 
-      // TODO: Show toast
-      return
+      return toast({
+        title: `Upvote ${!hasUpvoted ? 'successful' : 'removed'}`,
+        variant: 'default',
+      })
     }
 
     if (action === 'downvote') {
@@ -48,14 +53,22 @@ export default function Votes(props: Props) {
         await downvoteAnswer({ userId, answerId: itemId, hasUpvoted, hasDownvoted, path: pathname })
       }
 
-      // TODO: Show toast
+      return toast({
+        title: `Downvote ${!hasDownvoted ? 'successful' : 'removed'}`,
+        variant: 'default',
+      })
     }
   }
 
   async function handleSave() {
-    if (!userId) return
+    if (!userId) return toast({ title: 'Login to vote', description: 'Please login or create an account to save' })
 
     await toggleSaveQuestion({ userId, questionId: itemId, path: pathname })
+
+    toast({
+      title: `Question ${!hasSaved ? 'saved in' : 'removed from'} your collection`,
+      variant: 'default',
+    })
   }
 
   useEffect(() => {

@@ -6,6 +6,7 @@ import { FilterQuery, SortOrder } from 'mongoose'
 
 import {
   CreateQuestionParams,
+  DeleteQuestionParams,
   EditQuestionParams,
   GetQuestionsParams,
   Question as QuestionType,
@@ -16,6 +17,7 @@ import Question from '@/database/question.model'
 import Tag from '@/database/tag.model'
 import User from '@/database/user.model'
 import Interaction from '@/database/interaction.model'
+import Answer from '@/database/answer.model'
 
 export type GetQuestionByIdReturn = Omit<QuestionType, 'tags' | 'author'> & {
   tags: {
@@ -255,5 +257,33 @@ export async function downvoteQuestion(params: QuestionVoteParams) {
   } catch (error) {
     console.log(error)
     throw error
+  }
+}
+
+export async function deleteQuestion(params: DeleteQuestionParams) {
+  try {
+    await connectToDatabase();
+
+    const { questionId, path } = params;
+
+    // Delete the question
+    await Question.deleteOne({ _id: questionId });
+
+    // Delete all answers associated with the question
+    await Answer.deleteMany({ question: questionId });
+
+    // Delete interactions related to the question
+    await Interaction.deleteMany({ question: questionId });
+
+    // Update tags to remove references to the deleted question
+    await Tag.updateMany(
+      { questions: questionId },
+      { $pull: { questions: questionId } }
+    );
+
+    revalidatePath(path);
+  } catch (error) {
+    console.error("Error deleting question:", error);
+    throw error;
   }
 }

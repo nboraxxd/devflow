@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
+import { auth } from '@clerk/nextjs'
 
 import { SearchParamsProps } from '@/types'
 import { PATH } from '@/constants/path'
-import { getQuestions } from '@/lib/actions/question.actions'
+import { getQuestions, getRecommendedQuestions } from '@/lib/actions/question.actions'
 import { HomeFilters } from '@/components/home'
 import { LinkGradient } from '@/components/shared/button'
 import { QuestionCard } from '@/components/shared/cards'
@@ -17,12 +18,24 @@ export const metadata: Metadata = {
 }
 
 export default async function Home({ searchParams }: SearchParamsProps) {
-  const { questions, isNext } = await getQuestions({
-    searchQuery: searchParams.q,
-    filter: searchParams.filter,
-    page: searchParams.page ? +searchParams.page : 1,
-    pageSize: PAGE_SIZE,
-  })
+  const { userId } = auth()
+  let result
+
+  if (searchParams?.filter === 'recommended' && userId) {
+    result = await getRecommendedQuestions({
+      userId,
+      searchQuery: searchParams.q,
+      page: searchParams.page ? +searchParams.page : 1,
+      pageSize: PAGE_SIZE,
+    })
+  } else {
+    result = await getQuestions({
+      searchQuery: searchParams.q,
+      filter: searchParams.filter,
+      page: searchParams.page ? +searchParams.page : 1,
+      pageSize: PAGE_SIZE,
+    })
+  }
 
   return (
     <div className="py-8 md:py-16">
@@ -36,8 +49,8 @@ export default async function Home({ searchParams }: SearchParamsProps) {
       <HomeFilters />
 
       <section className="mt-10 flex w-full flex-col gap-6">
-        {questions.length > 0 ? (
-          questions.map((question) => (
+        {result.questions.length > 0 ? (
+          result.questions.map((question) => (
             <QuestionCard
               key={question._id.toString()}
               question={{
@@ -65,7 +78,9 @@ export default async function Home({ searchParams }: SearchParamsProps) {
         )}
       </section>
 
-      {questions.length > 0 && <Pagination isNext={isNext} pageNumber={searchParams?.page ? +searchParams.page : 1} />}
+      {result.questions.length > 0 && (
+        <Pagination isNext={result.isNext} pageNumber={searchParams?.page ? +searchParams.page : 1} />
+      )}
     </div>
   )
 }

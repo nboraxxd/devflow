@@ -37,6 +37,13 @@ export interface QuestionVoteParams {
   path: string
 }
 
+export interface RecommendedParams {
+  userId: string;
+  page?: number;
+  pageSize?: number;
+  searchQuery?: string;
+}
+
 export type Question = {
   _id: ObjectId
   title: string

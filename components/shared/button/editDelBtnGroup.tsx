@@ -10,7 +10,6 @@ import { deleteQuestion } from '@/lib/actions/question.actions'
 export default function EditDelBtnGroup({ questionId }: { questionId: string }) {
   const router = useRouter()
   const pathname = usePathname()
-  console.log('🔥 ~ EditDelBtnGroup ~ pathname:', pathname)
 
   function handleClickEditBtn() {
     router.push(`${PATH.QUESTIONS}/${questionId}/edit`)

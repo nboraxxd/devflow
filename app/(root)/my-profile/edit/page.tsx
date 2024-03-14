@@ -1,7 +1,14 @@
+import type { Metadata } from 'next'
 import { auth } from '@clerk/nextjs'
 
 import { getUserByClerkId } from '@/lib/actions/user.action'
 import { MyProfile } from '@/components/forms'
+
+export const metadata: Metadata = {
+  title: 'Edit Profile | Devflow',
+  description:
+    'Edit your profile and keep your information up to date. Devflow is a community of developers helping each other.',
+}
 
 export default async function Page() {
   const { userId: clerkId } = auth()

@@ -1,3 +1,5 @@
+import type { Metadata } from 'next'
+
 import { URLProps } from '@/types'
 import { PATH } from '@/constants/path'
 import { TagFilters } from '@/constants/filters'
@@ -7,6 +9,11 @@ import { FilterGroup } from '@/components/shared/filter'
 import { QuestionCard } from '@/components/shared/cards'
 import { NoResult } from '@/components/shared/noResult'
 import { Pagination } from '@/components/shared/pagination'
+
+export const metadata: Metadata = {
+  title: 'Tags | Devflow',
+  description: 'Explore and discover tags. Devflow is a community of developers helping each other.',
+}
 
 export default async function Page({ params, searchParams }: URLProps) {
   const { tagTitle, questions, isNext } = await getQuestionsByTagId({

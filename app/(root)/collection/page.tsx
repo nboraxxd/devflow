@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { auth } from '@clerk/nextjs'
 
 import { SearchParamsProps } from '@/types'
@@ -8,6 +9,11 @@ import { QuestionCard } from '@/components/shared/cards'
 import { FilterGroup } from '@/components/shared/filter'
 import { NoResult } from '@/components/shared/noResult'
 import { Pagination } from '@/components/shared/pagination'
+
+export const metadata: Metadata = {
+  title: 'Saved Questions | Devflow',
+  description: 'Explore and save questions that pique your interest. Devflow is a community of developers helping each other.',
+}
 
 export default async function Page({ searchParams }: SearchParamsProps) {
   const { userId: clerkId } = auth()

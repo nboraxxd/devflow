@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { auth } from '@clerk/nextjs'
 
 import { URLProps } from '@/types'
@@ -12,6 +13,11 @@ import { Answer } from '@/components/forms'
 import { AnswerList } from '@/components/shared/answerList'
 import { Author } from '@/components/shared/author'
 import { Votes } from '@/components/shared/votes'
+
+export const metadata: Metadata = {
+  title: 'Question | Devflow',
+  description: 'Get help from the community. Devflow is a community of developers helping each other.',
+}
 
 export default async function Page({ params, searchParams }: URLProps) {
   const { userId: clerkId } = auth()

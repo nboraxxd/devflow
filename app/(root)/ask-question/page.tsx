@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { auth } from '@clerk/nextjs'
 
@@ -5,6 +6,11 @@ import { PATH } from '@/constants/path'
 import { QuestionFormType } from '@/constants/enums'
 import { getUserByClerkId } from '@/lib/actions/user.action'
 import { Question } from '@/components/forms'
+
+export const metadata: Metadata = {
+  title: 'Ask a public question | Devflow',
+  description: 'Ask a public question and get help from the community. Devflow is a community of developers helping each other.',
+}
 
 export default async function AskQuestionPage() {
   const { userId: clerkId } = auth()

@@ -1,3 +1,5 @@
+import type { Metadata } from 'next'
+
 import { SearchParamsProps } from '@/types'
 import { TagFilters } from '@/constants/filters'
 import { PATH } from '@/constants/path'
@@ -6,6 +8,11 @@ import { TagCard } from '@/components/shared/cards'
 import { FilterGroup } from '@/components/shared/filter'
 import { NoResult } from '@/components/shared/noResult'
 import { Pagination } from '@/components/shared/pagination'
+
+export const metadata: Metadata = {
+  title: 'Tags | Devflow',
+  description: 'Explore and discover tags. Devflow is a community of developers helping each other.',
+}
 
 export default async function Page({ searchParams }: SearchParamsProps) {
   const { tags, isNext } = await getAllTags({

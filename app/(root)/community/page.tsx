@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { SearchParamsProps } from '@/types'
 import { PATH } from '@/constants/path'
 import { UserFilters } from '@/constants/filters'
@@ -6,6 +7,11 @@ import { UserCard } from '@/components/shared/cards'
 import { FilterGroup } from '@/components/shared/filter'
 import { NoResult } from '@/components/shared/noResult'
 import { Pagination } from '@/components/shared/pagination'
+
+export const metadata: Metadata = {
+  title: 'Community | Devflow',
+  description: 'Explore and connect with other developers. Devflow is a community of developers helping each other.',
+}
 
 export default async function Page({ searchParams }: SearchParamsProps) {
   const { users, isNext } = await getAllUsers({

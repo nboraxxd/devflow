@@ -1,10 +1,16 @@
 import Link from 'next/link'
+import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { auth } from '@clerk/nextjs'
 
 import { SearchParamsProps } from '@/types'
 import { PATH } from '@/constants/path'
 import { ProfileTemplate } from '@/components/profile'
+
+export const metadata: Metadata = {
+  title: 'My Profile | Devflow',
+  description: 'Explore and update your profile. Devflow is a community of developers helping each other.',
+}
 
 export default async function Page({ searchParams }: SearchParamsProps) {
   const { userId } = auth()

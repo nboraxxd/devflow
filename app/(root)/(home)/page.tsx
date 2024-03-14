@@ -1,3 +1,5 @@
+import type { Metadata } from 'next'
+
 import { SearchParamsProps } from '@/types'
 import { PATH } from '@/constants/path'
 import { getQuestions } from '@/lib/actions/question.actions'
@@ -8,6 +10,11 @@ import { NoResult } from '@/components/shared/noResult'
 import { Pagination } from '@/components/shared/pagination'
 
 const PAGE_SIZE = 10
+
+export const metadata: Metadata = {
+  title: 'Home | Devflow',
+  description: 'Devflow is a community of developers helping each other. Join us and ask your programming questions!',
+}
 
 export default async function Home({ searchParams }: SearchParamsProps) {
   const { questions, isNext } = await getQuestions({

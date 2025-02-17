@@ -120,6 +120,7 @@ export const editorOptions = (resolvedTheme?: string, initialValue?: string) => 
       'insertdatetime',
       'media',
       'table',
+      'markdown',
     ],
     toolbar:
       'undo redo |' +

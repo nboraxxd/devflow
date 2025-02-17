@@ -30,11 +30,6 @@ export const sidebarLinks: SidebarLink[] = [
     label: 'Collections',
   },
   {
-    imgURL: '/assets/icons/suitcase.svg',
-    route: PATH.JOBS,
-    label: 'Find Jobs',
-  },
-  {
     imgURL: '/assets/icons/tag.svg',
     route: PATH.TAGS,
     label: 'Tags',
